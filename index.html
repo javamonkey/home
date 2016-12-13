@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>beetl 官网 - beetl 最好的java模板引擎</title>
+		<meta charset="utf-8">
+		<meta name="renderer" content="webkit">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0,minimum-scale=1.0, user-scalable=no">
+		<meta name="keywords" content="java,beetl,beetlsql,模板,orm" />
+		<meta name="description" content="Beetl是一款6倍于Freemarker的超高性能的java模板引擎，来自于中国！！BeetlSQL是一款功能强大，以SQL为中心，使用简单的全功能的ORMapping工具，支持自动生成代码，内置大量SQL语句，支持市面上绝大多数主流数据库。Beetl和BeetlSQL均能与目前市面上的大多数流行框架无缝整合。" />
+		<link href="//cdn.bootcss.com/normalize/5.0.0/normalize.min.css" rel="stylesheet">
+		<link rel="stylesheet" type="text/css" href="font/iconfont.css"/>
+		<style>
+			html,body{font-family:PingFang SC,Microsoft YaHei;width: 100%;margin: 0;padding: 0;}
+			.body{width: 100%;}
+			.ani,.nav-menu *{-webkit-transition: all .3s ease-out;-ms-transition: all .3s ease-out;-moz-transition: all .3s ease-out;-o-transition: all .3s ease-out;transition: all .3s ease-out;}
+			::-webkit-scrollbar{width:0px;height:0px}
+			
+			.logo{padding-right: 7px;overflow: hidden;position: relative;height:50px;display:block;float:left;padding-left:50px;text-decoration:none;color:#19191b;line-height:50px;font-size:25px}
+			.logo i{font-size: 30px;position: absolute;left: 0;top: 0;width: 50px;height: 50px;line-height: 50px;text-align: center;}
+			.logo:hover i{color: #f60;font-size: 38px;}
+			.logo:after {content: '';position: absolute;transform: skewX(-25deg) translateX(0px);top: 0px;left: -45px;width: 25px;height: 80px;background-image: linear-gradient(90deg,rgba(255,255,255,.3),#fff 50% ,rgba(255,255,255,.3));}
+			.logo:hover:after {transform: skewX(-25deg) translateX(200px);transition: all .4s ease-in;opacity: 0}
+			
+			
+			.navbar{background: #F5C503;width: 100%;z-index: 2;}
+			.navbar-nav{box-sizing: border-box;max-width: 1200px;margin: 0 auto;height: 50px;background: #F5C503;position: relative;}
+			.navbar-nav li a{white-space:nowrap;color:#19191b;text-decoration:none;width:100%;height:50px;display:block}
+			.navbar-nav .nav-item a:hover{color:#f60}ul,li{margin:0;padding:0;list-style:none}
+			
+			.navbar-nav .nav-item{display:block;float:left;line-height:50px;padding:0 15px;text-align:center;position:relative;box-sizing:border-box;border-bottom:0 solid #f90}
+			.navbar-nav .nav-item>.nav-group>.nav{padding:0 15px;height:0;box-shadow:0 -1px 0 0 #e6b802}
+			.navbar-nav .nav-menu{float:right;background: #F5C503;}
+			.beetlChart>img{display: block;width: 100%;height: auto;}
+				
+			@media(min-width:1001px){
+				.navbar-nav .nav-item{height: 50px;}
+				.navbar-nav .nav-item:hover{border-bottom-width:4px}
+				.navbar-nav .nav-item>.nav-group{position:absolute;right:0;top:50px;overflow:hidden;background:#f5c503}
+				.navbar-nav .nav-item>.nav-group>.nav>a{text-align:right}
+				.navbar-nav .nav-item:hover>.nav-group>.nav{height:50px}
+				.navbar-nav .nav-item:hover>.nav-group>.pay{height: 240px;padding-top: 15px;}
+			}
+				
+			.body_content{overflow: hidden;max-width:1200px;margin:0 auto;padding: 10px 15px 0px 15px;box-sizing: border-box;}
+			.body_content .product{padding-left: 20px;box-sizing: border-box;overflow:hidden;width:50%;float:left}
+			.body_content .product:first-child{padding-right: 20px;padding-left: 0;}
+
+			.product-explain>h2{margin:15px 0;margin-bottom:8px}
+			.product-explain>p{line-height:23px;color:#444}
+			.product-explain .merits li{width:100%;box-sizing:border-box}
+			.product-explain .merits li .img{font-size:20px;padding:10px 0}
+			.product-explain .merits li .img i{font-size:26px;position:relative;top:3px;margin-right:8px}
+			.product-explain .explain{line-height:23px;position:relative;font-size:14px;color:#777;box-sizing:border-box;padding-left:34px}
+			.product-explain .explain:before{content:"";position:absolute;top:0;left:11px;width:4px;height:100%;background:#ccc}
+			
+			.footer {height: 50px;line-height: 50px;text-align: center;color: #bbb;margin-top: 30px;}
+			
+			@media(max-width:1000px){
+				.body_content{padding-top: 60px;}
+				.body_content .product{padding:0;width:100%;}
+				.beetlChart {width: 100%;}
+				.navbar{position: fixed;top: 0;left: 0;}
+				.navbar-nav .nav-menu{width:100%;position: absolute;top: 50px;left: 0;height: 0;overflow-y: scroll;}
+				.navbar-nav .nav-menu .nav-item{overflow: hidden;width:100%;text-align:left;border-top: 1px solid #e6b802;}
+				.navbar-nav .nav-menu .nav-item .nav-group .nav a {text-align: left;}
+				
+				.navbar-nav.active .nav-menu{height: 357px;}
+				.nav-item.item-active{height: auto;}
+				.nav-item>.nav-group>.pay{height: 0;text-align: center;}
+				.nav-item.item-active>.nav-group>.nav{height: 50px;}
+				.nav-item.item-active>.nav-group>.pay{height: 240px;padding-top: 16px;}
+				
+			}
+		</style>
+		<script>
+			//百度统计
+			var _hmt = _hmt || [];
+			(function() {
+			  var hm = document.createElement("script");
+			  hm.src = "https://hm.baidu.com/hm.js?acc69acbc4e6d4c69ecf77725d072490";
+			  var s = document.getElementsByTagName("script")[0]; 
+			  s.parentNode.insertBefore(hm, s);
+			})();
+		</script>
+
+	</head>
+	<body>
+		<div class="body">
+			<section class="navbar">
+				<nav class="navbar-nav">
+					<a class="logo" href="/"><i class="ani iconfont icon-beetl"></i>Beetl<small></small></a>
+					<ul class="nav-menu ani">
+						<li class="nav-item">
+							<a href="javascript:;">Beetl模板</a>
+							<ul class="nav-group">
+								<li class="nav"><a href="guide#beetl">在线文档</a></li>
+								<li class="nav"><a href="guide/beetl.md" download="beetl.md">Markdown下载</a></li>
+							</ul>
+						</li>
+						<li class="nav-item">
+							<a href="javascript:;">BeetlSQL</a>
+							<ul class="nav-group">
+								<li class="nav"><a href="guide#beetlsql">在线文档</a></li>
+								<li class="nav"><a href="guide/beetlsql.md" download="beetlsql.md">Markdown下载</a></li>
+							</ul>
+						</li>
+						<li class="nav-item"><a href="beetlonline.html">在线体验</a></li>
+						<li class="nav-item">
+							<a href="javascript:;">论坛</a>
+							<ul class="nav-group">
+								<li class="nav"><a href="http://ibeetl.com/bbs/bbs/index/1.html">官方论坛(开源，试运行)</a></li>
+								<li class="nav"><a href="https://www.oschina.net/p/beetl">Beetl@Oschina</a></li>
+								<li class="nav"><a href="https://www.oschina.net/p/beetlsql">BeetlSQL@Oschina</a></li>
+							</ul>
+						</li>
+						<li class="nav-item">
+							<a href="javascript:;">Issues</a>
+							<ul class="nav-group">
+								<li class="nav"><a href="http://git.oschina.net/xiandafu/beetl2.0/issues">Beetl@Oscgit</a></li>
+								<li class="nav"><a href="http://git.oschina.net/xiandafu/beetlsql">BeetlSQL@Oscgit</a></li>
+							</ul>
+						</li>
+						<li class="nav-item">
+							<a href="javascript:;">下载</a>
+							<ul class="nav-group">
+								<li class="nav"><a href="http://git.oschina.net/xiandafu/beetl2.0/attach_files">Beetl</a></li>
+								<li class="nav"><a href="http://git.oschina.net/xiandafu/beetlsql/attach_files">BeetlSQL</a></li>
+							</ul>
+						</li>
+						<li class="nav-item">
+							<a href="javascript:;">捐助开源作者</a>
+							<ul class="nav-group">
+								<li class="nav pay"><img src="img/weixinpay.png" width="200px"/></li>
+							</ul>
+						</li>
+					</ul>
+				</nav>
+			</section>
+			
+			
+			<div class="body_content">
+				<div class="product">
+					<section class="beetlChart">
+						<img src="img/beetl_mob_01.png"/>
+					</section>
+					<section class="product-explain">
+						<h2>Beetl</h2>
+						<p>Beetl是Bee Template Language的缩写，它绝不是简单的另外一种模板引擎，而是新一代的模板引擎，它功能强大，性能良好，秒杀当前流行的模板引擎。而且还易学易用。</p>
+						<ul class="merits">
+							<li>
+								<div class="img"><i class="iconfont icon-fly"></i>简单易用</div>
+								<div class="explain">
+									Beetl类似Javascript语法和习俗，只要半小时就能通过半学半猜完全掌握用法。拒绝其他模板引擎那种非人性化的语法和习俗。同时也能支持html 标签，使得开发CMS系统比较容易
+								</div>
+							</li>
+							<li>
+								<div class="img"><i class="iconfont icon-block"></i>易于整合</div>
+								<div class="explain">
+									Beetl能很容易的与各种web框架整合，如Spring MVC，JFinal,Struts,Nutz，Jodd，Servlet等。
+								</div>
+							</li>
+							<li>
+								<div class="img"><i class="iconfont icon-speed"></i>性能卓越</div>
+								<div class="explain">Beetl远超过主流java模板引擎性能(引擎性能5-6倍与freemaker，2倍于JSP)，宏观上通过了优化的渲染引擎，IO的二进制输出，字节码属性访问增强，微观上通过一维数组保存上下文Context,静态文本合并处理，重复使用字节数组来防止java频繁的创建和销毁数组，还使用模板缓存，运行时优化等方法。
+								</div>
+							</li>
+						</ul>
+					</section>
+				</div>
+				<div class="product">
+					<section class="beetlChart">
+						<img src="img/beetl_mob_02.png"/>
+					</section>
+					<section class="product-explain">
+						<h2>BeetlSQL</h2>
+						<p>BeetSql是一个全功能DAO工具， 同时具有Hibernate 优点 & Mybatis优点功能，适用于承认以SQL为中心，同时又需求工具能自动能生成大量常用的SQL的应用。</p>
+						<ul class="merits">
+							<li>
+								<div class="img"><i class="iconfont icon-gongzuo"></i>开发效率高</div>
+								<div class="explain">
+									无需注解，自动使用大量内置SQL，轻易完成增删改查功能，节省50%的开发工作量。 数据模型支持Pojo，也支持Map/List这种快速模型，也支持混合模型。 SQL 模板基于Beetl实现，更容易写和调试，以及扩展。 可以针对单个表(或者视图）代码生成pojo类和sql模版，甚至是整个数据库。能减少代码编写工作量。
+								</div>
+							</li>
+							<li>
+								<div class="img"><i class="iconfont icon-weihu"></i>易于维护</div>
+								<div class="explain">
+									SQL 以更简洁的方式，Markdown方式集中管理，同时方便程序开发和数据库SQL调试。可以自动将sql文件映射为dao接口类。灵活直观的支持支持一对一，一对多，多对多关系映射而不引入复杂的OR Mapping概念和技术。具备Interceptor功能，可以调试，性能诊断SQL，以及扩展其他功能
+								</div>
+							</li>
+							<li>
+								<div class="img"><i class="iconfont icon-qita"></i>其他</div>
+								<div class="explain">
+									内置支持主从数据库支持的开源工具，支持跨数据库平台，开发者所需工作减少到最小，目前跨数据库支持mysql,postgres,oracle,sqlserver,h2,sqllite.
+								</div>
+							</li>
+						</ul>
+					</section>
+				</div>
+			</div>
+				
+			<footer class="footer">iBeetl.com &copy; 2011 - 2016</footer>
+	</div>
+			
+	
+	<script type="text/javascript" src="js/jquery-3.1.1.min.js" ></script>
+	<script>
+		$(function(){
+			if($(window).width() < 1000){
+				$('.nav-item').on('click',function(e){
+					$(this).toggleClass('item-active')
+				})
+				
+				$('.body_content').on('click',function(e){
+					$('.active').removeClass('active')
+					$('.item-active').removeClass('item-active')
+				})
+				$('.navbar-nav').on('click',function(e){
+					var et = $(e.target);
+					if(et.hasClass('nav-menu')|| et.parents('.nav-menu').length == 0){
+						$(this).toggleClass('active')
+					}
+				})
+				
+			}
+			
+		})
+		
+	</script>
+	</body>
+</html>

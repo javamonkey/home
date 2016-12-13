@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Beetl中文手册</title>
+	<meta charset="utf-8">
+	<meta name="renderer" content="webkit">  
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0,minimum-scale=1.0, user-scalable=no">
+	<meta name="keywords" content="java,beetl,beetlsql,模板,orm" />
+	<meta name="description" content="Beetl是一款6倍于Freemarker的超高性能的java模板引擎，来自于中国！！BeetlSQL是一款功能强大，以SQL为中心，使用简单的全功能的ORMapping工具，支持自动生成代码，内置大量SQL语句，支持市面上绝大多数主流数据库。Beetl和BeetlSQL均能与目前市面上的大多数流行框架无缝整合。" />
+	<!--[if lt IE 9]><script>(!+[1,])&&alert('本站不支持IE8及以下，我们不想为落后买单！'),location.href='http://browsehappy.com/'</script><![endif]-->
+	<style>[v-cloak]{display:none}body{overflow-y:scroll}</style>
+</head>
+<body>
+	<div id="guide" v-cloak>
+		<article id="doc" class="markdown-body" v-html="doc"></article>
+		<aside id="nav" class="markdown-body">
+			<h3 v-if="type">{{type}}手册目录</h3>
+			<ul>
+				<li v-if="type == 'beetlsql'"><a href="/">主页</a> | <a href="#beetl">查看Beetl手册</a></li>
+				<li v-if="type == 'beetl'"><a href="/">主页</a> | <a href="#beetlsql">查看BeetlSQL手册</a></li>
+				<li v-if="nav.length"><input type="text" placeholder="输入关键词快速检索，支持正则" v-model="search" maxlength="15"/></li>
+			</ul>
+			<navmenu v-if="!search" :list="nav"></navmenu>
+			<ul v-if="search">
+				<li>“{{search}}”搜索结果如下：</li>
+				<li v-for="n of searchlist" :title="n.text"><a :href="n.href" @click="jump" v-html="n.text"></a></li>
+			</ul>
+		</aside>
+	</div>
+	<link href="//cdn.bootcss.com/github-markdown-css/2.4.1/github-markdown.min.css" rel="stylesheet" >
+	<link href="//cdn.bootcss.com/highlight.js/9.8.0/styles/github-gist.min.css" rel="stylesheet">
+	<link href="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+	<script src="//cdn.bootcss.com/highlight.js/9.8.0/highlight.min.js"></script>
+	<script src="//cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
+	<script src="//cdn.bootcss.com/lodash.js/4.17.2/lodash.min.js"></script>
+	<script src="//cdn.bootcss.com/vue/2.1.4/vue.min.js"></script>
+	<script src="//cdn.bootcss.com/marked/0.3.6/marked.min.js"></script>
+	<script src="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.js"></script>
+	<script src="//cdn.bootcss.com/smoothscroll/1.4.6/SmoothScroll.min.js"></script>
+	<link href="static/beetldoc.css" rel="stylesheet">
+	<script src="static/beetldoc.js"></script>
+</body>
+</html>

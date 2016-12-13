@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Beetl在线体验 - Beetl性能6倍于Freemarker的最好的Java模板引擎 - Made In China</title>
+	<meta name="keywords" content="java,beetl,beetlsql,模板,orm" />
+	<meta name="description" content="Beetl是一款6倍于Freemarker的超高性能的java模板引擎，来自于中国！！BeetlSQL是一款功能强大，以SQL为中心，使用简单的全功能的ORMapping工具，支持自动生成代码，内置大量SQL语句，支持市面上绝大多数主流数据库。Beetl和BeetlSQL均能与目前市面上的大多数流行框架无缝整合。" />
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0,minimum-scale=1.0, user-scalable=no">
+	<meta name="format-detection" content="telephone=no" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="renderer" content="webkit">
+	<!--[if lt IE 9]><script>(!+[1,])&&alert('本站不支持IE8及以下，我们不想为落后买单！'),location.href='http://browsehappy.com/'</script><![endif]-->
+	<style type="text/css">*{box-sizing:border-box}hr::after,hr::before{display:table;content:""}.form-actions::after,hr::after{clear:both}html{font-family:sans-serif;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%}nav{display:block}a{background-color:transparent;-webkit-text-decoration-skip:objects;color:#4078c0;text-decoration:none}a:active,a:hover{outline-width:0;text-decoration:underline}hr{box-sizing:content-box}button,input,select,textarea{font:inherit;margin:0}button,input{overflow:visible}button,select{text-transform:none}[type=reset],[type=submit],button{-webkit-appearance:button}[type=reset]::-moz-focus-inner,[type=submit]::-moz-focus-inner,button::-moz-focus-inner{border-style:none;padding:0}textarea{resize:none;overflow:auto}hr{overflow:hidden}[type=number]::-webkit-inner-spin-button,[type=number]::-webkit-outer-spin-button{height:auto}[type=search]::-webkit-search-cancel-button,[type=search]::-webkit-search-decoration{-webkit-appearance:none}::-webkit-input-placeholder{opacity:.54}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}.btn{-webkit-appearance:none}h2{font-weight:600}button,select,textarea{font-family:inherit;font-size:inherit;line-height:inherit}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";font-size:14px;line-height:1.5;color:#333;background-color:#fff}hr{height:0;margin:15px 0;background:0;border:0;border-bottom:1px solid #ddd}h2{margin-top:0;margin-bottom:0}button{cursor:pointer}h2{font-size:24px}dd{margin-left:0}.tooltipped{position:relative}.tooltipped::after{position:absolute;z-index:1000000;display:none;padding:5px 8px;font:normal normal 11px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";-webkit-font-smoothing:subpixel-antialiased;color:#fff;text-align:center;text-decoration:none;text-shadow:none;text-transform:none;letter-spacing:normal;word-wrap:break-word;white-space:pre;pointer-events:none;content:attr(aria-label);background:rgba(0,0,0,.8);border-radius:3px;opacity:0}.btn{line-height:20px}.tooltipped::before{position:absolute;z-index:1000001;display:none;width:0;height:0;color:rgba(0,0,0,.8);pointer-events:none;content:"";border:5px solid transparent;opacity:0}.tooltipped:active::after,.tooltipped:active::before,.tooltipped:focus::after,.tooltipped:focus::before,.tooltipped:hover::after,.tooltipped:hover::before{display:inline-block;text-decoration:none;-webkit-animation-name:tooltip-appear;animation-name:tooltip-appear;-webkit-animation-duration:.1s;animation-duration:.1s;-webkit-animation-fill-mode:forwards;animation-fill-mode:forwards;-webkit-animation-timing-function:ease-in;animation-timing-function:ease-in;-webkit-animation-delay:.4s;animation-delay:.4s}.tooltipped-no-delay:active::after,.tooltipped-no-delay:active::before,.tooltipped-no-delay:focus::after,.tooltipped-no-delay:focus::before,.tooltipped-no-delay:hover::after,.tooltipped-no-delay:hover::before{opacity:1;-webkit-animation:none;animation:none}.tooltipped-n::after{right:50%;bottom:100%;margin-bottom:5px}.tooltipped-n::before{top:-5px;right:50%;bottom:auto;margin-right:-5px;border-top-color:rgba(0,0,0,.8)}.tooltipped-n::after{-webkit-transform:translateX(50%);transform:translateX(50%)}.btn{white-space:nowrap}.btn{position:relative;display:inline-block;padding:6px 12px;font-size:14px;font-weight:600;color:#333;vertical-align:middle;cursor:pointer;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;background-color:#eee;background-image:-webkit-linear-gradient(#fcfcfc,#eee);background-image:linear-gradient(#fcfcfc,#eee);border:1px solid #d5d5d5;border-radius:3px;-moz-appearance:none;appearance:none}.btn:focus,.btn:focus:hover{border-color:#51a7e8}.btn:focus{text-decoration:none;outline:0;box-shadow:0 0 5px rgba(81,167,232,.5)}.btn:active,.btn:hover{text-decoration:none;background-color:#ddd;background-image:-webkit-linear-gradient(#eee,#ddd);background-image:linear-gradient(#eee,#ddd);border-color:#ccc}.btn:active{background-color:#dcdcdc;background-image:none;border-color:#b5b5b5;box-shadow:inset 0 2px 4px rgba(0,0,0,.15)}.btn:disabled,.btn:disabled:hover{color:rgba(102,102,102,.5);cursor:default;background-color:rgba(229,229,229,.5);background-image:none;border-color:rgba(197,197,197,.5);box-shadow:none}.btn-primary{color:#fff;text-shadow:0 -1px 0 rgba(0,0,0,.15);background-color:#60b044;background-image:-webkit-linear-gradient(#8add6d,#60b044);background-image:linear-gradient(#8add6d,#60b044);border-color:#5ca941}.btn-primary:hover{color:#fff;background-color:#569e3d;background-image:-webkit-linear-gradient(#79d858,#569e3d);background-image:linear-gradient(#79d858,#569e3d);border-color:#4a993e}.btn-primary:active{text-shadow:0 1px 0 rgba(0,0,0,.15);background-color:#569e3d;background-image:none;border-color:#418737}.btn-primary:disabled,.btn-primary:disabled:hover{color:#fefefe;background-color:#add39f;background-image:-webkit-linear-gradient(#c3ecb4,#add39f);background-image:linear-gradient(#c3ecb4,#add39f);border-color:#b9dcac #b9dcac #a7c89b}label{font-weight:600}input,textarea{-webkit-font-feature-settings:"liga" 0;font-feature-settings:"liga" 0}.form-control,.form-select{min-height:34px;padding:6px 8px;font-size:14px;line-height:20px;color:#333;vertical-align:middle;background-color:#fff;background-repeat:no-repeat;background-position:right 8px center;border:1px solid #ddd;border-radius:3px;outline:0;box-shadow:inset 0 1px 2px rgba(0,0,0,.075)}.form-control:focus,.form-select:focus{border-color:#51a7e8;outline:0;box-shadow:inset 0 1px 2px rgba(0,0,0,.075),0 0 5px rgba(81,167,232,.5)}::-webkit-input-placeholder{color:#999}::-moz-placeholder{color:#999}:-ms-input-placeholder{color:#999}::placeholder{color:#999}.form-actions::after,.form-actions::before{display:table;content:""}input::-webkit-inner-spin-button,input::-webkit-outer-spin-button{margin:0;-webkit-appearance:none;appearance:none}.form-actions .btn{float:right}.form-actions .btn+.btn{margin-right:5px}.form-select{display:inline-block;max-width:100%;height:34px;padding-right:24px;padding-right:8px\9;background:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAUCAMAAACzvE1FAAAADFBMVEUzMzMzMzMzMzMzMzMKAG/3AAAAA3RSTlMAf4C/aSLHAAAAPElEQVR42q3NMQ4AIAgEQTn//2cLdRKppSGzBYwzVXvznNWs8C58CiussPJj8h6NwgorrKRdTvuV9v16Afn0AYFOB7aYAAAAAElFTkSuQmCC) right 8px center no-repeat #fff;background-image:none\9;background-size:8px 10px;-webkit-appearance:none;-moz-appearance:none;appearance:none}.form-select::-ms-expand{opacity:0}.form-group{margin:15px 0}.form-group .form-control{width:440px;max-width:100%;margin-right:5px;background-color:#fafafa}.form-group .form-control:focus{background-color:#fff}.form-group textarea.form-control{width:100%;height:200px;min-height:200px}.form-group dt{margin:0 0 6px}.tabnav-tab,.tabnav-tab:focus,.tabnav-tab:hover{text-decoration:none}.form-group label{position:static}.tabnav{margin-top:0;margin-bottom:15px;border-bottom:1px solid #ddd}.tabnav-extra{margin-left:10px}.tabnav-tabs{margin-bottom:-1px}.tabnav-tab{display:inline-block;padding:8px 12px;font-size:14px;line-height:20px;color:#666;background-color:transparent;border:1px solid transparent;border-bottom:0}.tabnav-tab.selected{color:#333;background-color:#fff;border-color:#ddd;border-radius:3px 3px 0 0}.tabnav-extra{display:inline-block;padding-top:10px;font-size:12px;color:#666}a.tabnav-extra:hover{color:#4078c0;text-decoration:none}iframe{width:100%;min-height:500px}.right{float:right}#template{display:none}#onlineapp{margin:30px auto;width:650px}@media(max-width:650px){textarea{height:120px !important;min-height:120px !important;max-height:120px !important}#onlineapp{margin:10px auto;width:90%}.separator{display:block;height:20px}}[v-cloak]{display:none}svg{width:1em;height:1em;vertical-align:middle;fill:currentColor;overflow:hidden}</style>
+	<script src="//cdn.bootcss.com/vue/2.1.4/vue.min.js"></script>
+</head>
+<body>
+	<div id="onlineapp" v-cloak>
+		<h2><svg viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1880"><path d="M832.299957 714.965621c-71.047126 88.067778-148.2126 70.077032-148.2126 70.077032 77.615729-65.686025 74.107835-233.597269 74.107835-233.597269 56.979736 6.564509 74.104765 93.439112 74.104765 93.439112 2.635013 53.857629 148.21567 93.439112 148.21567 93.439112C887.304711 721.78698 832.299957 714.965621 832.299957 714.965621zM513.173732 467.12086c0 0-26.707268-15.610536-21.554922-82.356706 0 0 43.672662-370.594433 237.145072-313.196165 0 0 128.243803 88.283696-21.580504 292.610314C707.182354 364.178303 570.780755 504.72634 513.173732 467.12086zM560.578392 504.72634c31.834033 103.172801-49.409316 210.239282-49.409316 210.239282-95.057983 32.713053-67.633377-56.756655-67.633377-56.756655 58.984393-61.013609 42.930765-130.125663 42.930765-130.125663C512.189312 506.013659 560.578392 504.72634 560.578392 504.72634zM214.740806 668.246577c0 0-15.826454-68.054979 9.243525-99.791797 0 0 19.540032 53.137221 64.86431 6.345522 0 0 13.948687-61.868069-50.226938-47.768957 0 0 21.086248-69.096704 66.274426-103.007025-82.760912-100.30652-238.370992-82.821287-238.370992-82.821287-51.842739-30.236652 0-46.715975 0-46.715975 135.454018-0.991584 222.324528 93.439112 222.324528 93.439112-23.989367-126.739543-148.21567-163.520237-148.21567-163.520237-39.818891-48.290843 17.485233-35.68371 17.485233-35.68371 126.141932 81.534991 149.874449 190.310394 154.345274 230.244918 20.531616-12.791327 45.414329-18.281365 75.196633-7.67889 0 0 156.796092 73.606415-24.702612 256.95935C362.956476 668.246577 246.483764 776.989233 214.740806 668.246577zM706.990996 513.219781c30.182416 116.948549-22.903639 201.74584-22.903639 201.74584-59.500139 125.21891-148.21567 46.719044-148.21567 46.719044 93.910856-94.708012 98.807377-256.95935 98.807377-256.95935C675.925467 502.981602 706.990996 513.219781 706.990996 513.219781z" p-id="1881"></path></svg>Beetl在线体验</h2>
+
+		<div class="tabnav">
+			<div class="right">
+				<a class="tabnav-extra" href="/">主页</a>
+				<a class="tabnav-extra" href="/guide">文档</a>
+			</div>
+			<nav class="tabnav-tabs">
+				<a href="javascript:;" :class="'tabnav-tab '+(tab==1&&'selected')" @click="tab = 1">在线体验</a>
+				<a href="javascript:;" :class="'tabnav-tab '+(tab==2&&'selected')" @click="tab = 2">体验结果</a>
+			</nav>
+		</div>
+
+		<form v-show="tab==1" method="POST" action="http://ibeetl.com/beetlonline/t" target="result" @submit="run">
+			<label>章节</label>
+			<select class="form-select" v-model="chapter">
+				<option v-for="(v,k) of chapterData" :value="k">{{v}}</option>
+			</select>
+			<span class="separator"></span>
+			<label>例子</label>
+			<select class="form-select" v-model="sample">
+				<option v-for="(v,k) of sampleData[chapter]" :value="k">{{v}}</option>
+			</select>
+
+			<dl class="form-group">
+				<dt><label>模板</label></dt>
+				<dd class="tooltipped tooltipped-n tooltipped-no-delay"  aria-label="默认使用${ } 作为占位符号&#10;使用<%%> 作为控制语句起始符号"><textarea class="form-control" v-model="input" name="input" maxlength="5000"></textarea></dd>
+			</dl>
+			<dl class="form-group">
+				<dt><label>伪模型</label></dt>
+				<dd><textarea class="form-control" v-model="json" name="json" maxlength="5000"></textarea></dd>
+			</dl>
+
+			<div class="form-actions">
+				<button class="btn btn-primary" type="submit">运行代码</button>
+				<button class="btn" type="reset">重置表单</button>
+			</div>
+		</form>
+		<iframe  v-show="tab==2" name="result" frameborder="0" scrolling="no" width="100%" src="http://ibeetl.com/beetlonline/t"></iframe>
+	</div>
+	<script type="text/javascript">
+		String.prototype.replaceAll = function(AFindText,ARepText){return this.replace(new RegExp(AFindText.replace(/([\(\)\[\]\{\}\^\$\+\-\*\?\.\"\'\|\/\\])/g,"\\$1"),"ig"),ARepText)};
+		var $=function(id){return document.querySelector(id)}
+		var chapterData = {ch1:'看一眼',ch2:'定义变量',ch3:'属性引用',ch4:'算数表达式',ch5:'逻辑表达式',ch6:'循环语句',ch7:'条件语句',ch8:'函数调用',ch9:'格式化',ch10:'class方法调用',ch11:'错误处理',ch12:'安全输出',ch13:'注释',ch14:'类型说明'}
+		var sampleData={ch1:{ch1_0:"空白",ch1_1:"Hello,beetl",ch1_2:"变量",ch1_3:"表达式",ch1_4:"循环语句",ch1_5:"判断语句",ch1_6:"安全输出",ch1_7:"class调用",ch1_8:"方法调用",ch1_9:"格式化函数",ch1_10:"虚拟属性"},ch2:{ch2_0:"定义临时变量",ch2_1:"一行定义多个临时变量",ch2_2:"定义json变量",ch2_3:"定义模板变量"},ch3:{ch3_0:"对象属性",ch3_1:"数组或者列表",ch3_2:"集合",ch3_3:"Map"},ch4:{ch4_0:"算数表达式"},ch5:{ch5_0:"逻辑表达式1",ch5_1:"逻辑表达式2",ch5_2:"三元表达式"},ch6:{ch6_0:"循环数组或者List",ch6_1:"循环Map",ch6_2:"安全循环",ch6_3:"循环控制",ch6_4:"elsefor",ch6_5:"for(exp;exp;exp)"},ch7:{ch7_0:"if else ",ch7_1:"switch",ch7_2:"使用nvl函数",ch7_3:"使用decode函数",ch7_4:"select case"},ch8:{ch8_0:"print函数",ch8_1:"date函数",ch8_2:"exist函数",ch8_3:"debug函数",ch8_4:"cache标签"},ch9:{ch9_0:"日期格式化输出",ch9_1:"数字格式化输出"},ch10:{ch10_0:"class静态方法",ch10_1:"class静态属性",ch10_2:"实例的方法"},ch11:{ch11_0:"语法错误",ch11_1:"运行错误"},ch12:{ch12_0:"安全输出",ch12_1:"安全输出指令",ch12_2:"使用安全输出判断变量是否存在",ch12_3:"使用isEmpty判断是否存在"},ch13:{ch13_0:"单行注释",ch13_1:"多行输出"},ch14:{ch14_0:"动态类型",ch14_1:"指定全局变量类型"}};
+		var app = new Vue({
+			el:'#onlineapp',
+			data:{
+				chapterData:chapterData,
+				sampleData:sampleData,
+				chapter:'ch1',
+				sample:'ch1_0',
+				tab:1,
+				input:'',
+				json:''
+			},
+			watch:{
+				chapter:function(val){this.sample = val+'_0'},
+				sample:function(val){
+					this.input = $('#'+val+'_template').innerHTML
+						.replaceAll('@_', '<'+'%').replaceAll('_@', '%'+'>')
+						.replaceAll('@@{', '$'+'{').replaceAll('}@@', '}')
+						.replaceAll("&lt;", "<").replaceAll("&gt;", ">");
+					this.json = $('#'+val+'_model').innerHTML
+				}
+			},
+			methods:{
+				run:function(){
+					this.tab = 2;
+					return true;
+				}
+			}
+		})
+	</script>
+
+<div id="template">
+ <!-- 第一章开始 
+ 
+ var ch1={ "ch1_0":"空白","ch1_1":"第一个例子","ch1_2":"变量"，"ch1_3":"表达式","ch1_4":"循环语句","ch1_5":"判断语句","ch1_6":"安全输出"
+,"ch1_7":"class调用","ch1_8":"方法调用"，"ch1_9":"格式化函数","ch1_10":"虚拟属性"};
+ --> 
+<div id="ch1_0_template"></div> 
+<div id="ch1_0_model"></div> 
+
+<div id="ch1_1_template">hello,@@{user.name}@@</div> 
+<div id="ch1_1_model">var user={name:'beetl',age:2};</div> 
+
+<div id="ch1_2_template">@_var name='beetl',age=2;_@
+@@{name}@@
+</div> 
+<div id="ch1_2_model"></div> 
+
+<div id="ch1_3_template">@_
+var name='beetl',age=2, msg = "hello "+name+" age is "+age ;
+_@
+@@{msg}@@
+</div> 
+<div id="ch1_3_model"></div> 
+
+<div id="ch1_4_template">@_
+for(user in userList){
+_@
+@@{user.name}@@
+@_}_@
+</div> 
+<div id="ch1_4_model">var userList=[{name:'lijz',age:18},{name:'lucy',age:16}];</div> 
+
+<div id="ch1_5_template">@_
+if(name=='lijzh'||age!=18){
+_@
+Hello,@@{name}@@
+@_}else{_@
+Morning @@{name}@@
+@_}_@
+</div> 
+<div id="ch1_5_model">var name='lijz';
+var age= 18;
+</div>
+
+<div id="ch1_6_template">@@{user.name!'未知'}@@
+</div> 
+<div id="ch1_6_model">var user = null;</div>  
+
+<div id="ch1_7_template">@_ 
+ var list = [5,2,4];
+_@
+@@{ @java.util.Collections.max(list)}@@
+
+</div> 
+<div id="ch1_7_model"></div>  
+
+<div id="ch1_8_template">@_ 
+ var date = date();
+_@
+today is @@{ date}@@
+
+</div> 
+<div id="ch1_8_model"></div>  
+
+<div id="ch1_9_template">@_ 
+ var date = date();
+_@
+today is @@{date,dateFormat='yyyy-MM-dd'}@@
+
+</div> 
+<div id="ch1_9_model"></div> 
+
+
+<div id="ch1_10_template">size is  @@{userList.~size}@@
+
+</div> 
+<div id="ch1_10_model">var userList=[{name:'lijz',age:18},{name:'lucy',age:16}];</div> 
+
+ 
+
+ 
+ <!-- 第一章结束 -->
+
+
+
+
+<!--  第二章开始 
+
+var ch2={"ch2_0":"定义临时变量","ch2_1":"一行定义多个临时变量","ch2_2":"定义json变量","ch2_3":"定义模板变量"};
+
+-->
+<div id="ch2_0_template">@_
+var number = 1 ;
+var str = "hello";
+var now = date();
+var isChecked = true;
+var nullValue = null;
+_@
+number is @@{number}@@,str is @@{str}@@,time is @@{now}@@
+@@{isChecked}@@
+nullValue=@@{nullValue}@@.
+</div> 
+<div id="ch2_0_model"></div> 
+
+
+
+<div id="ch2_1_template">@_
+var number = 1 ,str="hello",now = date();
+_@
+number is @@{number}@@,str is @@{str}@@,time is @@{now}@@
+</div> 
+<div id="ch2_1_model"></div> 
+
+
+<div id="ch2_2_template">@_
+var map={name:'joel',age:18};
+var list=['open','close'];
+_@
+@@{map['name']}@@ = @@{map.name}@@ 
+@@{list[0]}@@ 
+</div> 
+<div id="ch2_2_model"></div> 
+
+
+
+<div id="ch2_3_template">@_
+var bigNumber = 7777777777777.23;
+var templateVar = {
+_@
+big number is @@{bigNumber}@@
+@_};_@
+现在输出模板变量：
+@@{templateVar}@@
+</div> 
+<div id="ch2_3_model"></div> 
+
+<!--  第二章开始结束 -->
+
+<!-- 第三章开始  
+var ch3={"ch3_0":"对象属性","ch3_1":"数组或者列表","ch3_2":"集合","ch3_3":"Map"};
+-->
+
+<div id="ch3_0_template">
+推荐： @@{user.wife.name}@@ 
+不推荐：@@{user.wife["name"]}@@ 
+</div> 
+<div id="ch3_0_model">var user = {name:'lijz',wife:{name:'lucy',age:17}};
+
+</div> 
+
+
+<div id="ch3_1_template">
+@@{status[0]}@@ 
+@@{status.~size}@@ 
+</div> 
+<div id="ch3_1_model">var status =  [1,2,3];
+
+</div> 
+
+<div id="ch3_2_template">
+@@{status[0]}@@ 
+</div> 
+<div id="ch3_2_model">var status =  [1,2,3];
+
+</div> 
+
+<div id="ch3_3_template">
+推荐 @@{map["key1"]}@@
+不推荐 @@{map.key2}@@ 
+</div> 
+<div id="ch3_3_model">var map = {key1:'value1',key2:'value2'} ;
+
+</div> 
+
+<!--  第三章结束 -->
+
+
+<!-- 第四章 -->
+<div id="ch4_0_template">@_
+var a1 = 12;
+var b1 = (a1+15)/3-2*a1;
+var bc = -1-b1;
+_@
+@@{bc}@@
+</div> 
+<div id="ch4_0_model"></div>
+
+<!--  第四章结束 -->
+
+
+
+<!-- 第五章 -->
+<div id="ch5_0_template">@_
+var a1 = 12;
+var b1 = a1==12;
+var b2 = a1!=12;
+_@
+@@{b1}@@
+@@{b2}@@
+</div> 
+<div id="ch5_0_model"></div>
+
+<div id="ch5_1_template">@_
+var a1 = "joeli";
+var b1 = a1=="joelli";
+_@
+@@{b1}@@
+
+</div> 
+<div id="ch5_1_model"></div>
+
+
+
+<div id="ch5_2_template">@_
+var a=1;
+var b = a==1?"hi":"hey";
+_@
+@@{b}@@
+
+</div> 
+<div id="ch5_2_model"></div>
+
+<!--  第五章结束 -->
+
+<!-- 第六章 循环
+var ch6={"ch6_0":"循环数组或者List","ch6_1":"循环Map","ch6_2":"安全循环",
+"ch6_3":"使用While","ch6_4":"循环控制","ch6_5":"for(exp;exp;exp)"};
+
+ -->
+
+
+
+<div id="ch6_0_template">@_
+print("总共"+userList.~size+"<br/>");
+for(user in userList){
+_@
+@@{userLP.index}@@    @@{user.name}@@ <br/>
+@_}_@
+</div> 
+<div id="ch6_0_model">var userList=[{name:'lijz',age:18},{name:'lucy',age:16}];</div> 
+
+
+<div id="ch6_1_template">@_
+print("总共"+map.~size+"<br/>");
+for(user in map){
+_@
+@@{userLP.index}@@    @@{user.key}@@ @@{user.value.name}@@ <br/>
+@_}_@
+</div> 
+<div id="ch6_1_model">var map={"001":{name:'lijz'},"002":{name:'lucy'}};</div> 
+
+
+
+<div id="ch6_2_template">@_
+
+for(user in list!){
+_@
+@@{user}@@   <br/>
+@_}_@
+end
+</div> 
+<div id="ch6_2_model">var list=null;</div> 
+
+<div id="ch6_3_template">@_
+for(user in userList){
+if(user.age==18){
+	print("it's lijz'");
+	continue;
+}else if(user.age==16){
+	print("It's lucy");
+	break;
+}else{
+	print("return ");
+	return ;
+}
+}
+print("end loop");
+_@
+
+</div> 
+<div id="ch6_3_model">var userList=[{name:'lijz',age:18},{name:'lucy',age:16}];</div> 
+
+
+
+
+<div id="ch6_4_template">@_
+for(user in userList){
+print(user.name);
+}elsefor {
+print("no data");
+}
+
+_@
+
+</div> 
+<div id="ch6_4_model">var userList=[];</div> 
+
+
+<div id="ch6_5_template">@_
+for(var i=1;i==10;i++){
+print(i);
+}
+
+_@
+
+</div> 
+<div id="ch6_5_model"></div> 
+
+<!-- 第六章结束 -->
+
+<!--  第七章开始 
+
+var ch7={"ch7_0":"if else ","ch7_1":"switch","ch6_2":"使用nvl函数","ch6_3":"使用decode函数"};
+-->
+<div id="ch7_0_template">@_
+var user = map["001"];
+if(user.name=="lijz"){
+	print(user.name);
+}else{
+	return ;
+}
+_@
+</div> 
+<div id="ch7_0_model">var map={"001":{name:'lijz'},"002":{name:'lucy'}};</div> 
+
+
+<div id="ch7_1_template">@_
+var status = "1";
+switch(status){
+    case "0":{
+    	print("0");
+    	break ;
+    }
+	case "1":{
+		print("1");
+		break;
+	}
+	default:{
+		print("default");
+	}
+}
+_@
+</div> 
+<div id="ch7_1_model"></div> 
+
+
+<div id="ch7_2_template">@@{nvl(user,"Beetl")}@@
+</div> 
+<div id="ch7_2_model">var user = null;</div> 
+
+<div id="ch7_3_template">@@{decode(age,1,"age is 1",2,"age is 2","默认值")}@@
+</div> 
+<div id="ch7_3_model">var age = 1;</div> 
+
+
+<div id="ch7_4_template">@_
+var status = "1";
+select(status){
+    case "0","1":
+    	print("small");
+    case "2":
+		print("big");
+    default:
+		print("default");
+	
+}
+
+select{
+    case status=="0",status=="1":
+    	print("small");    
+    case status=="2":
+		print("big");
+    default:
+		print("default");
+	
+}
+
+_@
+</div> 
+<div id="ch7_4_model"></div> 
+
+
+<!-- 第七章结束 -->
+
+<!-- 第八章 开始
+var ch8={"ch8_0":"print函数","ch8_1":"date函数","ch8_2":"exist函数","ch8_3":"debug函数","cache标签"};
+-->
+
+<div id="ch8_0_template">@_
+print("hello");
+println("hello");
+printf("hello,%s,your age is %s","lijz",12+"");
+_@
+</div> 
+<div id="ch8_0_model"></div> 
+
+
+<div id="ch8_1_template">@_
+var now = date();
+var date = date("2013-1-1","yyyy-MM-dd");
+_@
+now=@@{now,dateFormat='yyyy年MM月dd日'}@@
+date=@@{date,dateFormat='yyyy年MM月dd日'}@@
+
+</div> 
+<div id="ch8_1_model"></div> 
+
+
+<div id="ch8_2_template">@_
+print(exist("session")+"  "); 
+print(exist("user")+"  ");
+_@
+
+
+</div> 
+<div id="ch8_2_model">var user = null;</div> 
+
+<div id="ch8_3_template">@_
+debug("仅仅在后台打印，前台什么都没有");
+_@
+
+
+</div> 
+<div id="ch8_3_model"></div> 
+
+
+<div id="ch8_4_template">@_
+//请指定你的缓存key
+cache("key",60,false){
+_@
+date = @@{date(),dateFormat='yy-MM-dd hh:mm::ss'}@@
+@_}_@
+now =  @@{date(),dateFormat='yy-MM-dd hh:mm::ss'}@@
+</div> 
+<div id="ch8_4_model"></div> 
+
+
+<!-- 第八章结束 -->
+
+<!-- 第9章 -->
+<div id="ch9_0_template">@_
+var now = date();
+var date = date("2013-1-1","yyyy-MM-dd");
+_@
+now=@@{now,dateFormat='yyyy年MM月dd日'}@@
+date=@@{date,dateFormat='yyyy年MM月dd日'}@@
+or
+now=@@{now,'yyyy年MM月dd日'}@@
+
+</div> 
+<div id="ch9_0_model"></div> 
+
+<div id="ch9_1_template">@_
+var number = 12.7893;
+_@
+number=@@{number,numberFormat='#.##'}@@
+or
+number=@@{number,'#.##'}@@
+
+</div> 
+<div id="ch9_1_model"></div> 
+<!-- 第9章结束 -->
+
+<!-- 第10章 
+var ch10={"ch10_0":"class静态方法","ch10_1":"class静态属性","ch10_2":"实例的方法"};
+-->
+
+<div id="ch10_0_template">@_ 
+ var list = [5,2,4];
+_@
+@@{ @java.util.Collections.max(list)}@@
+
+</div> 
+<div id="ch10_0_model"></div>  
+
+
+<div id="ch10_1_template">@@{ @java.util.logging.Level.INFO }@@
+
+</div> 
+<div id="ch10_1_model"></div>  
+
+
+<div id="ch10_2_template">@@{ @list.isEmpty() }@@
+
+</div> 
+<div id="ch10_2_model"> var list = [];</div>  
+
+
+<!-- 第10章结束 -->
+
+
+<!-- 第11章开始
+var ch11={"ch11_0":"语法错误","ch11_1":"运行错误"};
+ -->
+ <div id="ch11_0_template">@_ 
+ var list = [5,2,4]
+ var a =12;
+_@
+
+
+</div> 
+<div id="ch11_0_model"></div>  
+
+
+ <div id="ch11_1_template">@_ 
+ var a =5/0; 
+_@
+
+</div> 
+<div id="ch11_1_model"></div>  
+
+<!-- 第11章结束 -->
+
+<!-- 第12章开始 -->
+<div id="ch12_0_template">@@{user1.wife.name!"单身"}@@
+@@{user2.wife.name!}@@
+@@{user3.wife.name!"单身"}@@
+
+</div> 
+<div id="ch12_0_model">var user1 = null;
+var user2 = null;
+var user3 = {"name":"lijz",wife:{'name':'lucy'}};
+</div>  
+
+
+
+<div id="ch12_1_template">@_ DIRECTIVE SAFE_OUTPUT_OPEN ;_@
+@@{user1.wife.name}@@
+@@{user2.wife.name}@@
+@@{user3.wife.name}@@
+@_ DIRECTIVE SAFE_OUTPUT_CLOSE ;_@
+</div> 
+<div id="ch12_1_model">var user1 = null;
+var user2 = null;
+var user3 = {"name":"lijz",wife:{'name':'lucy'}};
+</div>  
+
+<div id="ch12_2_template">
+@@{str1!''==''}@@
+@@{str2!''==''}@@
+@@{str3!''==''}@@
+@@{str4!''==''}@@
+
+</div> 
+<div id="ch12_2_model">var str1 = null;
+var str2 = '';
+//var str3='input' ,不定义str3
+var str4 = 'input';
+</div> 
+
+
+<div id="ch12_3_template">@@{isEmpty(str1)}@@
+@@{isEmpty(str2)}@@
+@@{isEmpty(str3)}@@
+@@{isEmpty(str4)}@@
+@@{isEmpty(str5)}@@
+
+</div> 
+<div id="ch12_3_model">var str1 = null;
+var str2 = '';
+//var str3='input' ,不定义str3
+var str4 = 'input';
+var str5 = [];
+</div> 
+
+<!-- 第12章结束 -->
+
+<!-- 第13章开始
+var ch13={"ch13_0":"单行注释","ch13_1":"多行输出"};
+ -->
+ 
+<div id="ch13_0_template">@_ 
+//最大值是12;
+var max = 12;
+_@
+</div> 
+<div id="ch13_0_model"></div>   
+
+
+<div id="ch13_1_template">@_ 
+/*
+var max = 12;
+*/
+_@
+</div> 
+<div id="ch13_1_model"></div>   
+ 
+<!-- 第13章结束 -->
+
+
+<!-- 第14章开始
+
+ -->
+ 
+<div id="ch14_0_template">@_ 
+//全局变量类型是动态的，即Object
+directive dynamic ;
+var max = 12;
+_@
+</div> 
+<div id="ch14_0_model"></div>   
+
+
+<div id="ch14_1_template">@_ 
+/*
+*@type(Integer age,String name)
+*/
+print(age);
+_@
+</div> 
+<div id="ch14_1_model">
+var age = 1;
+var name= "baby";
+</div>   
+ 
+<!-- 第13章结束 -->
+</div>
+</body>
+</html>

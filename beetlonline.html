@@ -1,0 +1,938 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<title>Beetl2.2在线体验--闲大赋</title>
+		<meta charset="UTF-8">
+		<meta name="renderer" content="webkit">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0,minimum-scale=1.0, user-scalable=no">
+		<meta name="keywords" content="java,beetl,beetlsql,模板,orm" />
+		<meta name="description" content="Beetl是一款6倍于Freemarker的超高性能的java模板引擎，来自于中国！！BeetlSQL是一款功能强大，以SQL为中心，使用简单的全功能的ORMapping工具，支持自动生成代码，内置大量SQL语句，支持市面上绝大多数主流数据库。Beetl和BeetlSQL均能与目前市面上的大多数流行框架无缝整合。" />
+		<link href="//cdn.bootcss.com/normalize/5.0.0/normalize.min.css" rel="stylesheet">
+		<script type="text/javascript" src="js/autosize.min.js" ></script>
+		<script type="text/javascript" src="js/jquery-3.1.1.min.js" ></script>
+		<style>
+			html,body{margin: 0;padding: 0;}
+			html,body *{font-family: PingFang SC,Microsoft YaHei;}
+			select,textarea,input{outline: none;}
+			textarea{
+				resize:none;
+				padding: 10px;
+    			font-size: 16px;
+    			width: 80%;
+    			box-sizing: border-box;
+    			background: #fff;
+    			border: 1px solid #ccc;
+    		}
+    		
+    		textarea:focus{background: #fff;}
+    		.test_content{
+    			width: 100%;
+    			max-width: 1200px;
+    			margin: 0 auto;
+    			padding: 0 15px;
+    			box-sizing: border-box;
+    		}
+    		.test_content .title{line-height: 30px;}
+    		.test_content .help{height: 30px;line-height: 20px;}
+    		.test_content .submitbtn{height: 40px;line-height: 40px;}
+    		.test_content .submitbtn>input{cursor: pointer;padding: 5px 15px;margin-right: 10px;background: #ccc;border: 0;color: #333;}
+    		.test_content .submitbtn>input:hover{background: #bbb;}
+    		.test_content .submitbtn>input:last-child{margin-right: 0;}
+    		.test_content .beetl{margin-bottom: 5px;}
+    		.test_content .beetl a{font-weight: initial;text-decoration: none;font-size: 16px;}
+    		.test_content .beetl a:hover{text-decoration: underline;}
+    		.test_content .demo{overflow: hidden;}
+    		.test_content .demo>div{float: left;margin-right: 20px;}
+    		.test_content .demo>div:last-child{margin-right: 0;}
+    		
+    		@media(max-width:768px){
+    			textarea{width: 100%;}
+    			.test_content .demo>div{float: none;margin-right: 0;margin-bottom: 10px;}
+    			.test_content .demo>div:last-child{margin: 0;}
+    		}
+    		
+		</style>
+	</head>
+
+	<body>
+		<script>
+			String.prototype.replaceAll = function(search, replace) {
+				var regex = new RegExp(search, "g");
+				return this.replace(regex, replace);
+			}
+			var _ss = "@_";
+			var _es = "_@";
+			var _sh = "@@{";
+			var _eh = "}@@"
+
+			var ch1 = {
+				"ch1_0": "空白",
+				"ch1_1": "Hello,beetl",
+				"ch1_2": "变量",
+				"ch1_3": "表达式",
+				"ch1_4": "循环语句",
+				"ch1_5": "判断语句",
+				"ch1_6": "安全输出",
+				"ch1_7": "class调用",
+				"ch1_8": "方法调用",
+				"ch1_9": "格式化函数",
+				"ch1_10": "虚拟属性"
+			};
+			var ch2 = {
+				"ch2_0": "定义临时变量",
+				"ch2_1": "一行定义多个临时变量",
+				"ch2_2": "定义json变量",
+				"ch2_3": "定义模板变量"
+			};
+			var ch3 = {
+				"ch3_0": "对象属性",
+				"ch3_1": "数组或者列表",
+				"ch3_2": "集合",
+				"ch3_3": "Map"
+			};
+			var ch4 = {
+				"ch4_0": "算数表达式"
+			};
+			var ch5 = {
+				"ch5_0": "逻辑表达式1",
+				"ch5_1": "逻辑表达式2",
+				"ch5_2": "三元表达式"
+			};
+			var ch6 = {
+				"ch6_0": "循环数组或者List",
+				"ch6_1": "循环Map",
+				"ch6_2": "安全循环",
+				"ch6_3": "循环控制",
+				"ch6_4": "elsefor",
+				"ch6_5": "for(exp;exp;exp)"
+			};
+			var ch7 = {
+				"ch7_0": "if else ",
+				"ch7_1": "switch",
+				"ch7_2": "使用nvl函数",
+				"ch7_3": "使用decode函数",
+				"ch7_4": "select case"
+			};
+			var ch8 = {
+				"ch8_0": "print函数",
+				"ch8_1": "date函数",
+				"ch8_2": "exist函数",
+				"ch8_3": "debug函数",
+				"ch8_4": "cache标签"
+			};
+			var ch9 = {
+				"ch9_0": "日期格式化输出",
+				"ch9_1": "数字格式化输出"
+			};
+			var ch10 = {
+				"ch10_0": "class静态方法",
+				"ch10_1": "class静态属性",
+				"ch10_2": "实例的方法"
+			};
+			var ch11 = {
+				"ch11_0": "语法错误",
+				"ch11_1": "运行错误"
+			};
+			var ch12 = {
+				"ch12_0": "安全输出",
+				"ch12_1": "安全输出指令",
+				"ch12_2": "使用安全输出判断变量是否存在",
+				"ch12_3": "使用isEmpty判断是否存在"
+			};
+			var ch13 = {
+				"ch13_0": "单行注释",
+				"ch13_1": "多行输出"
+			};
+			var ch14 = {
+				"ch14_0": "动态类型",
+				"ch14_1": "指定全局变量类型"
+			};
+
+			var json = {
+				"ch1": ch1,
+				"ch2": ch2,
+				"ch3": ch3,
+				"ch4": ch4,
+				"ch5": ch5,
+				"ch6": ch6,
+				"ch7": ch7,
+				"ch8": ch8,
+				"ch9": ch9,
+				"ch10": ch10,
+				"ch11": ch11,
+				"ch12": ch12,
+				"ch13": ch13,
+				"ch14": ch14
+			};
+
+			function changeChapter() {
+				var obj = document.getElementById("chapter"); //selectid
+				var index = obj.selectedIndex; // 选中索引
+				var chp = obj.options[index].value; // 选中文本	
+
+				var sample = document.getElementById("sample");
+				sample.length = 0;
+				var all = json[chp];
+				for(var ch in all) {
+					var varItem = new Option(all[ch], ch);
+					sample.options.add(varItem);
+				}
+				changeSample(chp + "_0");
+
+			}
+
+			function changeSample(chp) {
+				var sample = null;
+				if(typeof(chp) != "undefined") {
+
+					sample = chp;
+				} else {
+					var obj = document.getElementById("sample"); //selectid
+					var index = obj.selectedIndex; // 选中索引
+					sample = obj.options[index].value; // 选中文本	
+				}
+
+				var template = document.getElementById(sample + "_template").innerHTML;
+				var model = document.getElementById(sample + "_model").innerHTML;
+				setContent("input", replaceContent(template));
+				setContent("json", model);
+
+			}
+
+			function replaceContent(template) {
+				var startStatment = "<" + "%"; // getContent("startStatment");
+				var endStatment = "%" + ">"; //getContent("endStatment");
+				var startHolder = "$" + "{" //getContent("startHolder");
+				var endHolder = "}" //getContent("endHolder");
+				template = template.replaceAll(_ss, startStatment);
+				template = template.replaceAll(_es, endStatment);
+				template = template.replaceAll(_sh, startHolder);
+				template = template.replaceAll(_eh, endHolder);
+				template = template.replaceAll("&lt;", "<");
+				template = template.replaceAll("&gt;", ">");
+
+				return template
+			}
+
+			function getContent(id) {
+				return document.getElementById(id).value;
+			}
+
+			function setContent(id, content) {
+				document.getElementById(id).value = content;;
+			}
+
+			function validateForm() {
+				var input = getContent("input");
+				if(input.length > 5000) {
+					alert("模板输出内容太长");
+					return false;
+				}
+
+				var json = getContent("json");
+				if(json.length > 1000) {
+					alert("模型内容太长");
+					return false;
+				}
+			}
+		</script>
+
+
+		<body>
+
+			<div class="test_content">
+			<form id="form1" target="_blank" name="form1" method="post" action="http://ibeetl.com/beetlonline/t" onsubmit="return validateForm();">
+					<h3 class="beetl">Beetl2.2在线体验&nbsp;&nbsp;&nbsp;<a href="/">主页</a></h3>
+					<div>	
+						<div class="title">例子</div>
+						<div class="demo">
+							<div>
+								章节
+								<select name="chapter" id="chapter" onChange="changeChapter()">
+									<option value="ch1" selected="selected">看一眼</option>
+									<option value="ch2">定义变量</option>
+									<option value="ch3">属性引用</option>
+									<option value="ch4">算数表达式</option>
+									<option value="ch5">逻辑表达式</option>
+									<option value="ch6">循环语句</option>
+									<option value="ch7">条件语句</option>
+									<option value="ch8">函数调用</option>
+									<option value="ch9">格式化</option>
+									<option value="ch10">class方法调用</option>
+									<option value="ch11">错误处理</option>
+									<option value="ch12">安全输出</option>
+									<option value="ch13">注释</option>
+									<option value="ch14">类型说明</option>
+								</select>
+							</div>
+							<div>
+								例子
+								<select name="sample" id="sample" onchange="changeSample()">
+									<option>请选择</option>
+									<option>Hello，Beetl</option>
+									<option>真实的例子</option>
+								</select>
+							</div>
+						</div>
+					</div>
+					<div>
+						<div class="title">模板</div>
+        				<div><textarea name="input" id="input" rows="10" ></textarea></div>
+        			</div>
+        			<div>
+      					<div class="title">伪模型</div>
+      					<div><textarea name="json" id="json" cols="60" rows="4"></textarea></div>
+      				</div>	
+        			<div class="submitbtn">
+        				<input type="submit" name="Submit" value="运行" />
+        				<input type="reset" name="Submit2" value="重置" />
+        			</div>
+      				<div class="help">帮助：默认使用<b>$</b><b>{</b> <b>}</b> 作为占位符号，使用<b>&lt;%%&gt;</b> 作为控制语句起始符号</div>
+		</form>
+		</div>
+		
+		<script type="text/javascript">
+			$(function(){
+				autosize($('textarea'));
+			})
+		</script>
+  <div id="input-id" style="display:none"></div>   
+    <div id="json-id" style="display:none"> </div>
+ 
+ <!-- 第一章开始 
+ 
+ var ch1={ "ch1_0":"空白","ch1_1":"第一个例子","ch1_2":"变量"，"ch1_3":"表达式","ch1_4":"循环语句","ch1_5":"判断语句","ch1_6":"安全输出"
+,"ch1_7":"class调用","ch1_8":"方法调用"，"ch1_9":"格式化函数","ch1_10":"虚拟属性"};
+ --> 
+<div id="ch1_0_template" style="display:none;"></div> 
+<div id="ch1_0_model" style="display:none;"></div> 
+
+<div id="ch1_1_template" style="display:none;">hello,@@{user.name}@@</div> 
+<div id="ch1_1_model" style="display:none;">var user={name:'beetl',age:2};</div> 
+
+<div id="ch1_2_template" style="display:none;">@_var name='beetl',age=2;_@
+@@{name}@@
+</div> 
+<div id="ch1_2_model" style="display:none;"></div> 
+
+<div id="ch1_3_template" style="display:none;">@_
+var name='beetl',age=2, msg = "hello "+name+" age is "+age ;
+_@
+@@{msg}@@
+</div> 
+<div id="ch1_3_model" style="display:none;"></div> 
+
+<div id="ch1_4_template" style="display:none;">@_
+for(user in userList){
+_@
+@@{user.name}@@
+@_}_@
+</div> 
+<div id="ch1_4_model" style="display:none;">var userList=[{name:'lijz',age:18},{name:'lucy',age:16}];</div> 
+
+<div id="ch1_5_template" style="display:none;">@_
+if(name=='lijzh'||age!=18){
+_@
+Hello,@@{name}@@
+@_}else{_@
+Morning @@{name}@@
+@_}_@
+</div> 
+<div id="ch1_5_model" style="display:none;">var name='lijz';
+var age= 18;
+</div>
+
+<div id="ch1_6_template" style="display:none;">@@{user.name!'未知'}@@
+</div> 
+<div id="ch1_6_model" style="display:none;">var user = null;</div>  
+
+<div id="ch1_7_template" style="display:none;">@_ 
+ var list = [5,2,4];
+_@
+@@{ @java.util.Collections.max(list)}@@
+
+</div> 
+<div id="ch1_7_model" style="display:none;"></div>  
+
+<div id="ch1_8_template" style="display:none;">@_ 
+ var date = date();
+_@
+today is @@{ date}@@
+
+</div> 
+<div id="ch1_8_model" style="display:none;"></div>  
+
+<div id="ch1_9_template" style="display:none;">@_ 
+ var date = date();
+_@
+today is @@{date,dateFormat='yyyy-MM-dd'}@@
+
+</div> 
+<div id="ch1_9_model" style="display:none;"></div> 
+
+
+<div id="ch1_10_template" style="display:none;">size is  @@{userList.~size}@@
+
+</div> 
+<div id="ch1_10_model" style="display:none;">var userList=[{name:'lijz',age:18},{name:'lucy',age:16}];</div> 
+
+ 
+
+ 
+ <!-- 第一章结束 -->
+
+
+
+
+<!--  第二章开始 
+
+var ch2={"ch2_0":"定义临时变量","ch2_1":"一行定义多个临时变量","ch2_2":"定义json变量","ch2_3":"定义模板变量"};
+
+-->
+<div id="ch2_0_template" style="display:none;">@_
+var number = 1 ;
+var str = "hello";
+var now = date();
+var isChecked = true;
+var nullValue = null;
+_@
+number is @@{number}@@,str is @@{str}@@,time is @@{now}@@
+@@{isChecked}@@
+nullValue=@@{nullValue}@@.
+</div> 
+<div id="ch2_0_model" style="display:none;"></div> 
+
+
+
+<div id="ch2_1_template" style="display:none;">@_
+var number = 1 ,str="hello",now = date();
+_@
+number is @@{number}@@,str is @@{str}@@,time is @@{now}@@
+</div> 
+<div id="ch2_1_model" style="display:none;"></div> 
+
+
+<div id="ch2_2_template" style="display:none;">@_
+var map={name:'joel',age:18};
+var list=['open','close'];
+_@
+@@{map['name']}@@ = @@{map.name}@@ 
+@@{list[0]}@@ 
+</div> 
+<div id="ch2_2_model" style="display:none;"></div> 
+
+
+
+<div id="ch2_3_template" style="display:none;">@_
+var bigNumber = 7777777777777.23;
+var templateVar = {
+_@
+big number is @@{bigNumber}@@
+@_};_@
+现在输出模板变量：
+@@{templateVar}@@
+</div> 
+<div id="ch2_3_model" style="display:none;"></div> 
+
+<!--  第二章开始结束 -->
+
+<!-- 第三章开始  
+var ch3={"ch3_0":"对象属性","ch3_1":"数组或者列表","ch3_2":"集合","ch3_3":"Map"};
+-->
+
+<div id="ch3_0_template" style="display:none;">
+推荐： @@{user.wife.name}@@ 
+不推荐：@@{user.wife["name"]}@@ 
+</div> 
+<div id="ch3_0_model" style="display:none;">var user = {name:'lijz',wife:{name:'lucy',age:17}};
+
+</div> 
+
+
+<div id="ch3_1_template" style="display:none;">
+@@{status[0]}@@ 
+@@{status.~size}@@ 
+</div> 
+<div id="ch3_1_model" style="display:none;">var status =  [1,2,3];
+
+</div> 
+
+<div id="ch3_2_template" style="display:none;">
+@@{status[0]}@@ 
+</div> 
+<div id="ch3_2_model" style="display:none;">var status =  [1,2,3];
+
+</div> 
+
+<div id="ch3_3_template" style="display:none;">
+推荐 @@{map["key1"]}@@
+不推荐 @@{map.key2}@@ 
+</div> 
+<div id="ch3_3_model" style="display:none;">var map = {key1:'value1',key2:'value2'} ;
+
+</div> 
+
+<!--  第三章结束 -->
+
+
+<!-- 第四章 -->
+<div id="ch4_0_template" style="display:none;">@_
+var a1 = 12;
+var b1 = (a1+15)/3-2*a1;
+var bc = -1-b1;
+_@
+@@{bc}@@
+</div> 
+<div id="ch4_0_model" style="display:none;"></div>
+
+<!--  第四章结束 -->
+
+
+
+<!-- 第五章 -->
+<div id="ch5_0_template" style="display:none;">@_
+var a1 = 12;
+var b1 = a1==12;
+var b2 = a1!=12;
+_@
+@@{b1}@@
+@@{b2}@@
+</div> 
+<div id="ch5_0_model" style="display:none;"></div>
+
+<div id="ch5_1_template" style="display:none;">@_
+var a1 = "joeli";
+var b1 = a1=="joelli";
+_@
+@@{b1}@@
+
+</div> 
+<div id="ch5_1_model" style="display:none;"></div>
+
+
+
+<div id="ch5_2_template" style="display:none;">@_
+var a=1;
+var b = a==1?"hi":"hey";
+_@
+@@{b}@@
+
+</div> 
+<div id="ch5_2_model" style="display:none;"></div>
+
+<!--  第五章结束 -->
+
+<!-- 第六章 循环
+var ch6={"ch6_0":"循环数组或者List","ch6_1":"循环Map","ch6_2":"安全循环",
+"ch6_3":"使用While","ch6_4":"循环控制","ch6_5":"for(exp;exp;exp)"};
+
+ -->
+
+
+
+<div id="ch6_0_template" style="display:none;">@_
+print("总共"+userList.~size+"<br/>");
+for(user in userList){
+_@
+@@{userLP.index}@@    @@{user.name}@@ <br/>
+@_}_@
+</div> 
+<div id="ch6_0_model" style="display:none;">var userList=[{name:'lijz',age:18},{name:'lucy',age:16}];</div> 
+
+
+<div id="ch6_1_template" style="display:none;">@_
+print("总共"+map.~size+"<br/>");
+for(user in map){
+_@
+@@{userLP.index}@@    @@{user.key}@@ @@{user.value.name}@@ <br/>
+@_}_@
+</div> 
+<div id="ch6_1_model" style="display:none;">var map={"001":{name:'lijz'},"002":{name:'lucy'}};</div> 
+
+
+
+<div id="ch6_2_template" style="display:none;">@_
+
+for(user in list!){
+_@
+@@{user}@@   <br/>
+@_}_@
+end
+</div> 
+<div id="ch6_2_model" style="display:none;">var list=null;</div> 
+
+<div id="ch6_3_template" style="display:none;">@_
+for(user in userList){
+if(user.age==18){
+	print("it's lijz'");
+	continue;
+}else if(user.age==16){
+	print("It's lucy");
+	break;
+}else{
+	print("return ");
+	return ;
+}
+}
+print("end loop");
+_@
+
+</div> 
+<div id="ch6_3_model" style="display:none;">var userList=[{name:'lijz',age:18},{name:'lucy',age:16}];</div> 
+
+
+
+
+<div id="ch6_4_template" style="display:none;">@_
+for(user in userList){
+print(user.name);
+}elsefor {
+print("no data");
+}
+
+_@
+
+</div> 
+<div id="ch6_4_model" style="display:none;">var userList=[];</div> 
+
+
+<div id="ch6_5_template" style="display:none;">@_
+for(var i=1;i==10;i++){
+print(i);
+}
+
+_@
+
+</div> 
+<div id="ch6_5_model" style="display:none;"></div> 
+
+<!-- 第六章结束 -->
+
+<!--  第七章开始 
+
+var ch7={"ch7_0":"if else ","ch7_1":"switch","ch6_2":"使用nvl函数","ch6_3":"使用decode函数"};
+-->
+<div id="ch7_0_template" style="display:none;">@_
+var user = map["001"];
+if(user.name=="lijz"){
+	print(user.name);
+}else{
+	return ;
+}
+_@
+</div> 
+<div id="ch7_0_model" style="display:none;">var map={"001":{name:'lijz'},"002":{name:'lucy'}};</div> 
+
+
+<div id="ch7_1_template" style="display:none;">@_
+var status = "1";
+switch(status){
+    case "0":{
+    	print("0");
+    	break ;
+    }
+	case "1":{
+		print("1");
+		break;
+	}
+	default:{
+		print("default");
+	}
+}
+_@
+</div> 
+<div id="ch7_1_model" style="display:none;"></div> 
+
+
+<div id="ch7_2_template" style="display:none;">@@{nvl(user,"Beetl")}@@
+</div> 
+<div id="ch7_2_model" style="display:none;">var user = null;</div> 
+
+<div id="ch7_3_template" style="display:none;">@@{decode(age,1,"age is 1",2,"age is 2","默认值")}@@
+</div> 
+<div id="ch7_3_model" style="display:none;">var age = 1;</div> 
+
+
+<div id="ch7_4_template" style="display:none;">@_
+var status = "1";
+select(status){
+    case "0","1":
+    	print("small");
+    case "2":
+		print("big");
+    default:
+		print("default");
+	
+}
+
+select{
+    case status=="0",status=="1":
+    	print("small");    
+    case status=="2":
+		print("big");
+    default:
+		print("default");
+	
+}
+
+_@
+</div> 
+<div id="ch7_4_model" style="display:none;"></div> 
+
+
+<!-- 第七章结束 -->
+
+<!-- 第八章 开始
+var ch8={"ch8_0":"print函数","ch8_1":"date函数","ch8_2":"exist函数","ch8_3":"debug函数","cache标签"};
+-->
+
+<div id="ch8_0_template" style="display:none;">@_
+print("hello");
+println("hello");
+printf("hello,%s,your age is %s","lijz",12+"");
+_@
+</div> 
+<div id="ch8_0_model" style="display:none;"></div> 
+
+
+<div id="ch8_1_template" style="display:none;">@_
+var now = date();
+var date = date("2013-1-1","yyyy-MM-dd");
+_@
+now=@@{now,dateFormat='yyyy年MM月dd日'}@@
+date=@@{date,dateFormat='yyyy年MM月dd日'}@@
+
+</div> 
+<div id="ch8_1_model" style="display:none;"></div> 
+
+
+<div id="ch8_2_template" style="display:none;">@_
+print(exist("session")+"  "); 
+print(exist("user")+"  ");
+_@
+
+
+</div> 
+<div id="ch8_2_model" style="display:none;">var user = null;</div> 
+
+<div id="ch8_3_template" style="display:none;">@_
+debug("仅仅在后台打印，前台什么都没有");
+_@
+
+
+</div> 
+<div id="ch8_3_model" style="display:none;"></div> 
+
+
+<div id="ch8_4_template" style="display:none;">@_
+//请指定你的缓存key
+cache("key",60,false){
+_@
+date = @@{date(),dateFormat='yy-MM-dd hh:mm::ss'}@@
+@_}_@
+now =  @@{date(),dateFormat='yy-MM-dd hh:mm::ss'}@@
+</div> 
+<div id="ch8_4_model" style="display:none;"></div> 
+
+
+<!-- 第八章结束 -->
+
+<!-- 第9章 -->
+<div id="ch9_0_template" style="display:none;">@_
+var now = date();
+var date = date("2013-1-1","yyyy-MM-dd");
+_@
+now=@@{now,dateFormat='yyyy年MM月dd日'}@@
+date=@@{date,dateFormat='yyyy年MM月dd日'}@@
+or
+now=@@{now,'yyyy年MM月dd日'}@@
+
+</div> 
+<div id="ch9_0_model" style="display:none;"></div> 
+
+<div id="ch9_1_template" style="display:none;">@_
+var number = 12.7893;
+_@
+number=@@{number,numberFormat='#.##'}@@
+or
+number=@@{number,'#.##'}@@
+
+</div> 
+<div id="ch9_1_model" style="display:none;"></div> 
+<!-- 第9章结束 -->
+
+<!-- 第10章 
+var ch10={"ch10_0":"class静态方法","ch10_1":"class静态属性","ch10_2":"实例的方法"};
+-->
+
+<div id="ch10_0_template" style="display:none;">@_ 
+ var list = [5,2,4];
+_@
+@@{ @java.util.Collections.max(list)}@@
+
+</div> 
+<div id="ch10_0_model" style="display:none;"></div>  
+
+
+<div id="ch10_1_template" style="display:none;">@@{ @java.util.logging.Level.INFO }@@
+
+</div> 
+<div id="ch10_1_model" style="display:none;"></div>  
+
+
+<div id="ch10_2_template" style="display:none;">@@{ @list.isEmpty() }@@
+
+</div> 
+<div id="ch10_2_model" style="display:none;"> var list = [];</div>  
+
+
+<!-- 第10章结束 -->
+
+
+<!-- 第11章开始
+var ch11={"ch11_0":"语法错误","ch11_1":"运行错误"};
+ -->
+ <div id="ch11_0_template" style="display:none;">@_ 
+ var list = [5,2,4]
+ var a =12;
+_@
+
+
+</div> 
+<div id="ch11_0_model" style="display:none;"></div>  
+
+
+ <div id="ch11_1_template" style="display:none;">@_ 
+ var a =5/0; 
+_@
+
+</div> 
+<div id="ch11_1_model" style="display:none;"></div>  
+
+<!-- 第11章结束 -->
+
+<!-- 第12章开始 -->
+<div id="ch12_0_template" style="display:none;">@@{user1.wife.name!"单身"}@@
+@@{user2.wife.name!}@@
+@@{user3.wife.name!"单身"}@@
+
+</div> 
+<div id="ch12_0_model" style="display:none;">var user1 = null;
+var user2 = null;
+var user3 = {"name":"lijz",wife:{'name':'lucy'}};
+</div>  
+
+
+
+<div id="ch12_1_template" style="display:none;">@_ DIRECTIVE SAFE_OUTPUT_OPEN ;_@
+@@{user1.wife.name}@@
+@@{user2.wife.name}@@
+@@{user3.wife.name}@@
+@_ DIRECTIVE SAFE_OUTPUT_CLOSE ;_@
+</div> 
+<div id="ch12_1_model" style="display:none;">var user1 = null;
+var user2 = null;
+var user3 = {"name":"lijz",wife:{'name':'lucy'}};
+</div>  
+
+<div id="ch12_2_template" style="display:none;">
+@@{str1!''==''}@@
+@@{str2!''==''}@@
+@@{str3!''==''}@@
+@@{str4!''==''}@@
+
+</div> 
+<div id="ch12_2_model" style="display:none;">var str1 = null;
+var str2 = '';
+//var str3='input' ,不定义str3
+var str4 = 'input';
+</div> 
+
+
+<div id="ch12_3_template" style="display:none;">@@{isEmpty(str1)}@@
+@@{isEmpty(str2)}@@
+@@{isEmpty(str3)}@@
+@@{isEmpty(str4)}@@
+@@{isEmpty(str5)}@@
+
+</div> 
+<div id="ch12_3_model" style="display:none;">var str1 = null;
+var str2 = '';
+//var str3='input' ,不定义str3
+var str4 = 'input';
+var str5 = [];
+</div> 
+
+<!-- 第12章结束 -->
+
+<!-- 第13章开始
+var ch13={"ch13_0":"单行注释","ch13_1":"多行输出"};
+ -->
+ 
+<div id="ch13_0_template" style="display:none;">@_ 
+//最大值是12;
+var max = 12;
+_@
+</div> 
+<div id="ch13_0_model" style="display:none;"></div>   
+
+
+<div id="ch13_1_template" style="display:none;">@_ 
+/*
+var max = 12;
+*/
+_@
+</div> 
+<div id="ch13_1_model" style="display:none;"></div>   
+ 
+<!-- 第13章结束 -->
+
+
+<!-- 第14章开始
+
+ -->
+ 
+<div id="ch14_0_template" style="display:none;">@_ 
+//全局变量类型是动态的，即Object
+directive dynamic ;
+var max = 12;
+_@
+</div> 
+<div id="ch14_0_model" style="display:none;"></div>   
+
+
+<div id="ch14_1_template" style="display:none;">@_ 
+/*
+*@type(Integer age,String name)
+*/
+print(age);
+_@
+</div> 
+<div id="ch14_1_model" style="display:none;">
+var age = 1;
+var name= "baby";
+</div>   
+ 
+<!-- 第13章结束 -->
+
+			<script>
+				changeChapter("ch1");
+			</script>
+
+		</body>
+
+</html>
+<script>
+	var input_text = document.getElementById("input-id").innerHTML;
+	var json_text = document.getElementById("json-id").innerHTML;
+	input_text = input_text.replaceAll("&lt;%", "<" + "%");
+	input_text = input_text.replaceAll("%&gt;", "%" + ">");
+
+	setContent("input", input_text);
+	setContent("json", json_text);
+</script>
+
+</body>
+
+</html>
