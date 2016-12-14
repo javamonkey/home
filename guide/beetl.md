@@ -46,7 +46,7 @@ Beetl目前版本是2.7.3,相对于其他java模板引擎，具有功能齐全�
 >
 >   源码主页：https://github.com/javamonkey/beetl2.0
 >
->   在线体验和代码分享 [http://ibeetl.com/online.html](http://ibeetl.com/online.html)
+>   在线体验和代码分享 [http://ibeetl.com/beetlonline/](http://ibeetl.com/beetlonline/)
 
 
 
