@@ -13,6 +13,7 @@
 		<style>
 			html,body{font-family:PingFang SC,Microsoft YaHei;width: 100%;margin: 0;padding: 0;}
 			.body{width: 100%;}
+			.fl{float:left;}.fr{float:right;}
 			.ani,.nav-menu *{-webkit-transition: all .3s ease-out;-ms-transition: all .3s ease-out;-moz-transition: all .3s ease-out;-o-transition: all .3s ease-out;transition: all .3s ease-out;}
 			::-webkit-scrollbar{width:0px;height:0px}
 			
@@ -57,13 +58,16 @@
 			.footer {padding:30px 0;overflow:hidden;color:#777;margin-top: 30px;background:#f3f3f3}
 			.footer div{max-width:1200px;width:100%;margin:auto;box-sizing:border-box;padding:0 20px;}
 			.footer div p{margin:8px 0;}
-			.footer div p span{word-break:keep-all;white-space:nowrap;}
-			.footer div p a{color:currentcolor}
+			.footer a{color:currentcolor;text-decoration:none;}
+			.footer a:hover{text-decoration:underline;}
+			#contributors{float:right;width:60%}
+			#contributors li{float:left;width:120px;margin-top:8px;word-break:keep-all;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+			#copyright{float:left;width:40%}
 			
 			@media(max-width:800px){
 				.body_content{padding-top: 60px;}
 				.body_content .product{padding:0;width:100%;}
-				.beetlChart {width: 100%;}
+				#contributors,#copyright,.beetlChart {width: 100%;}
 				.navbar{position: fixed;top: 0;left: 0;}
 				.navbar-nav .nav-menu{width:100%;position: absolute;top: 50px;left: 0;height: 0;overflow-y: scroll;}
 				.navbar-nav .nav-menu .nav-item{overflow: hidden;width:100%;text-align:left;border-top: 1px solid #e6b802;}
@@ -74,8 +78,10 @@
 				.nav-item>.nav-group>.pay{height: 0;text-align: center;}
 				.nav-item.item-active>.nav-group>.nav{height: 50px;}
 				.nav-item.item-active>.nav-group>.pay{height: 240px;padding-top: 16px;}
-				
+				#contributors li{width:25%}
+				#copyright{padding-top:20px;border-top:1px solid #999;margin-top:20px;}
 			}
+			@media(max-width:500px){#contributors li{width:50%}}
 		</style>
 		<script>
 			//百度统计
@@ -205,10 +211,21 @@
 				
 			<footer class="footer">
 				<div>
-					<p><i class="iconfont icon-beetl"></i> iBeetl.com &copy; 2011 ~ 2016</p>
-					<p><i class="iconfont icon-beetl"></i> <a href="mailto:xiandafu@126.com?subject=Beetl问题咨询、意见建议、商业合作、业务洽谈&body=闲·大赋您好：">闲·大赋</a> 荣誉出品</p>
-					<p><i class="iconfont icon-beetl"></i> QQ交流群：<a href="http://shang.qq.com/wpa/qunwpa?idkey=3a4d438fe96f0acc2b52b2323b66d88243ceaff9153d9cfb2e0d83343bdc1047" target="_blank">219324263</a></p>
-					<p><i class="iconfont icon-beetl"></i> Beetl社区：<a href="http://bbs.ibeetl.com">bbs.ibeetl.com</a></p>
+					<div id="contributors">
+					<!-- 
+						<span>Beetl的成长离不开以下人员的帮助（排名不分前后）：</span>
+						<ul>
+							<li><a href="mailto:1234567@qq.com">张三三</a></li>
+							<li> <a href="http://lisi.com/blog">李四</a></li>
+						</ul>
+					 -->
+					</div>
+					<div id="copyright">
+						<p><i class="iconfont icon-beetl"></i> iBeetl.com &copy; 2011 ~ 2016</p>
+						<p><i class="iconfont icon-beetl"></i> <a href="mailto:xiandafu@126.com?subject=Beetl问题咨询、意见建议、商业合作、业务洽谈&body=闲·大赋您好：">闲·大赋</a> 荣誉出品</p>
+						<p><i class="iconfont icon-beetl"></i> QQ交流群：<a href="http://shang.qq.com/wpa/qunwpa?idkey=3a4d438fe96f0acc2b52b2323b66d88243ceaff9153d9cfb2e0d83343bdc1047" target="_blank">219324263</a></p>
+						<p><i class="iconfont icon-beetl"></i> Beetl社区：<a href="http://bbs.ibeetl.com">bbs.ibeetl.com</a></p>
+					</div>
 				</div>
 			</footer>
 	</div>
@@ -225,6 +242,7 @@
 		NodeList.prototype.removeClass = HTMLElement.prototype.removeClass = function(cls){return this.cls('remove',cls)}
 		HTMLElement.prototype.hasClass = function(cls){return this.classList.contains(cls)}
 		var rep = function(t,c){c=c||1;return new Array(~~c+1).join({b:'2b',e:'\\',t:'/',l:'_',s:'\n',q:' '}[t.substr(0,1)])}
+		//控制台输出Beetl/BeetlSQL字符画签名
 		console.log('q3l2q17l2q4l2sq2tqtlq3l3q3l3q3tqtq3tqtsqtql2qeqtqlqeqtqlqeqtql2eqtqtqstqtltqt2ql3t2ql3t2qtl2qtqtl2sel4tqel3tqel3tqel3tqel3tsq3l2q17l2q4l2q17l2sq2tqtlq3l3q3l3q3tqtq3tqtq3l5ql3q4tqtsqtql2qeqtqlqeqtqlqeqtql2eqtqtq3tql3t2ql2qeqtqtstqtltqt2ql3t2ql3t2qtl2qtqtl2qtl2q2t2qtltqt2qtl2sel4tqel3tqel3tqel3tqel3t2l4tqel2q2tqel3tsq39tlt'.replace(/b(\d*)/g,rep).replace(/e(\d*)/g,rep).replace(/t(\d*)/g,rep).replace(/l(\d*)/g,rep).replace(/s(\d*)/g,rep).replace(/q(\d*)/g,rep))
 		window.beetl = function(sel){return document.querySelectorAll(sel)}
 	}()
