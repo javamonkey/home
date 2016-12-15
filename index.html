@@ -7,11 +7,13 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0,minimum-scale=1.0, user-scalable=no">
 		<meta name="keywords" content="java,beetl,beetlsql,模板,orm" />
 		<meta name="description" content="Beetl是一款6倍于Freemarker的超高性能的java模板引擎，来自于中国！！BeetlSQL是一款功能强大，以SQL为中心，使用简单的全功能的ORMapping工具，支持自动生成代码，内置大量SQL语句，支持市面上绝大多数主流数据库。Beetl和BeetlSQL均能与目前市面上的大多数流行框架无缝整合。" />
-		<link href="//cdn.bootcss.com/normalize/5.0.0/normalize.min.css" rel="stylesheet">
+		<!--[if lt IE 9]><script>(!+[1,])&&alert('本站不支持IE8及以下，我们不想为落后买单！'),location.href='http://browsehappy.com/'</script><![endif]-->
+		<link href="http://cdn.bootcss.com/normalize/5.0.0/normalize.min.css" rel="stylesheet">
 		<link rel="stylesheet" type="text/css" href="font/iconfont.css"/>
 		<style>
 			html,body{font-family:PingFang SC,Microsoft YaHei;width: 100%;margin: 0;padding: 0;}
 			.body{width: 100%;}
+			.fl{float:left;}.fr{float:right;}
 			.ani,.nav-menu *{-webkit-transition: all .3s ease-out;-ms-transition: all .3s ease-out;-moz-transition: all .3s ease-out;-o-transition: all .3s ease-out;transition: all .3s ease-out;}
 			::-webkit-scrollbar{width:0px;height:0px}
 			
@@ -32,7 +34,7 @@
 			.navbar-nav .nav-menu{float:right;background: #F5C503;}
 			.beetlChart>img{display: block;width: 100%;height: auto;}
 				
-			@media(min-width:1001px){
+			@media(min-width:801px){
 				.navbar-nav .nav-item{height: 50px;}
 				.navbar-nav .nav-item:hover{border-bottom-width:4px}
 				.navbar-nav .nav-item>.nav-group{position:absolute;right:0;top:50px;overflow:hidden;background:#f5c503}
@@ -53,12 +55,19 @@
 			.product-explain .explain{line-height:23px;position:relative;font-size:14px;color:#777;box-sizing:border-box;padding-left:34px}
 			.product-explain .explain:before{content:"";position:absolute;top:0;left:11px;width:4px;height:100%;background:#ccc}
 			
-			.footer {height: 50px;line-height: 50px;text-align: center;color: #bbb;margin-top: 30px;}
+			.footer {padding:30px 0;overflow:hidden;color:#777;margin-top: 30px;background:#f3f3f3}
+			.footer div{max-width:1200px;width:100%;margin:auto;box-sizing:border-box;padding:0 20px;}
+			.footer div p{margin:8px 0;}
+			.footer a{color:currentcolor;text-decoration:none;}
+			.footer a:hover{text-decoration:underline;}
+			#contributors{float:right;width:60%}
+			#contributors li{float:left;width:120px;margin-top:8px;word-break:keep-all;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+			#copyright{float:left;width:40%}
 			
-			@media(max-width:1000px){
+			@media(max-width:800px){
 				.body_content{padding-top: 60px;}
 				.body_content .product{padding:0;width:100%;}
-				.beetlChart {width: 100%;}
+				#contributors,#copyright,.beetlChart {width: 100%;}
 				.navbar{position: fixed;top: 0;left: 0;}
 				.navbar-nav .nav-menu{width:100%;position: absolute;top: 50px;left: 0;height: 0;overflow-y: scroll;}
 				.navbar-nav .nav-menu .nav-item{overflow: hidden;width:100%;text-align:left;border-top: 1px solid #e6b802;}
@@ -69,8 +78,10 @@
 				.nav-item>.nav-group>.pay{height: 0;text-align: center;}
 				.nav-item.item-active>.nav-group>.nav{height: 50px;}
 				.nav-item.item-active>.nav-group>.pay{height: 240px;padding-top: 16px;}
-				
+				#contributors li{width:25%}
+				#copyright{padding-top:20px;border-top:1px solid #999;margin-top:20px;}
 			}
+			@media(max-width:500px){#contributors li{width:50%}}
 		</style>
 		<script>
 			//百度统计
@@ -104,7 +115,7 @@
 								<li class="nav"><a href="guide/beetlsql.md" download="beetlsql.md">Markdown下载</a></li>
 							</ul>
 						</li>
-						<li class="nav-item"><a href="online.html">在线体验</a></li>
+						<li class="nav-item"><a href="beetlonline/">在线体验</a></li>
 						<li class="nav-item">
 							<a href="javascript:;">论坛</a>
 							<ul class="nav-group">
@@ -139,7 +150,7 @@
 			
 			
 			<div class="body_content">
-				<div class="product">
+				<div class="product ani">
 					<section class="beetlChart">
 						<img src="img/beetl_mob_01.png"/>
 					</section>
@@ -167,7 +178,7 @@
 						</ul>
 					</section>
 				</div>
-				<div class="product">
+				<div class="product ani">
 					<section class="beetlChart">
 						<img src="img/beetl_mob_02.png"/>
 					</section>
@@ -198,33 +209,60 @@
 				</div>
 			</div>
 				
-			<footer class="footer">iBeetl.com &copy; 2011 - 2016</footer>
+			<footer class="footer">
+				<div>
+					<div id="contributors">
+					<!-- 
+						<span>Beetl的成长离不开以下人员的帮助（排名不分前后）：</span>
+						<ul>
+							<li><a href="mailto:1234567@qq.com">张三三</a></li>
+							<li> <a href="http://lisi.com/blog">李四</a></li>
+						</ul>
+					 -->
+					</div>
+					<div id="copyright">
+						<p><i class="iconfont icon-beetl"></i> iBeetl.com &copy; 2011 ~ 2016</p>
+						<p><i class="iconfont icon-beetl"></i> <a href="mailto:xiandafu@126.com?subject=Beetl问题咨询、意见建议、商业合作、业务洽谈&body=闲·大赋您好：">闲·大赋</a> 荣誉出品</p>
+						<p><i class="iconfont icon-beetl"></i> QQ交流群：<a href="http://shang.qq.com/wpa/qunwpa?idkey=3a4d438fe96f0acc2b52b2323b66d88243ceaff9153d9cfb2e0d83343bdc1047" target="_blank">219324263</a></p>
+						<p><i class="iconfont icon-beetl"></i> Beetl社区：<a href="http://bbs.ibeetl.com">bbs.ibeetl.com</a></p>
+					</div>
+				</div>
+			</footer>
 	</div>
-			
-	
-	<script type="text/javascript" src="js/jquery-3.1.1.min.js" ></script>
 	<script>
-		$(function(){
-			if($(window).width() < 1000){
-				$('.nav-item').on('click',function(e){
-					$(this).toggleClass('item-active')
-				})
-				
-				$('.body_content').on('click',function(e){
-					$('.active').removeClass('active')
-					$('.item-active').removeClass('item-active')
-				})
-				$('.navbar-nav').on('click',function(e){
-					var et = $(e.target);
-					if(et.hasClass('nav-menu')|| et.parents('.nav-menu').length == 0){
-						$(this).toggleClass('active')
-					}
-				})
-				
+	!function(){
+		//IE9 hack
+		"classList"in document.documentElement||Object.defineProperty(HTMLElement.prototype,"classList",{get:function(){function n(n){return function(e){var s=t.className.split(/\s+/g),i=s.indexOf(e);n(s,i,e),t.className=s.join(" ")}}var t=this;return{add:n(function(n,t,e){~t||n.push(e)}),remove:n(function(n,t){~t&&n.splice(t,1)}),toggle:n(function(n,t,e){~t?n.splice(t,1):n.push(e)}),contains:function(n){return!!~t.className.split(/\s+/g).indexOf(n)},item:function(n){return t.className.split(/\s+/g)[n]||null}}}});
+		// dom.on | dom.click | dom.toggleClass | dom.addClass | dom.removeClass | dom.hasClass
+		NodeList.prototype.on = function(ev,fn){if(this.length&&typeof ev == 'string'&&typeof fn =='function')for (var i = 0, len = this.length; i < len; i++)this[i].addEventListener(ev,fn,false);return this;}
+		NodeList.prototype.click = function(fn){typeof fn =='function'&&this.on('click',fn);return this;}
+		NodeList.prototype.cls=HTMLElement.prototype.cls=function(a,b){if("toggle"==a||"add"==a||"remove"==a)if(null==this.length)this.classList[a](b);else for(var c=0,d=this.length;d>c;c++)this[c].classList[a](b);return this};
+		NodeList.prototype.toggleClass = HTMLElement.prototype.toggleClass = function(cls){return this.cls('toggle',cls)}
+		NodeList.prototype.addClass = HTMLElement.prototype.addClass = function(cls){return this.cls('add',cls)}
+		NodeList.prototype.removeClass = HTMLElement.prototype.removeClass = function(cls){return this.cls('remove',cls)}
+		HTMLElement.prototype.hasClass = function(cls){return this.classList.contains(cls)}
+		var rep = function(t,c){c=c||1;return new Array(~~c+1).join({b:'2b',e:'\\',t:'/',l:'_',s:'\n',q:' '}[t.substr(0,1)])}
+		//控制台输出Beetl/BeetlSQL字符画签名
+		console.log('q3l2q17l2q4l2sq2tqtlq3l3q3l3q3tqtq3tqtsqtql2qeqtqlqeqtqlqeqtql2eqtqtqstqtltqt2ql3t2ql3t2qtl2qtqtl2sel4tqel3tqel3tqel3tqel3tsq3l2q17l2q4l2q17l2sq2tqtlq3l3q3l3q3tqtq3tqtq3l5ql3q4tqtsqtql2qeqtqlqeqtqlqeqtql2eqtqtq3tql3t2ql2qeqtqtstqtltqt2ql3t2ql3t2qtl2qtqtl2qtl2q2t2qtltqt2qtl2sel4tqel3tqel3tqel3tqel3t2l4tqel2q2tqel3tsq39tlt'.replace(/b(\d*)/g,rep).replace(/e(\d*)/g,rep).replace(/t(\d*)/g,rep).replace(/l(\d*)/g,rep).replace(/s(\d*)/g,rep).replace(/q(\d*)/g,rep))
+		window.beetl = function(sel){return document.querySelectorAll(sel)}
+	}()
+	if(window.innerHeight<800){
+		beetl('.nav-item').click(function(e){
+			e.stopPropagation();
+			if(this.hasClass('item-active')) this.removeClass('item-active')
+			else{
+				beetl('.item-active').removeClass('item-active')
+				this.addClass('item-active')
 			}
-			
 		})
-		
+		beetl('.body_content').click(function(){
+			beetl('.active').removeClass('active')
+			beetl('.item-active').removeClass('item-active')
+		})
+		beetl('.navbar-nav').click(function(){
+			this.toggleClass('active')
+		})
+	}
 	</script>
 	</body>
 </html>

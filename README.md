@@ -14,13 +14,14 @@
 
 -   2016年12月13日
 
-    【在线体验】全新的在线体验页面（网页样式提取自[Primer](https://github.com/primer/primer-css)），以标签形式显示运行结果
+    【在线体验】修改在线体验地址为http://ibeetl.com/beetlonline/，这样以前在其他地方引用过的（如OSC上提问回答中有预留过的）依旧直接访问有效
 
-    >   临时屏蔽[新的在线体验页面](https://javamonkey.github.io/online.html)
-    >
-    >   因为Github默认域名为HTTPS，在线演示提交结果页面为HTTP，导致无法直接加载
-    >
-    >   后续绑定自定义CNAME转为HTTP协议或者演示页面上HTTPS协议后再启用新的在线演示
+    【主页】去除jQuery依赖，更新Footer栏样式
+
+
+-   2016年12月13日
+
+    【在线体验】全新的在线体验页面（网页样式提取自[Primer](https://github.com/primer/primer-css)），以标签形式显示运行结果
 
 -   2016年12月08日
 
