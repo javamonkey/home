@@ -247,7 +247,7 @@ beetlsql生成了用于查询，更新，条件的sql片段和一个简单例子
 
 #### 3.1. 获得SQLManager
 
-SQLManager 是系统的核心，他提供了所有的dao方法。获得SQLManager，可以直接构造SQLManager.并通过过单例获取如：
+SQLManager 是系统的核心，他提供了所有的dao方法。获得SQLManager，可以直接构造SQLManager.并通过单例获取如：
 
 ```java
 ConnectionSource source = ConnectionSourceHelper.getSimple(driver, url, "", userName, password);
@@ -1036,7 +1036,7 @@ age=#age#
 
 ### 13. Beetl 入门
 
-Beetl 语法类似js，java，如下做简要说明，使用可以参考 [http://ibeetl.com](http://ibeetl.com/) , 或者在线体验 [http://ibeetl.com:8080/beetlonline/](http://ibeetl.com:8080/beetlonline/)
+Beetl 语法类似js，java，如下做简要说明，使用可以参考 [http://ibeetl.com](http://ibeetl.com/) , 或者在线体验 [http://ibeetl.com/beetlonline/](http://ibeetl.com/beetlonline/)
 
 #### 13.1. 定界符号
 
