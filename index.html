@@ -227,7 +227,6 @@
 			}
 			var localize = (localStorage.localize||navigator.language||navigator.browserLanguage).toLowerCase();
 			if(localize!='zh-cn')localize='en';
-			localStorage.localize = localize;
 			var beetl = new Vue({
 				el:'#beetl',
 				data:{lang:localize,consumer:consumer,contributors:contributors},
