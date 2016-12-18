@@ -1,9 +1,9 @@
 ## BeetlSQL中文文档
 
->   -   作者: 闲大赋,Gavin.King,Sue,Zhoupan,woate
+>   -   作者: 闲大赋,Gavin.King,Sue,Zhoupan,woate,Darren
 >   -   社区 [http://ibeetl.com](http://ibeetl.com/)
 >   -   qq群 219324263
->   -   当前版本 2.7.3 , 另外还需要beetl([http://git.oschina.net/xiandafu/beetl2.0/attach_files](http://git.oschina.net/xiandafu/beetl2.0/attach_files)) 包
+>   -   当前版本 2.7.5 , 另外还需要beetl([http://git.oschina.net/xiandafu/beetl2.0/attach_files](http://git.oschina.net/xiandafu/beetl2.0/attach_files)) 包
 
 
 
@@ -37,7 +37,7 @@ maven 方式:
 <dependency>
 	<groupId>com.ibeetl</groupId>
 	<artifactId>beetlsql</artifactId>
-	<version>2.7.3</version>
+	<version>2.7.5</version>
 </dependency>
 ```
 
@@ -497,7 +497,7 @@ Beetlsql 默认提供了三种列明和属性名的映射类。
 
 -   DefaultNameConversion 数据库名和java属性名保持一致，如数据库表User，对应Java类也是User，数据库列是sysytemId,则java属性也是systemId，反之亦然
 -   UnderlinedNameConversion 将数据库下划线去掉，首字母大写，如数据库是SYS_USER（oralce数据库的表和属性总是大写的), 则会改成SysUser
--   JPANameConversion 支持JPA方式的映射，适合不能用确定的映射关系
+-   JPA2NameConversion 支持JPA方式的映射，适合不能用确定的映射关系(2.7.4以前采用JPANameConversion过于简单，已经不用了)
 -   自定义命名转化，如果以上3个都不合适,可以自己实现一个命名转化。实现DefaultNameConversion实现方式
 -   因为数据库表和列都忽略大小写区别，所以，实现NameConversion也不需要考虑大小写
 
@@ -645,7 +645,28 @@ public List<User> selectAll();
 
 使用Mapper能增加Dao维护性，并能提高开发效率，建议在项目中使用。
 
+对于Mapper涉及的查询来说，会将查询结果映射到返回值上，有如下规则
 
+- Mapper方法得返回值应该查询结果对应，如查询结果是日期，方法返回值也应该是日期（Date或者Timestamp)
+
+```java
+// 不需要注解说明返回类型
+public Date getMaxDate(User query);
+
+@SqlStatement(returnType=Date.class)
+public List<Date> getTop10Date();
+```
+
+- 如果返回值是List，如实体本身集合，则不需要使用注解的returnType来说明，这是默认情况
+
+- 如果返回的值是List，但是其他类型集合，则需要使用returnType来说明返回类型
+
+- 翻页查询PageQuery 不需要做类型说明，默认返回就是实体本身，如果返回的是其他类型，也需要在returnType加以说明
+
+```java
+//翻页查询，默认返回实体对象
+public void queryUser(PageQuery query);
+```
 
 ### 7. BeetlSQL Annotation
 
@@ -1634,7 +1655,7 @@ jdbcSql是渲染过后的sql，jdbcPara 是对应的参数值
 
 ### 22. Hibernate,MyBatis,MySQL 对比
 
-[http://ibeetl.com/community/?/article/63](http://ibeetl.com/community/?/article/63) 提供了12项对比并给与评分。在犹豫使用BeetlSQL，可以参考这个全面的对比文章
+https://my.oschina.net/xiandafu/blog/617542 提供了12项对比并给与评分。在犹豫使用BeetlSQL，可以参考这个全面的对比文章
 
 ![beetlsql1](static/beetlsql1.png)
 
