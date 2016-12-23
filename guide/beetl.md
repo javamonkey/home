@@ -1926,7 +1926,7 @@ PlaceholderST.output = new PlaceholderST.Output(){
 
 #### 3.16. 定制模板引擎
 
-Beetl在线体验（[http://ibeetl.com:8080/beetlonline/](http://ibeetl.com:8080/beetlonline/)）面临一个挑战，允许用户输入任何脚本做练习或者分享代码。但又需要防止用户输入恶意的代码，如
+Beetl在线体验（[http://ibeetl.com/beetlonline/](http://ibeetl.com/beetlonline/)）面临一个挑战，允许用户输入任何脚本做练习或者分享代码。但又需要防止用户输入恶意的代码，如
 
 ```javascript
 <%
