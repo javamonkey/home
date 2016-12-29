@@ -49,7 +49,7 @@
 
 			<div class="form-actions">
 				<button class="btn btn-primary" type="submit">运行代码</button>
-				<button class="btn" type="reset">重置表单</button>
+				<button class="btn" type="button" @click="reset">清空内容</button>
 			</div>
 		</form>
 		</transition>
@@ -87,6 +87,9 @@
 				run:function(){
 					this.tab = 2;
 					return true;
+				},
+				reset:function(){
+					this.input = this.json = '';
 				}
 			}
 		})
