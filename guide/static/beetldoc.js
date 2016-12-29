@@ -10,7 +10,7 @@ var guide = new Vue({
 		'navmenu':{
 			name:'navmenu',
 			props: ['list'],
-			template: '<transition-group v-if="list.length" tag="ul" appear="true"><li v-for="n of list" :title="n.text" :key="n.text"><a :href="n.href" @click="guide.jump" v-html="n.text"></a><navmenu  v-if="list.length" :list="n.child"></navmenu></li></transition-group>'
+			template: '<transition-group v-if="list.length" tag="ul" appear><li v-for="n of list" :title="n.text" :key="n.text"><a :href="n.href" @click="guide.jump" v-html="n.text"></a><navmenu  v-if="list.length" :list="n.child"></navmenu></li></transition-group>'
 		}
 	},
 	methods:{
