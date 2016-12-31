@@ -1,5 +1,9 @@
 ## Beetl官方网站：[http://ibeetl.com](http://ibeetl.com)
 
+Happy New Year~~愿Beetl、BeetlSQL 2017更加雄起！！！
+
+![logo](img/logo.png)
+
 #### 2016 Beetl官网改版计划（计划列表已于2016年12月17日完成）
 
 ---
@@ -26,7 +30,6 @@
 
     【在线体验】添加面板切换时的vue css3过渡动效
 
-
 -   2016年12月17日
 
     【主页】i18n功能上线（翻译暂时来自于百度和Google，如有不准确或有更好的翻译请指出）
@@ -40,7 +43,6 @@
     【在线体验】修改在线体验地址为[http://ibeetl.com/beetlonline/](http://ibeetl.com/beetlonline/)，这样以前在其他地方引用过的（如OSC上提问回答中有预留过的）依旧直接访问有效
 
     【主页】去除jQuery依赖，更新Footer栏样式
-
 
 -   2016年12月13日
 
@@ -59,7 +61,6 @@
     【文档】页面重新改造，以后仅需维护**[guide/beetl.md](https://github.com/javamonkey/home/blob/master/guide/beetl.md)**文件和**[guide/beetlsql.md](https://github.com/javamonkey/home/blob/master/guide/beetlsql.md)**文件，无需再手动生成HTML文件了。
 
 
-
 #### ©版权声明
 
 本项目为beetl官方网站托管仓库，所有的页面设计和制作均为自主设计与编写。
@@ -76,8 +77,8 @@
 -   github-markdown-css：[https://github.com/sindresorhus/github-markdown-css](https://github.com/sindresorhus/github-markdown-css)
 -   primer-css：[http://primercss.io](http://primercss.io)
 -   iconfont部分字体图标：[http://iconfont.cn/](http://iconfont.cn/)
+-   normalize：[http://necolas.github.io/normalize.css/](http://necolas.github.io/normalize.css/)
 
-
-在此对这些开源作者的感谢。
+在此对这些开源作者表示感谢。
 
 同时项目的第三方库采用的bootcdn（[http://www.bootcdn.cn/](http://www.bootcdn.cn/)）提供的免费CDN，在此表示感谢。

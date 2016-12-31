@@ -17,11 +17,7 @@
 			<div id="code">404</div>
 		</div>
 		<script>
-			var timeout = 3;
-			!function(){
-				if(!timeout) location.replace('/')
-				else setTimeout(fn,1e3)
-			}()
+			setTimeout(function(){location.replace('/')},3e3)
 			//百度统计
 			var _hmt = _hmt || [];
 			(function() {
