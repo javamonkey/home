@@ -44,7 +44,7 @@ Beetl目前版本是2.7.3,相对于其他java模板引擎，具有功能齐全�
 >
 >   Beetl社区：[bbs.ibeetl.com](http://bbs.ibeetl.com)
 >
->   源码主页：https://github.com/javamonkey/beetl2.0
+>   源码主页：[https://github.com/javamonkey/beetl2.0](https://github.com/javamonkey/beetl2.0)
 >
 >   在线体验和代码分享 [http://ibeetl.com/beetlonline/](http://ibeetl.com/beetlonline/)
 
@@ -2037,7 +2037,7 @@ public class OnlineTemplateEngine extends FastRuntimeEngine{
 ```
 
 -   StatementParser 是关键类，他允许对模板的Program进行解析，并替换其中的Statement。parser.addListener 方法接受俩个参数，第一个是需要找的类，第二个是执行的监听器。
--   可以参考在线体验的源码：http://git.oschina.net/xiandafu/beetlonline/blob/master/src/org/bee/tl/online/OnlineTemplateEngine.java
+-   可以参考在线体验的源码：[http://git.oschina.net/xiandafu/beetlonline/blob/master/src/org/bee/tl/online/OnlineTemplateEngine.java](http://git.oschina.net/xiandafu/beetlonline/blob/master/src/org/bee/tl/online/OnlineTemplateEngine.java)
 
 ```java
 class RestrictLoopNodeListener implements Listener{
@@ -2498,7 +2498,7 @@ spring-devtools.properties 为spring boot的配置文件,位于META-INF目录下
 
 #### 4.7. Jodd集成
 
-需要配置web.xml,将所有请求交给jodd处理，参考:http://jodd.org/doc/madvoc/setup.html
+需要配置web.xml,将所有请求交给jodd处理，参考:[http://jodd.org/doc/madvoc/setup.html](http://jodd.org/doc/madvoc/setup.html)
 
 ```xml
 <filter>
@@ -2636,7 +2636,7 @@ for(user in list){
 </html>
 ```
 
-需要注意的是，如果使用了nutz的obj（http://www.nutzam.com/core/mvc/view.html），则需要在模板顶部申明obj是动态对象，如
+需要注意的是，如果使用了nutz的obj（[http://www.nutzam.com/core/mvc/view.html](http://www.nutzam.com/core/mvc/view.html)），则需要在模板顶部申明obj是动态对象，如
 
 ```javascript
 <%
@@ -2705,7 +2705,7 @@ ${obj.user.name}
     var session= {admin:{id:1,name:'admin'}};
     ```
 
--   通过浏览器直接访问http://ip:port/user/userList.html ，监听器会预先执行userList.html.var，并将返回值作为模板的全局变量，传给userList.html
+-   通过浏览器直接访问[http://ip:port/user/userList.html](http://ip:port/user/userList.html) ，监听器会预先执行userList.html.var，并将返回值作为模板的全局变量，传给userList.html
 
 -   可以将一些公共的变量放到WebRoot/values/common.var里（比如上面代码的session）. 监听器会先执行common.var,然后再执行userList.html.var
 
@@ -2743,7 +2743,7 @@ ${obj.user.name}
 %>
 ```
 
-\#ajax 用于告诉告诉模板引擎，此处是个局部渲染标记，标记为"userTable",对于正常渲染视图"index.html"页面,#ajax标记没什么用处,table仍能得到正常渲染。如果渲染的视图是index.html#userTable,则模板只会渲染#ajax标记得模板片段，其他部分将忽略。关于完整例子，可以参考http://beetlajax.oschina.mopaas.com/
+\#ajax 用于告诉告诉模板引擎，此处是个局部渲染标记，标记为"userTable",对于正常渲染视图"index.html"页面,#ajax标记没什么用处,table仍能得到正常渲染。如果渲染的视图是index.html#userTable,则模板只会渲染#ajax标记得模板片段，其他部分将忽略。关于完整例子，可以参考[http://beetlajax.oschina.mopaas.com/](http://beetlajax.oschina.mopaas.com/)
 
 后台代码如下:
 
@@ -2860,7 +2860,7 @@ ERROR_HANDLER = org.beetl.ext.web.WebErrorHandler
 -   **strutil.toUpperCase** ${ strutil.toUpperCase (“hello”),输出是HELLO
 -   **strutil.toLowerCase** ${ strutil.toLowerCase (“Hello”),输出是hello
 -   **strutil.replace** ${ strutil.replace (“Hello”,”lo”,”loooo”),输出是helloooo
--   strutil.format ${ strutil.format (“hello,{0}, my age is {1}”,”joeli”,15),输出是hello,joelli, my age is 15. 具体请参考http://docs.oracle.com/javase/6/docs/api/java/text/MessageFormat.html
+-   strutil.format ${ strutil.format (“hello,{0}, my age is {1}”,”joeli”,15),输出是hello,joelli, my age is 15. 具体请参考[http://docs.oracle.com/javase/6/docs/api/java/text/MessageFormat.html](http://docs.oracle.com/javase/6/docs/api/java/text/MessageFormat.html)
 -   **strutil.trim** 去掉字符串的尾部空格
 -   **strutil.formatDate** var a = strutil.formatDate(user.bir,’yyyy-MM-dd’);
 -   **strutil.index** var index = strutil.index("abc","a");返回 索引0
@@ -3173,7 +3173,7 @@ Beetl2.0目前只完成了解释引擎，使用解释引擎好处是可以适用
 
 ![beetl2](static/beetl2.png)
 
-测试用例三 https://github.com/javamonkey/template-benchmark
+测试用例三 [https://github.com/javamonkey/template-benchmark](https://github.com/javamonkey/template-benchmark)
 
 ![beetl3](static/beetl3.png)
 

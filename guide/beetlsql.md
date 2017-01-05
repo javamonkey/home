@@ -1655,7 +1655,7 @@ jdbcSql是渲染过后的sql，jdbcPara 是对应的参数值
 
 ### 22. Hibernate,MyBatis,MySQL 对比
 
-https://my.oschina.net/xiandafu/blog/617542 提供了12项对比并给与评分。在犹豫使用BeetlSQL，可以参考这个全面的对比文章
+[https://my.oschina.net/xiandafu/blog/617542](https://my.oschina.net/xiandafu/blog/617542) 提供了12项对比并给与评分。在犹豫使用BeetlSQL，可以参考这个全面的对比文章
 
 ![beetlsql1](static/beetlsql1.png)
 
@@ -1876,7 +1876,7 @@ public class MyServiceImpl implements MyService {
 
 采用java config方式
 
-参考 demo ，http://git.oschina.net/xiandafu/springboot_beetl_beetlsql
+参考 demo ，[http://git.oschina.net/xiandafu/springboot_beetl_beetlsql](http://git.oschina.net/xiandafu/springboot_beetl_beetlsql)
 
 spring boot集成需要注意的是要添加spring-devtools.properties文件,并配置如下选项
 
