@@ -1,65 +1,44 @@
-## Beetl官方网站：[http://ibeetl.com](http://ibeetl.com)
-
-Happy New Year~~愿Beetl、BeetlSQL 2017更加雄起！！！
-
 ![logo](img/logo.png)
 
-#### 2016 Beetl官网改版计划（计划列表已于2016年12月17日完成）
+### Beetl官方网站：[http://ibeetl.com](http://ibeetl.com)
+
+### Beetl官方论坛：[官方BBS](http://42.96.162.109/bbs/bbs/index/1.html)
+
+
+
+#### 2017 Beetl官方论坛改版计划（长期）
 
 ---
 
-- [x] 重新设计整体风格，加入适当CSS3动画提升用户体验
-- [x] 支持响应式，适应不同屏幕以及手机等移动设备访问
-- [x] 改造文档页面，直接动态加载md渲染，重写样式和代码着色
-- [x] 改造文档页支持浮动导航和页面滚动导航监听
-- [x] 改造在线体验页面，可做弹层
-- [x] 官网主页i18n（vue前端实现i18n）（使用百度+谷歌翻译，如有不准确或有更好的翻译请指出）
-- [ ] ~~其他改进，如动态加载github issue，加入多说等社会化评论？~~ （已有论坛）
+- [ ] 界面风格的升级（长期优化）
+
+- [ ] 更新Bootstrap4正式版（需等待Bootstrap官方正式发布）
+
+- [ ] 加入pjax支持，并针对不支持html5 pushstate的浏览器提供向下兼容
+
+      （pjax = pushstate + ajax，页面不刷新，局部内容动态ajax，地址栏url改变，效果如Github）
+
+- [ ] 编辑器加入“@”其他人的功能，同时被“@”的人会收到消息通知
+      （simditor官方已提供“@”插件，需自己实现后台）
+
+- [ ] *会员个人页面（功能添加，需大赋确认）*
+
+- [ ] *其他细节更新（功能添加，需大赋确认，如个人资料修改，用户头像上传等）*
 
 ---
 
-####Beetl官网更新历史记录
+####Beetl官网最近更新
 
--   2016年12月29日
+-   2017年01月11日
 
-    【主页】添加极速版文档（由Github根据Markdown自动生成，因为没有js和异步ajax加载，所以速度较快）
+    【文档】IE8浏览器访问时直接跳转至Github自动生成的文档
+    （也就是当前称之为的极速版，之前文档不支持IE8访问）
 
-    【主页】添加语言切换时的vue css3过渡动效
+    【在线体验】修复页面高度不足时，因css3动画导致滚动条出现引起页面抖动的问题
+    （body{overflow:hidden}）
 
-    【文档】添加右边导航栏的vue css3过渡动效
 
-    【在线体验】添加面板切换时的vue css3过渡动效
-
--   2016年12月17日
-
-    【主页】i18n功能上线（翻译暂时来自于百度和Google，如有不准确或有更好的翻译请指出）
-
--   2016年12月16日
-
-    【主页】全新设计的官网主页上线
-
--   2016年12月13日
-
-    【在线体验】修改在线体验地址为[http://ibeetl.com/beetlonline/](http://ibeetl.com/beetlonline/)，这样以前在其他地方引用过的（如OSC上提问回答中有预留过的）依旧直接访问有效
-
-    【主页】去除jQuery依赖，更新Footer栏样式
-
--   2016年12月13日
-
-    【在线体验】全新的在线体验页面（网页样式提取自[Primer](https://github.com/primer/primer-css)），以标签形式显示运行结果
-
--   2016年12月08日
-
-    【文档】提升部分浏览器的兼容性，优化iPad浏览器横屏时侧边栏的滚动效果
-
-    【文档】添加手机等窄屏设备的顶部导航banner
-
-    【文档】添加IE8及以下浏览器访问时的消息提示
-
--   2016年12月07日
-
-    【文档】页面重新改造，以后仅需维护**[guide/beetl.md](https://github.com/javamonkey/home/blob/master/guide/beetl.md)**文件和**[guide/beetlsql.md](https://github.com/javamonkey/home/blob/master/guide/beetlsql.md)**文件，无需再手动生成HTML文件了。
-
+---
 
 #### ©版权声明
 
@@ -79,6 +58,6 @@ Happy New Year~~愿Beetl、BeetlSQL 2017更加雄起！！！
 -   iconfont部分字体图标：[http://iconfont.cn/](http://iconfont.cn/)
 -   normalize：[http://necolas.github.io/normalize.css/](http://necolas.github.io/normalize.css/)
 
-在此对这些开源作者表示感谢。
+在此对这些开源作者和团队表示感谢。
 
-同时项目的第三方库采用的bootcdn（[http://www.bootcdn.cn/](http://www.bootcdn.cn/)）提供的免费CDN，在此表示感谢。
+同时官网的的第三方库均采用的bootcdn（[http://www.bootcdn.cn/](http://www.bootcdn.cn/)）提供的免费CDN，在此表示感谢。

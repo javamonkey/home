@@ -43,7 +43,7 @@ render.heading = function(text,level){
 function loadDoc(){
 	var docs = ['beetl','beetlsql'],doc = location.hash.substr(1)
 	if(docs.indexOf(doc)<0) doc = 'beetl';//所有非法的参数都归为beetl
-	document.title = doc+'中文手册';
+	document.title = doc+'中文文档';
 	toc=[];
 	$(window).scrollTop(0)
 	NProgress.start();
