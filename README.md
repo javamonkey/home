@@ -12,7 +12,7 @@
 
 - [ ] 界面风格的升级（长期优化）
 
-- [ ] 更新Bootstrap4正式版（需等待Bootstrap官方正式发布）
+- [ ] 更新Bootstrap4正式版（或[primercss](http://primercss.io/)，需等待[Bootstrap](http://getbootstrap.com/)官方正式发布后定夺）
 
 - [ ] 加入pjax支持，并针对不支持html5 pushstate的浏览器提供向下兼容
 
@@ -35,7 +35,7 @@
     （也就是当前称之为的极速版，之前文档不支持IE8访问）
 
     【在线体验】修复页面高度不足时，因css3动画导致滚动条出现引起页面抖动的问题
-    （body{overflow:hidden}）
+    （`body{overflow:hidden}`）
 
 
 ---
