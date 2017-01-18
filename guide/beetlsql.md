@@ -1,9 +1,9 @@
-## BeetlSQL2.7.8中文文档
+## BeetlSQL2.7.9中文文档
 
 >   -   作者: 闲大赋,Gavin.King,Sue,Zhoupan,woate,Darren
 >   -   社区 [http://ibeetl.com](http://ibeetl.com/)
 >   -   qq群 219324263
->   -   当前版本 2.7.8 , 另外还需要beetl([http://git.oschina.net/xiandafu/beetl2.0/attach_files](http://git.oschina.net/xiandafu/beetl2.0/attach_files)) 包
+>   -   当前版本 2.7.9 , 另外还需要beetl([http://git.oschina.net/xiandafu/beetl2.0/attach_files](http://git.oschina.net/xiandafu/beetl2.0/attach_files)) 包
 
 
 
@@ -37,7 +37,7 @@ maven 方式:
 <dependency>
 	<groupId>com.ibeetl</groupId>
 	<artifactId>beetlsql</artifactId>
-	<version>2.7.8</version>
+	<version>2.7.9</version>
 </dependency>
 ```
 
@@ -501,6 +501,8 @@ Beetlsql 默认提供了三种列明和属性名的映射类。
 -   自定义命名转化，如果以上3个都不合适,可以自己实现一个命名转化。实现DefaultNameConversion实现方式
 -   因为数据库表和列都忽略大小写区别，所以，实现NameConversion也不需要考虑大小写
 
+一般来讲，都建议数据库以下划线来区分单词，因此，使用UnderlinedNameConversion是个很好的选择
+
 ```java
 public class DefaultNameConversion extends NameConversion {
 
@@ -528,6 +530,39 @@ public class DefaultNameConversion extends NameConversion {
 
 如果有特殊的表并不符合DefaultNameConversion实现方式，你可以重新实现上面的三个方法
 
+在使用org.beetl.sql.core.JPA2NameConversion作为命令转化规则时，你可以使用以下JPA标签来帮助解析实体类到数据库的转换:
+
+- javax.persistence.Table
+- javax.persistence.Column
+- javax.persistence.Transient
+
+规则如下：
+1 在类名前使用Table注解映射的表名，例如：@Table(name = "PF_TEST")，表示映射的表名是PF_TEST；
+2 忽略静态变量以及被@Transient注解的属性；
+3 默认属性名与库表的字段名保持一致，如果不一致时，可以使用@Column注解。
+
+```java
+@Table(name = "PF_TEST")
+public class TestEntity implements Serializable {
+	public static String S="SSS";
+	@Id
+  private String id;
+	@Column(name = "login_name")
+    private String loginName;
+    private String password;
+    private Integer age;
+    private Long ttSize;
+    private byte[] bigger;
+    private String biggerClob;
+    @Transient
+    private String biggerStr;
+    @AssignID
+    public String getId() {
+        return id;
+    }
+    getter setter...
+}
+```
 
 
 ### 5. 复合主键
@@ -1289,6 +1324,53 @@ from user
 ```
 
 注:可以参考beetl官网 了解如何开发自定义标签以及注册标签函数
+
+
+- pageIgnoreTag，该标签的作用是在生成分页查询的count语句时，忽略sql语句里的某些内容，如：order by 。pageIgnoreTag与pageTag标签组合使用，组合如下
+
+
+```markdown
+queryNewUser
+===
+select
+@pageTag(){
+id,name,status
+@}
+from user
+@pageIgnoreTag(){
+order by a.createTime
+@}
+
+```
+因为count语句，无需要排序语句部分，而且，有些数据库，如SQLServer并不支持count语句被排序，因此可以使用pageIgnoreTag来解决夸数据库问题
+
+- whereTag
+
+该标签复用TrimTag，其工作过程是：判断whereTag里的sql内容是否为空，如果为空就不输出空字符串，如果不为空则判断sql是否以AND或OR开头，如果是，则去掉。例如模板内容如下：
+
+```markdown
+queryNewUser
+===
+select a.* from user a 
+@whereTag(){
+@if(!isEmpty(age){
+    and a.age=#age# 
+@}
+@if(!isEmpty(status){
+    and a.status=#status#
+@}
+@}
+```
+将生成
+
+```sql
+select a.* from user a 
+where 
+a.age=? 
+and a.status=? 
+```
+
+当然，如果你不用whereTag，也可用where 1=1 来解决，我看并没有多大差别。
 
 
 
