@@ -1,25 +1,65 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Beetl中文文档</title>
-	<meta charset="utf-8">
-	<meta name="renderer" content="webkit">  
-	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0,minimum-scale=1.0, user-scalable=no">
-	<meta name="keywords" content="java,beetl,beetlsql,模板,orm" />
-	<meta name="description" content="Beetl是一款6倍于Freemarker的超高性能的java模板引擎，来自于中国！！BeetlSQL是一款功能强大，以SQL为中心，使用简单的全功能的ORMapping工具，支持自动生成代码，内置大量SQL语句，支持市面上绝大多数主流数据库。Beetl和BeetlSQL均能与目前市面上的大多数流行框架无缝整合。" />
+	<title>beetl中文文档</title>
+	<meta charset="utf-8"><meta name="author" content="闲·大赋,xiandafu@126.com"><meta name="theme-color" content="#f5c503"><meta name="apple-mobile-web-app-title" content="beetl官网"><meta name="apple-mobile-web-app-capable" content="yes" /><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" /><link rel="apple-touch-icon-precomposed" href="/img/logo.png" /><link rel="apple-touch-startup-image" href="/img/logo.png" /><meta name="msapplication-TileColor" content="#f5c503"/><meta name="msapplication-TileImage" content="/img/logo.png"/><meta name="screen-orientation" content="portrait"><meta name="x5-orientation" content="portrait"><meta name="full-screen" content="yes"><meta name="x5-fullscreen" content="true"><meta name="browsermode" content="application"><meta name="x5-page-mode" content="app"><meta name="msapplication-tap-highlight" content="no"><meta name="applicable-device"content="pc,mobile"><meta name="HandheldFriendly" content="true"/><meta name="google" value="notranslate"><meta http-equiv="Cache-Control" content="no-transform" /><meta http-equiv="Cache-Control" content="no-siteapp" /><meta name="robots" content="noarchive"><meta name="renderer" content="webkit"><meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0,minimum-scale=1.0, user-scalable=no">
+	<meta name="keywords" content="java,beetl,beetlsql,模板,orm" /><meta name="description" content="Beetl是一款6倍于Freemarker的超高性能的java模板引擎，来自于中国！！BeetlSQL是一款功能强大，以SQL为中心，使用简单的全功能的ORMapping工具，支持自动生成代码，内置大量SQL语句，支持市面上绝大多数主流数据库。Beetl和BeetlSQL均能与目前市面上的大多数流行框架无缝整合。" />
 	<!--[if lt IE 9]><script>alert("您的浏览器不支持标准版文档，将为您切换到极速版！");var _doc=location.hash.substr(1);doc="beetlsql"==_doc?doc:"beetl",location.replace(_doc+".html");</script><![endif]-->
-	<style>[v-cloak]{display:none}body{overflow-y:scroll}html,.markdown-body{font-family:PingFang SC,Microsoft YaHei}#guide{margin:auto;width:100%;max-width:1600px;box-sizing:border-box;padding:20px 350px 50px 50px}#nav{width:300px;padding:10px;box-sizing:border-box;border-left:1px solid #ccc;height:100%;font-size:16px;position:fixed;top:0;right:0;overflow-x:hidden;overflow-y:scroll;-webkit-overflow-scrolling:touch;scrollbar-face-color:#fff;scrollbar-arrow-color:#fff;scrollbar-3dlight-color:#fff;scrollbar-highlight-color:#fff;scrollbar-shadow-color:#fff;scrollbar-darkshadow-color:#fff;scrollbar-track-color:#fff}#nav::-webkit-scrollbar{width:0;height:0}#nav>ul{padding:0}#nav input{outline:0;width:100%;border:1px solid #ccc;box-sizing:border-box;padding:5px 8px;font-size:16px;border-radius:4px}#nav .active{color:red}#nav li{list-style:none}#nav a{display:inline-block;height:20px;line-height:20px;word-break:keep-all;white-space:nowrap}@media(max-width:1000px){#guide{padding-right:50px;margin-top:50px}#nav{position:fixed;top:0;left:0;width:100%;height:50px;padding:0;background:#fff;border-left:0;box-shadow:0 1px 1px #ccc;transition:all .3s ease}#nav h3,#nav h3+ul{display:none}#nav:hover{height:300px}#nav ul{padding:0}#nav li{margin:0}#nav li a{height:50px;line-height:50px;padding-left:50px;color:#444}}@media(max-width:768px){#guide{padding:20px}#nav li a{padding-left:20px}}.v-move,.v-enter-active,.v-leave-active{transition: all .5s ease;}.v-leave-active{position:absolute;}.v-enter,.v-leave-active{transform:translateY(50px);opacity:0;}</style>
+	<link rel="stylesheet" type="text/css" href="http://at.alicdn.com/t/font_u8ex7uzy60iqw7b9.css">
+	<style>body{overflow-y:scroll}html,.markdown-body{font-family:PingFang SC,Microsoft YaHei}#beetl{margin:auto;width:100%;max-width:1600px;box-sizing:border-box;padding:70px 350px 50px 50px}#nav{width:300px;padding:60px 10px 10px;box-sizing:border-box;border-left:1px solid #ccc;height:100%;font-size:16px;position:fixed;top:0;right:0;overflow-x:hidden;overflow-y:scroll;-webkit-overflow-scrolling:touch;scrollbar-face-color:#fff;scrollbar-arrow-color:#fff;scrollbar-3dlight-color:#fff;scrollbar-highlight-color:#fff;scrollbar-shadow-color:#fff;scrollbar-darkshadow-color:#fff;scrollbar-track-color:#fff}#nav::-webkit-scrollbar{width:0;height:0}#nav>ul{padding:0}#nav input{outline:0;width:100%;border:1px solid #ccc;box-sizing:border-box;padding:5px 8px;font-size:16px;border-radius:4px;margin-bottom:10px;}#nav .active{color:red}#nav li{list-style:none}#nav a{display:inline-block;height:20px;line-height:20px;word-break:keep-all;white-space:nowrap}#doc{position:relative;}@media(max-width:1000px){#beetl{padding-right:50px;margin-top:50px}#nav{display:none}}@media(max-width:768px){#beetl{padding:20px}}.v-move,.v-enter-active,.v-leave-active{transition:all .5s ease}.v-leave-active{position:absolute}.v-enter,.v-leave-active{transform:translateY(50px);opacity:0}
+	#beetl[v-cloak]{display:none}html,body{margin:0;padding:0;font-family:PingFang SC,Microsoft YaHei;font-size:14px;background:#fff;color:#333}body{overflow-y:scroll}a,header li li,#logo i.iconfont,#toggle_switch+label span,main dl{transition:all .3s ease}a{text-decoration:none;color:currentColor}li{list-style:none}#beetl{width:100%;position:relative}header{position:fixed;left:0;top:0;z-index:10}#logo{padding-left:50px;position:relative;font-size:24px;padding-right:20px}#logo i{position:absolute;top:0;left:0;text-align:center;height:50px;line-height:50px;width:50px;font-size:30px}#logo:before,#logo:after{content:'';position:absolute}#logo:before{top:0;left:0;border-radius:50%;width:50px;height:50px;box-shadow:0 0 20px 20px #fff;opacity:1;transform:scale(0)}#logo:after{transform:skewX(-25deg) translateX(0px);top:0;left:-45px;width:25px;height:80px;background-image:linear-gradient(90deg,rgba(255,255,255,.3),#fff 50%,rgba(255,255,255,.3))}#logo:hover:before{transform:scale(1);opacity:0;transition:all .4s ease-in}#logo:hover:after{transform:skewX(-25deg) translateX(240px);transition:all .4s ease-in .6s;opacity:0}#logo:hover i{font-size:38px;color:#f60}#toggle_switch,#toggle_switch+label{display:none}header,main,footer,#banner{width:100%;box-sizing:border-box;padding:0 50px}header>nav,main>div,footer>div,footer>section,#banner>div{width:100%;max-width:1100px;min-width:900px;margin:auto}header,header nav{height:50px;background:#f5c503}header ul{padding:0;margin:0;background:#f5c503}header li{list-style:none;background:#f5c503;word-break:keep-all;white-space:nowrap}header nav>ul{float:right}header nav>ul>li{float:left;position:relative;height:50px}header a{line-height:50px;height:50px;display:inline-block;overflow:hidden;box-sizing:border-box}header li a{padding:0 15px;border-bottom:0 solid #f90}header nav>ul>li:hover>a{border-bottom-width:5px;color:#f60}header li ul{position:absolute;z-index:1;top:50px;left:0;background:#f5c503;text-align:left}header li ul li{height:0;overflow:hidden}header li:hover li{height:50px;box-shadow:0 -1px 0 #e6b802}header li:hover li:first-child{box-shadow:none}header li li:hover a{color:#f60;width:100%}#donate:hover li{height:194px}#donate:hover li a{padding:15px;height:194px}#donate img{width:147px;height:164px}@media(max-width:768px){#toggle_switch+label{display:block;position:absolute;top:0;right:0;margin-top:2px;padding:15px;outline:0;-webkit-tap-highlight-color:rgba(0,0,0,0)}#toggle_switch+label span{display:block;width:22px;height:2px;background:#555;border-radius:1px;opacity:1}#toggle_switch+label span+span{margin-top:4px}#toggle_switch:checked+label+ul{display:block !important}#toggle_switch:checked+label span:first-child+span{opacity:0}#toggle_switch:checked+label span:first-child{transform:rotate(45deg) translate(5px,2px)}#toggle_switch:checked+label span:last-child{transform:rotate(-45deg) translate(6px,-3px)}header,main,footer{padding:0 10px}nav>ul{display:none;position:absolute;top:50px;left:0;box-shadow:0 -1px #e6b802;z-index:2}header nav>ul>li{height:auto}nav>ul li,nav>ul a{width:100%;text-align:center}header li:hover li{box-shadow:none;border-bottom:1px solid #e6b802}nav li ul{position:relative;top:0;left:0}header>nav{min-width:auto}}
+	#nprogress .bar{background:red !important}#nprogress .peg{box-shadow:0 0 10px red !important, 0 0 5px red !important}#nprogress .spinner-icon{border-top-color:red !important;border-left-color:red !important}
+	</style>
 </head>
 <body>
-	<div id="guide" v-cloak>
+	<div id="beetl" v-cloak>
+		<header>
+			<nav>
+				<a id="logo" href="/"><i class="iconfont icon-beetl"></i>Beetl</a>
+				<input type="checkbox" id="toggle_switch">
+				<label for="toggle_switch"><span class="btn-bar"></span><span class="btn-bar"></span><span class="btn-bar"></span></label>
+				<ul>
+					<li>
+						<a href="javascript:;"><i class="iconfont icon-beetl"></i> Beetl {{i18n.guide.title}}</a>
+						<ul>
+							<li><a href="/guide/#beetl"><i class="iconfont icon-guide"></i> {{i18n.guide.standard}}</a></li>
+							<li><a href="/guide/beetl.html" target="_blank"><i class="iconfont icon-wendang"></i> {{i18n.guide.faster}}</a></li>
+							<li><a href="/guide/beetl.md" download="beetl.md"><i class="iconfont icon-markdown"></i> {{i18n.guide.md}}</a></li>
+						</ul>
+					</li>
+					<li>
+						<a href="javascript:;"><i class="iconfont icon-beetl"></i> BeetlSQL {{i18n.guide.title}}</a>
+						<ul>
+							<li><a href="/guide/#beetlsql"><i class="iconfont icon-guide"></i> {{i18n.guide.standard}}</a></li>
+							<li><a href="/guide/beetlsql.html" target="_blank"><i class="iconfont icon-wendang"></i> {{i18n.guide.faster}}</a></li>
+							<li><a href="/guide/beetlsql.md" download="beetlsql.md"><i class="iconfont icon-markdown"></i> {{i18n.guide.md}}</a></li>
+						</ul>
+					</li>
+					<li><a href="/beetlonline"><i class="iconfont icon-trial"></i> {{i18n.trial}}</a></li>
+	
+					<li><a href="http://42.96.162.109/bbs/bbs/index/1.html"><i class="iconfont icon-forum"></i> {{i18n.forum}}</a></li>
+	
+					<li>
+						<a href="javascript:;"><i class="iconfont icon-download"></i> {{i18n.download}}</a>
+						<ul>
+							<li><a href="http://git.oschina.net/xiandafu/beetl2.0/attach_files" target="_blank" rel="nofllow external"><i class="iconfont icon-beetl"></i> Beetl</a></li>
+							<li><a href="http://git.oschina.net/xiandafu/beetlsql/attach_files" target="_blank" rel="nofllow external"><i class="iconfont icon-beetl"></i> BeetlSQL</a></li>
+						</ul>
+					</li>
+					<li id="donate">
+						<a href="javascript:;"><i class="iconfont icon-donate"></i> {{i18n.donate}}</a>
+						<ul>
+							<li><a href="javascript:;"><img src="/img/weixinpay.png"></a></li>
+						</ul>
+					</li>
+					<li><a href="javascript:;" @click="language"><i class="iconfont icon-translate"></i> {{i18n.language}}</a></li>
+				</ul>
+			</nav>
+		</header>
+	
 		<article id="doc" class="markdown-body" v-html="doc"></article>
 		<aside id="nav" class="markdown-body">
-			<h3 v-if="type">{{type}}文档目录</h3>
-			<ul>
-				<li v-if="type == 'beetlsql'"><a href="/">主页</a> | <a href="#beetl">查看Beetl文档</a></li>
-				<li v-if="type == 'beetl'"><a href="/">主页</a> | <a href="#beetlsql">查看BeetlSQL文档</a></li>
-				<li v-if="nav.length"><input type="text" placeholder="输入关键词快速检索，支持正则" v-model="search" maxlength="15"/></li>
-			</ul>
+			<input type="text" placeholder="输入关键词快速检索，支持正则" v-model="search" maxlength="15"/>
 			<navmenu v-if="!search" :list="nav"></navmenu>
 			<transition-group tag="ul" v-if="search" appear>
 				<li key="search">“{{search}}”搜索结果如下：</li>
@@ -36,9 +76,41 @@
 	<script src="http://cdn.bootcss.com/lodash.js/4.17.4/lodash.min.js"></script>
 	<script src="http://cdn.bootcss.com/vue/2.1.8/vue.min.js"></script>
 	<script src="http://cdn.bootcss.com/marked/0.3.6/marked.min.js"></script>
-	<script src="http://cdn.bootcss.com/nprogress/0.2.0/nprogress.min.js"></script>
 	<script src="http://cdn.bootcss.com/smoothscroll/1.4.6/SmoothScroll.min.js"></script>
-	<script type="text/javascript">function loadDoc(){var a=["beetl","beetlsql"],b=location.hash.substr(1);a.indexOf(b)<0&&(b="beetl"),document.title=b+"中文文档",toc=[],$(window).scrollTop(0),NProgress.start(),$.get(b+".md?_="+(new Date).getDay(),function(a){marked(a,{renderer:render,highlight:function(a){return hljs.highlightAuto(a).value}},function(a,c){guide.search="",guide.type=b,guide.doc=c,Vue.set(guide,"nav",toc),NProgress.done()})})}function localSearch(a,b,c){try{var d=new RegExp(a,"i");b.forEach(function(b){b.text.match(d)&&c.push(b),b.child.length&&localSearch(a,b.child,c)})}catch(e){}return c}var toc,guide=new Vue({el:"#guide",data:{type:"",doc:"",nav:[],search:""},computed:{searchlist:function(){return localSearch(this.search,this.nav,[])}},components:{navmenu:{name:"navmenu",props:["list"],template:'<transition-group v-if="list.length" tag="ul" appear><li v-for="n of list" :title="n.text" :key="n.text"><a :href="n.href" @click="guide.jump" v-html="n.text"></a><navmenu  v-if="list.length" :list="n.child"></navmenu></li></transition-group>'}},methods:{jump:function(a){this.search="",a.preventDefault(),$(window).scrollTop($($(a.target).attr("href")).offset().top)}}}),render=new marked.Renderer;render.heading=function(a,b){var e,c=/^((\d+_)+).*/.exec(a.replace(/\./g,"_")),d="<h"+b;return c?(d+=' id="beetl_'+c[1]+'" class="_anchor">',e={href:"#beetl_"+c[1],text:a,child:[]},3==b?toc.push(e):4==b?toc[toc.length-1].child.push(e):5==b&&toc[toc.length-1].child[toc[toc.length-1].child.length-1].child.push(e)):d+=">",d+=a+"</h"+b+">"},$(window).on("scroll",_.throttle(function(){var d,a=$(window),b=a.scrollTop(),c=a.height();$("#nav .active").removeClass("active"),$("._anchor").each(function(){var f,g,h;return b<=this.offsetTop?(f=d&&b+2*c/3<this.offsetTop?d.id:this.id,g=$('#nav a[href="#'+f+'"]').addClass("active"),h=$("#nav"),h.stop().animate({scrollTop:g.offset().top-h.offset().top+h.scrollTop()-(h.height()-g.height())/2},"fast"),!1):(d=this,void 0)})},300)).on("resize",function(){$(this).trigger("scroll")}).on("hashchange",loadDoc),loadDoc();</script>
+	<script src="http://cdn.bootcss.com/nprogress/0.2.0/nprogress.min.js"></script>
+	<script type="text/javascript">
+	var lang={
+		'zh-cn':{
+			guide:{
+				title:'文档',
+				standard:'标准文档',
+				faster:'极速文档',
+				md:'Markdown下载'
+			},
+			trial:'在线体验',
+			forum:'论坛',
+			download:'下载',
+			donate:'捐助作者',
+			language:'English'
+		},
+		'en':{
+			guide:{
+				title:'Guide',
+				standard:'Standard Ed.',
+				faster:'Faster Ed.',
+				md:'Markdown'
+			},
+			trial:'Trial',
+			forum:'Forum',
+			download:'Download',
+			donate:'Donate',
+			language:'中文'
+		}
+	}
+	var localize = (localStorage.localize||navigator.language||navigator.browserLanguage).toLowerCase();
+	if(localize!='zh-cn')localize='en';
+	function loadDoc(){var a=["beetl","beetlsql"],b=location.hash.substr(1);a.indexOf(b)<0&&(b="beetl"),document.title=b+"中文文档",toc=[],$(window).scrollTop(0),NProgress.start(),$.get(b+".md?_="+(new Date).getDay(),function(a){marked(a,{renderer:render,highlight:function(a){return hljs.highlightAuto(a).value}},function(a,b){beetl.search="",beetl.doc=b,Vue.set(beetl,"nav",toc),NProgress.done()})})}function localSearch(a,b,c){try{var d=new RegExp(a,"i");b.forEach(function(b){b.text.match(d)&&c.push(b),b.child.length&&localSearch(a,b.child,c)})}catch(e){}return c}var toc,beetl=new Vue({el:"#beetl",data:{lang:localize,doc:"",nav:[],search:""},computed:{searchlist:function(){return localSearch(this.search,this.nav,[])}},components:{navmenu:{name:"navmenu",props:["list"],template:'<transition-group v-if="list.length" tag="ul" appear><li v-for="n of list" :title="n.text" :key="n.text"><a :href="n.href" @click="beetl.jump" v-html="n.text"></a><navmenu  v-if="list.length" :list="n.child"></navmenu></li></transition-group>'}},methods:{jump:function(a){this.search="",a.preventDefault();var b=$(a.target.getAttribute("href")).offset().top-70;$(window).scrollTop(b)},language:function(){this.lang="en"==this.lang?"zh-cn":"en",localStorage.localize=this.lang}},computed:{searchlist:function(){return localSearch(this.search,this.nav,[])},i18n:function(){return lang[this.lang]}}}),render=new marked.Renderer;render.heading=function(a,b){var e,c=/^((\d+_)+).*/.exec(a.replace(/\./g,"_")),d="<h"+b;return c?(d+=' id="beetl_'+c[1]+'" class="_anchor">',e={href:"#beetl_"+c[1],text:a,child:[]},3==b?toc.push(e):4==b?toc[toc.length-1].child.push(e):5==b&&toc[toc.length-1].child[toc[toc.length-1].child.length-1].child.push(e)):d+=">",d+=a+"</h"+b+">"},$(window).on("scroll",_.throttle(function(){var d,a=$(window),b=a.scrollTop(),c=a.height();$("#nav .active").removeClass("active"),$("._anchor").each(function(){var f,g,h;return b<=this.offsetTop?(f=d&&b+2*c/3<this.offsetTop?d.id:this.id,g=$('#nav a[href="#'+f+'"]').addClass("active"),h=$("#nav"),h.stop().animate({scrollTop:g.offset().top-h.offset().top+h.scrollTop()-(h.height()-g.height())/2},"fast"),!1):(d=this,void 0)})},300)).on("resize",function(){$(this).trigger("scroll")}).on("hashchange",loadDoc),loadDoc();
+	</script>
 <script>
 	var _hmt = _hmt || [];
 			(function() {

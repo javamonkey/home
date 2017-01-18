@@ -1,6 +1,37 @@
-var guide = new Vue({
-	el:'#guide',
-	data:{type:'',doc:'',nav:[],search:''},
+var lang={
+	'zh-cn':{
+		guide:{
+			title:'文档',
+			standard:'标准文档',
+			faster:'极速文档',
+			md:'Markdown下载'
+		},
+		trial:'在线体验',
+		forum:'论坛',
+		download:'下载',
+		donate:'捐助作者',
+		language:'English'
+	},
+	'en':{
+		guide:{
+			title:'Guide',
+			standard:'Standard Ed.',
+			faster:'Faster Ed.',
+			md:'Markdown'
+		},
+		trial:'Trial',
+		forum:'Forum',
+		download:'Download',
+		donate:'Donate',
+		language:'中文'
+	}
+}
+var localize = (localStorage.localize||navigator.language||navigator.browserLanguage).toLowerCase();
+if(localize!='zh-cn')localize='en';
+
+var beetl = new Vue({
+	el:'#beetl',
+	data:{lang:localize,doc:'',nav:[],search:''},
 	computed:{
 		searchlist:function(){
 			return localSearch(this.search,this.nav,[]);
@@ -10,16 +41,19 @@ var guide = new Vue({
 		'navmenu':{
 			name:'navmenu',
 			props: ['list'],
-			template: '<transition-group v-if="list.length" tag="ul" appear><li v-for="n of list" :title="n.text" :key="n.text"><a :href="n.href" @click="guide.jump" v-html="n.text"></a><navmenu  v-if="list.length" :list="n.child"></navmenu></li></transition-group>'
+			template: '<transition-group v-if="list.length" tag="ul" appear><li v-for="n of list" :title="n.text" :key="n.text"><a :href="n.href" @click="beetl.jump" v-html="n.text"></a><navmenu  v-if="list.length" :list="n.child"></navmenu></li></transition-group>'
 		}
 	},
 	methods:{
 		jump:function(e){
 			this.search = '';
 			e.preventDefault();
-			$(window).scrollTop($($(e.target).attr('href')).offset().top);
-		}
-	}
+			var top = $(e.target.getAttribute('href')).offset().top-70;
+			$(window).scrollTop(top);
+		},
+		language:function(){this.lang = this.lang=='en'?'zh-cn':'en';localStorage.localize = this.lang;}
+	},
+	computed:{searchlist:function(){return localSearch(this.search,this.nav,[])},i18n:function(){return lang[this.lang]}}
 })
 var render = new marked.Renderer(),toc;
 render.heading = function(text,level){
@@ -51,10 +85,10 @@ function loadDoc(){
 		marked(md,
 			{renderer:render,highlight:function(code,lang){return hljs.highlightAuto(code).value}},
 			function(err,html){
-				guide.search='';
-				guide.type = doc;
-				guide.doc = html;
-				Vue.set(guide,'nav',toc);
+				beetl.search='';
+//				beetl.type = doc;
+				beetl.doc = html;
+				Vue.set(beetl,'nav',toc);
 				NProgress.done();
 			}
 		)
