@@ -830,7 +830,7 @@ Beetl不建议每一个页面都使用DIRECTIVE SAFE_OUTPUT_OPEN，这样，如�
 var list = null;
 for(item in list!){
 
-}eslefor{
+}elsefor{
         print("no data");
 }
 %>
