@@ -2,41 +2,13 @@
 
 ### Beetl官方网站：[http://ibeetl.com](http://ibeetl.com)
 
-### Beetl官方论坛：[官方BBS](http://42.96.162.109/bbs/bbs/index/1.html)
+Beetl是一款秒杀FreeMarker的高性能Java模板引擎，中文文档，简单容易上手。
 
+BeetlSQL是一款基于Beetl的，高性能的全功能的Java Dao工具，同时具有Hibernate和MyBatis的优点，适用于承认以 SQL 为中心，同时又需求工具能自动能生成大量常用的 SQL 的应用。
 
+新年快乐~
 
-#### 2017 Beetl官方论坛改版计划（长期）
-
----
-
-- [ ] 界面风格的升级（长期优化）
-
-- [ ] 更新Bootstrap4正式版（或[primercss](http://primercss.io/)，需等待[Bootstrap](http://getbootstrap.com/)官方正式发布后定夺）
-
-- [ ] 加入pjax支持，并针对不支持html5 pushstate的浏览器提供向下兼容
-
-      （pjax = pushstate + ajax，页面不刷新，局部内容动态ajax，地址栏url改变，效果如Github）
-
-- [ ] 编辑器加入“@”其他人的功能，同时被“@”的人会收到消息通知
-      （simditor官方已提供“@”插件，需自己实现后台）
-
-- [ ] *会员个人页面（功能添加，需大赋确认）*
-
-- [ ] *其他细节更新（功能添加，需大赋确认，如个人资料修改，用户头像上传等）*
-
----
-
-####Beetl官网最近更新
-
--   2017年01月11日
-
-    【文档】IE8浏览器访问时直接跳转至Github自动生成的文档
-    （也就是当前称之为的极速版，之前文档不支持IE8访问）
-
-    【在线体验】修复页面高度不足时，因css3动画导致滚动条出现引起页面抖动的问题
-    （`body{overflow:hidden}`）
-
+Happy Chinese New Year~
 
 ---
 
