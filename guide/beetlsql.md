@@ -1,9 +1,9 @@
-## BeetlSQL2.8.0中文文档
+## BeetlSQL2.8中文文档
 
 >   -   作者: 闲大赋,Gavin.King,Sue,Zhoupan,woate,Darren
 >   -   社区 [http://ibeetl.com](http://ibeetl.com/)
 >   -   qq群 219324263
->   -   当前版本 2.8.0 , 另外还需要beetl([http://git.oschina.net/xiandafu/beetl2.0/attach_files](http://git.oschina.net/xiandafu/beetl2.0/attach_files)) 包
+>   -   当前版本 2.8.1 , 另外还需要beetl([http://git.oschina.net/xiandafu/beetl2.0/attach_files](http://git.oschina.net/xiandafu/beetl2.0/attach_files)) 包
 
 
 
@@ -37,12 +37,12 @@ maven 方式:
 <dependency>
 	<groupId>com.ibeetl</groupId>
 	<artifactId>beetlsql</artifactId>
-	<version>2.8.0</version>
+	<version>2.8.1</version>
 </dependency>
 <dependency>
 	<groupId>com.ibeetl</groupId>
 	<artifactId>beetl</artifactId>
-	<version>2.7.10</version>
+	<version>2.7.11</version>
 </dependency>
 ```
 
@@ -1297,6 +1297,17 @@ select * from user #use("condition")#
 
 globalUse 参数是其他文件的globalUse，如globalUse("share.accessControl"),将访问share.md(sql)文件的accessControl片段
 
+- db.dynamicSql类似use功能,但第一个参数是sql片段，而不是sqlId
+
+```markdown
+queryUsers
+===
+@ var sql = "id=#xxx#";
+select #page("*")# from user where 1=1 and #db.dynamicSql(sql,{xxx:1})#
+```
+
+
+
 -   page 用于pagequery,但beetlsql 使用pagequery查询,会将sql模板翻译成带有count(1),和列表名的俩个sql语句,因此必须使用page函数或者pageTag标签
 
 ```markdown
@@ -2054,8 +2065,9 @@ Trans.rollback()
 >
 >   demo [https://code.csdn.net/xiandafu/beetlsql_orm_sample/tree/master](https://code.csdn.net/xiandafu/beetlsql_orm_sample/tree/master)
 
-
 ### 25. BeanProcessor
+
+这章补充一下结果集和java类型的映射
 
 
 #### 25.1 ResultSet结果集到Bean的转化
@@ -2080,7 +2092,7 @@ BeanProcessor 会根据属性类型取出对应的处理类，然后处理Result
 
 ResultSet转为Map的时候，有不一样则，根据数据库返回的列类型来做转化，数据库如果定义了一个浮点类型，则使用默认的BigDecimal类型
 
-如在BeanProcessor.toMapn代码里
+如在BeanProcessor.toMap代码里
 
 ```java
 
