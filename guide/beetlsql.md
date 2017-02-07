@@ -1,9 +1,9 @@
-## BeetlSQL2.7.9中文文档
+## BeetlSQL2.8.0中文文档
 
 >   -   作者: 闲大赋,Gavin.King,Sue,Zhoupan,woate,Darren
 >   -   社区 [http://ibeetl.com](http://ibeetl.com/)
 >   -   qq群 219324263
->   -   当前版本 2.7.9 , 另外还需要beetl([http://git.oschina.net/xiandafu/beetl2.0/attach_files](http://git.oschina.net/xiandafu/beetl2.0/attach_files)) 包
+>   -   当前版本 2.8.0 , 另外还需要beetl([http://git.oschina.net/xiandafu/beetl2.0/attach_files](http://git.oschina.net/xiandafu/beetl2.0/attach_files)) 包
 
 
 
@@ -37,7 +37,12 @@ maven 方式:
 <dependency>
 	<groupId>com.ibeetl</groupId>
 	<artifactId>beetlsql</artifactId>
-	<version>2.7.9</version>
+	<version>2.8.0</version>
+</dependency>
+<dependency>
+	<groupId>com.ibeetl</groupId>
+	<artifactId>beetl</artifactId>
+	<version>2.7.10</version>
 </dependency>
 ```
 
@@ -156,6 +161,14 @@ and name = #name#
 -   文件名约定为类名，首字母小写。
 
 sql模板采用beetl原因是因为beetl 语法类似js，且对模板渲染做了特定优化，相比于mybatis，更加容易掌握和功能强大，可读性更好，也容易在java和数据库之间迁移sql语句
+
+------
+
+
+注意：sqlId 到sql文件的映射是通过类SQLIdNameConversion来完成的，默认提供了DefaultSQLIdNameConversion实现，即 以 "." 区分最后一部分是sql片段名字，前面转为为文件相对路径，如sqlId是user.select，则select是sql片段名字，user是文件名，beetlsql会在根目录下寻找/user.sql,/user.md ,也会找数据库方言目录下寻找，比如如果使用了mysql数据库，则优先寻找/mysql/user.md,/mysql/user.sql 然后在找/user.md,/user.sql.
+
+如果sql是 test.user.select,则会在/test/user.md(sql) 或者 /mysql/test/user.md(sql) 下寻找“select”片段
+
 
 
 
@@ -394,9 +407,13 @@ PageQuery 对象也提供了 orderBy属性，用于数据库排序，如 "id des
 
 ##### 3.4.1. 自动生成sql
 
--   public void insert(Class<?> clazz,Object paras) 插入paras到paras关联的表
--   public void insert(Class<?> clazz,Object paras,KeyHolder holder)，插入paras到paras关联的表，如果需要主键，可以通过holder的getKey来获取
--   public int insert(Class clazz,Object paras,boolean autoAssignKey) 插入paras，并且指定是否自动将数据库主键赋值到paras里
+-   public void insert(Object paras) 插入paras到paras关联的表
+-   public void insert(Object paras,boolean autoAssignKey) 插入paras到paras对象关联的表,并且指定是否自动将数据库主键赋值到paras里
+-   public void insertTemplate(Object paras) 插入paras到paras关联的表,忽略为null值或者为空值的属性
+-   public void insertTemplate(Object paras,boolean autoAssignKey) 插入paras到paras对象关联的表,并且指定是否自动将数据库主键赋值到paras里,忽略为null值或者为空值的属性
+-   public void insert(Class<?> clazz,Object paras) 插入paras到clazz关联的表
+-   public void insert(Class<?> clazz,Object paras,KeyHolder holder)，插入paras到clazz关联的表，如果需要主键，可以通过holder的getKey来获取
+-   public int insert(Class clazz,Object paras,boolean autoAssignKey) 插入paras到clazz关联的表，并且指定是否自动将数据库主键赋值到paras里
 -   public int updateById(Object obj) 根据主键更新，主键通过annotation表示，如果没有，则认为属性id是主键，所有值参与更新
 -   public int updateTemplateById(Object obj) 根据主键更新，组件通过annotation表示，如果没有，则认为属性id是主键,属性为null的不会更新
 -   public int updateTemplateById(Class<?> clazz，Map paras) 根据主键更新，组件通过clazz的annotation表示，如果没有，则认为属性id是主键,属性为null的不会更新。
@@ -1476,7 +1493,7 @@ InterceptorContext 如下，包含了sqlId，实际得sql，和实际得参数, 
 public class InterceptorContext {
 	private String sqlId;
 	private String sql;
-	private  List<Object> paras;
+	private  List<SQLParameter> paras;
 	private boolean isUpdate = false ;
 	private Object result ;
 	private Map<String,Object> env  = null;
@@ -1867,6 +1884,8 @@ OrmQuery 标注在类上,OrmCondition 声明了一个懒加载关系.因此,在�
 
 
 
+
+
 ### 24. 集成和Demo
 
 #### 24.1. Spring集成和Demo
@@ -2027,8 +2046,81 @@ Trans.rollback()
 >
 >   JFinalBeetlSql.initProp
 
+
+
 >   #### 参考
 >
 >   可以参考demo [https://git.oschina.net/xiandafu/jfinal_beet_beetsql_btjson](https://git.oschina.net/xiandafu/jfinal_beet_beetsql_btjson)
 >
 >   demo [https://code.csdn.net/xiandafu/beetlsql_orm_sample/tree/master](https://code.csdn.net/xiandafu/beetlsql_orm_sample/tree/master)
+
+
+### 25. BeanProcessor
+
+
+#### 25.1 ResultSet结果集到Bean的转化
+数据库返回的ResultSet将根据Pojo对象的属性来做适当的转化，比如对于数据库如果定义了一个浮点类型，而Java端属性如果是double，则转成double，如果是BigDecimal，则转成BigDecial,如果定义为int类型，则转为int类型。BeanProcessor 类负责处理这种转化，开发者也可以实现自己的BeanProcessor来为特定的sql做转化，比如将数据库日期类型转为Java的Long类型。
+如在BeanProcessor.createBean代码里
+
+
+```java
+Class<?> propType = prop.getPropertyType();
+tp.setTarget(propType);
+JavaSqlTypeHandler handler = this.handlers.get(propType);
+if(handler==null){
+	handler = this.defaultHandler;
+}
+Object value = handler.getValue(tp);
+this.callSetter(bean, prop, value,propType);
+```
+
+BeanProcessor 会根据属性类型取出对应的处理类，然后处理ResultSet，如果你先自定义处理类，你可以重新添加一个JavaSqlTypeHandler到handlers
+
+#### 25.1 ResultSet结果集到Map的转化
+
+ResultSet转为Map的时候，有不一样则，根据数据库返回的列类型来做转化，数据库如果定义了一个浮点类型，则使用默认的BigDecimal类型
+
+如在BeanProcessor.toMapn代码里
+
+```java
+
+int colType = rsmd.getColumnType(i);
+Class  classType = JavaType.jdbcJavaTypes.get(colType);
+JavaSqlTypeHandler handler = handlers.get(classType);
+
+if(handler==null){
+	handler = this.defaultHandler;
+}
+tp.setIndex(i);
+tp.setTarget(classType);
+Object value = handler.getValue(tp);
+
+```
+
+JavaType 定义了默认的数据库类型到Java类型的转化，从而获取适当的 JavaSqlTypeHandler，如果没有定义，则使用默认的handler，仅仅使用resultSet.getObject(i)来获取值
+需要注意的是，尽量不要使用默认resultSet.getObject(i)来取值，这样会导致不同数据库取的类型不一样导致不兼容不同数据库。
+JavaType已经定义了绝大部分数据库类型到Java类型的转化，少量很少使用的类型没有定义，直接使用resultSet.getObject(i)取值
+
+```java
+
+//JavaType.java
+
+jdbcJavaTypes.put(new Integer(Types.LONGNVARCHAR), String.class); // -16
+																			// 字符串
+jdbcJavaTypes.put(new Integer(Types.NCHAR), String.class); // -15 字符串
+jdbcJavaTypes.put(new Integer(Types.NVARCHAR), String.class); // -9 字符串
+jdbcJavaTypes.put(new Integer(Types.ROWID), String.class); // -8 字符串
+jdbcJavaTypes.put(new Integer(Types.BIT), Boolean.class); // -7 布尔
+jdbcJavaTypes.put(new Integer(Types.TINYINT), Integer.class); // -6 数字
+jdbcJavaTypes.put(new Integer(Types.BIGINT), Long.class); // -5 数字
+jdbcJavaTypes.put(new Integer(Types.LONGVARBINARY), byte[].class); // -4
+																	// 二进制
+jdbcJavaTypes.put(new Integer(Types.VARBINARY), byte[].class); // -3 二进制
+jdbcJavaTypes.put(new Integer(Types.BINARY), byte[].class); // -2 二进制
+jdbcJavaTypes.put(new Integer(Types.LONGVARCHAR), String.class); // -1
+
+...... 
+
+```
+
+
