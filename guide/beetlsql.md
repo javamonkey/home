@@ -3,7 +3,7 @@
 >   -   作者: 闲大赋,Gavin.King,Sue,Zhoupan,woate,Darren
 >   -   社区 [http://ibeetl.com](http://ibeetl.com/)
 >   -   qq群 219324263
->   -   当前版本 2.8.1 , 另外还需要beetl([http://git.oschina.net/xiandafu/beetl2.0/attach_files](http://git.oschina.net/xiandafu/beetl2.0/attach_files)) 包
+>   -   当前版本 2.8.3 , 另外还需要beetl([http://git.oschina.net/xiandafu/beetl2.0/attach_files](http://git.oschina.net/xiandafu/beetl2.0/attach_files)) 包
 
 
 
@@ -37,7 +37,7 @@ maven 方式:
 <dependency>
 	<groupId>com.ibeetl</groupId>
 	<artifactId>beetlsql</artifactId>
-	<version>2.8.1</version>
+	<version>2.8.3</version>
 </dependency>
 <dependency>
 	<groupId>com.ibeetl</groupId>
@@ -61,7 +61,7 @@ CREATE TABLE `user` (
 	  `age` int(4) DEFAULT NULL,
 	  `userName` varchar(64) DEFAULT NULL COMMENT '用户名称',
 	  `roleId` int(11) DEFAULT NULL COMMENT '用户角色',
-	  `date` datetime NULL DEFAULT NULL,
+	  `create_date` datetime NULL DEFAULT NULL,
 	  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 ```
@@ -84,12 +84,13 @@ public class User  {
 	private String name ;
 	//用户名称
 	private String userName ;
-	private Date date ;
+	private Date createDate ;
 
 }
 ```
 
-
+> 主键需要通过注解来说明，如@AutoID，或者@AssingID等，但如果是自增主键，且属性是名字是id，则不需要注解，自动认为是自增主键
+>
 
 #### 2.3. 代码例子
 
@@ -100,8 +101,8 @@ ConnectionSource source = ConnectionSourceHelper.getSimple(driver, url, "", user
 DBStyle mysql = new MySqlStyle();
 // sql语句放在classpagth的/sql 目录下
 SQLLoader loader = new ClasspathLoader("/sql");
-// 数据库命名跟java命名一样，所以采用DefaultNameConversion，还有一个是UnderlinedNameConversion，下划线风格的
-所以采用DefaultNameConversion nc = new  所以采用DefaultNameConversion();
+// 数据库命名跟java命名一样，所以采用DefaultNameConversion，还有一个是UnderlinedNameConversion，下划线风格的，
+UnderlinedNameConversion nc = new  UnderlinedNameConversion();
 // 最后，创建一个SQLManager,DebugInterceptor 不是必须的，但可以通过它查看sql执行情况
 SQLManager sqlManager = new SQLManager(mysql,loader,source,nc,new Interceptor[]{new DebugInterceptor()});
 
@@ -198,7 +199,7 @@ import java.sql.Timestamp;
 *
 * gen by beetlsql 2016-01-06
 */
-public class user  {
+public class User  {
 	private Integer id ;
 	private Integer age ;
 	//用户角色
@@ -206,12 +207,10 @@ public class user  {
 	private String name ;
 	//用户名称
 	private String userName ;
-	private Date date ;
+	private Date createDate ;
 
 }
 ```
-
-上述生成的代码有些瑕疵，比如包名总是com.test，类名是小写开头（因为用了DefaultNameConversion)，你需要修改成你要的包名和正常的类名，pojo类也没有生成getter，setter方法，你需要用ide自带的工具再次生成一下。
 
 >   #### 注意
 >
@@ -229,12 +228,12 @@ sample
 cols
 ===
 
-	id,name,age,userName,roleId,date
+	id,name,age,userName,roleId,create_date
 
 updateSample
 ===
 
-	`id`=#id#,`name`=#name#,`age`=#age#,`userName`=#userName#,`roleId`=#roleId#,`date`=#date#
+	`id`=#id#,`name`=#name#,`age`=#age#,`userName`=#userName#,`roleId`=#roleId#,`create_date`=#date#
 
 condition
 ===
@@ -308,7 +307,7 @@ OFFSET_START_ZERO = true
 
 这样，翻页参数start传入0即可。
 
-注意:根据模板查询并不包含时间字段，也不包含排序，然而，可以通过在pojo class上使用@TableTemplate() 或者日期字段的getter方法上使用@DateTemplate()来定制，如下:
+注意:template查询方法根据模板查询并不包含时间字段，也不包含排序，然而，可以通过在pojo class上使用@TableTemplate() 或者日期字段的getter方法上使用@DateTemplate()来定制，如下:
 
 ```java
 @TableTemplate("order by id desc ")
@@ -397,6 +396,17 @@ PageQuery 对象也提供了 orderBy属性，用于数据库排序，如 "id des
 >
 >   如果你打算使用PageQuery做翻页,且只想提供一个sql语句+page函数,那考虑到垮数据库,应该不要在这个sql语句里包含排序,因为大部分数据库都不支持. page函数生成的查询总数sql语句,因为包含了oder by,在大部分数据库都是会报错的的,比如:select count(1) form user order by name,在sqlserver,mysql,postgres都会出错,oracle允许这种情况, 因此,如果你要使用一条sql语句+page函数,建议排序用PageQuery对象里有排序属性oderBy,可用于排序,而不是放在sql语句里.
 >
+>   2.8版本以后也提供了标签函数 pageIgnoreTag，可以用在翻页查询里，当查询用作统计总数的时候，会忽略标签体内容，如
+>
+>   ```
+>   select page("*") from xxx 
+>   @pageIgnoreTag{
+>    order by id 
+>   @}
+>   ```
+>
+>   如上语句，在求总数的时候，会翻译成 select count(1) from xxx
+>
 >   如果你不打算使用PageQuery+一条sql的方式,而是用俩条sql来分别翻页查询和统计总数,那无所谓
 >
 >   或者你直接使用select 带有起始和读取总数的接口,也没有关系,可以在sql语句里包含排序
@@ -414,8 +424,9 @@ PageQuery 对象也提供了 orderBy属性，用于数据库排序，如 "id des
 -   public void insert(Class<?> clazz,Object paras) 插入paras到clazz关联的表
 -   public void insert(Class<?> clazz,Object paras,KeyHolder holder)，插入paras到clazz关联的表，如果需要主键，可以通过holder的getKey来获取
 -   public int insert(Class clazz,Object paras,boolean autoAssignKey) 插入paras到clazz关联的表，并且指定是否自动将数据库主键赋值到paras里
--   public int updateById(Object obj) 根据主键更新，主键通过annotation表示，如果没有，则认为属性id是主键，所有值参与更新
--   public int updateTemplateById(Object obj) 根据主键更新，组件通过annotation表示，如果没有，则认为属性id是主键,属性为null的不会更新
+-   public int updateById(Object obj) 根据主键更新，所有值参与更新
+-   public int updateTemplateById(Object obj) 根据主键更新，属性为null的不会更新
+-   public int updateBatchTemplateById(Class clazz,List<?> list) 批量根据主键更新,属性为null的不会更新
 -   public int updateTemplateById(Class<?> clazz，Map paras) 根据主键更新，组件通过clazz的annotation表示，如果没有，则认为属性id是主键,属性为null的不会更新。
 -   public int[] updateByIdBatch(List<?> list) 批量更新
 -   public void insertBatch(Class clazz,List<?> list) 批量插入数据
@@ -433,9 +444,11 @@ PageQuery 对象也提供了 orderBy属性，用于数据库排序，如 "id des
 
 
 
-#### 3.5. 直接执行SQL
+#### 3.5. 直接执行SQL模板
 
 ##### 3.5.1. 直接执行sql模板语句
+
+  一下接口sql变量是sql模板
 
 -   public <T> List<T> execute(String sql,Class<T> clazz, Object paras)
 -   public <T> List<T> execute(String sql,Class<T> clazz, Map paras)
@@ -510,7 +523,7 @@ sql.genAll("com.test", new GenConfig(), new GenFilter(){
 
 ### 4. 命名转化，表和列名映射
 
-Beetlsql 默认提供了三种列明和属性名的映射类。
+Beetlsql 默认提供了三种列明和属性名的映射类，推荐使用UnderlinedNameConversion
 
 -   DefaultNameConversion 数据库名和java属性名保持一致，如数据库表User，对应Java类也是User，数据库列是sysytemId,则java属性也是systemId，反之亦然
 -   UnderlinedNameConversion 将数据库下划线去掉，首字母大写，如数据库是SYS_USER（oralce数据库的表和属性总是大写的), 则会改成SysUser
@@ -2065,9 +2078,9 @@ Trans.rollback()
 >
 >   demo [https://code.csdn.net/xiandafu/beetlsql_orm_sample/tree/master](https://code.csdn.net/xiandafu/beetlsql_orm_sample/tree/master)
 
-### 25. BeanProcessor
+### 25. 高级部分
 
-这章补充一下结果集和java类型的映射
+这章补充一下结果集和java类型的映射，以及事务管理
 
 
 #### 25.1 ResultSet结果集到Bean的转化
@@ -2088,7 +2101,7 @@ this.callSetter(bean, prop, value,propType);
 
 BeanProcessor 会根据属性类型取出对应的处理类，然后处理ResultSet，如果你先自定义处理类，你可以重新添加一个JavaSqlTypeHandler到handlers
 
-#### 25.1 ResultSet结果集到Map的转化
+#### 25.2 ResultSet结果集到Map的转化
 
 ResultSet转为Map的时候，有不一样则，根据数据库返回的列类型来做转化，数据库如果定义了一个浮点类型，则使用默认的BigDecimal类型
 
@@ -2135,4 +2148,21 @@ jdbcJavaTypes.put(new Integer(Types.LONGVARCHAR), String.class); // -1
 
 ```
 
+#### 25.3 事务管理
+
+BeetlSql 是一个简单的Dao工具，不含有事务管理，完全依赖web框架的事务管理机制，监听开始事务，结束事务等事件，如果你使用Spring，JFinal框架，无需担心事务，已经集成好了，如果你没有这些框架，也可以用Beetlsq
+
+提供的DSTransactionManager 来指定事务边界，是事实，Spring的事务集成也使用了DSTransactionManager
+
+
+
+```java
+SQLManager 	sql = new SQLManager(style,loader,cs,new UnderlinedNameConversion(), inters);
+.......
+DSTransactionManager.start();
+User user = new User();
+sql.insert(user);
+sql.insert(user);
+DSTransactionManager.commit();
+```
 
