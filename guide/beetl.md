@@ -1,10 +1,10 @@
-## Beetl2.7.11 中文文档
+## Beetl2.7.12 中文文档
 
-Beetl作者：李家智 &lt;[xiandafu@126.com](mailto:xiandafu@126.com)&gt;
+Beetl作者：李家智 <[xiandafu@126.com](mailto:xiandafu@126.com)>
 
 ### 1. 什么是Beetl
 
-Beetl目前版本是2.7.11,相对于其他java模板引擎，具有功能齐全，语法直观,性能超高，以及编写的模板容易维护等特点。使得开发和维护模板有很好的体验。是新一代的模板引擎。总得来说，它的特性如下：
+Beetl目前版本是2.7.12,相对于其他java模板引擎，具有功能齐全，语法直观,性能超高，以及编写的模板容易维护等特点。使得开发和维护模板有很好的体验。是新一代的模板引擎。总得来说，它的特性如下：
 
 -   功能完备：作为主流模板引擎，Beetl具有相当多的功能和其他模板引擎不具备的功能。适用于*各种应用场景*，从对响应速度有很高要求的大网站到功能繁多的CMS管理系统都适合。Beetl本身还具有很多独特功能来完成模板编写和维护，这是其他模板引擎所不具有的。
 -   非常简单：类似Javascript语法和习俗，只要半小时就能通过半学半猜完全掌握用法。拒绝其他模板引擎那种非人性化的语法和习俗。同时也能支持html 标签，使得开发CMS系统比较容易
@@ -1513,16 +1513,16 @@ tag类提供了如下属性和方法供使用
 
 -   public void registerVirtualAttributeEval(VirtualAttributeEval e) 为一些类注册需要属性，VirtualAttributeEval.isSupport方法将判断是否应用虚拟属性到此类
 
-          如下是虚拟属性类的定义
+            如下是虚拟属性类的定义
 
     ```java
-          public interface VirtualClassAttribute{
-                  public Object eval(Object o, String attributeName, Context ctx);
-          }
+            public interface VirtualClassAttribute{
+                    public Object eval(Object o, String attributeName, Context ctx);
+            }
 
-          public interface VirtualAttributeEval extends VirtualClassAttribute{
-                  public boolean isSupport(Class c, String attributeName);
-          }
+            public interface VirtualAttributeEval extends VirtualClassAttribute{
+                    public boolean isSupport(Class c, String attributeName);
+            }
     ```
 
 
@@ -1767,13 +1767,13 @@ include("db:1"){}
 5.  不仅仅输出日志，还抛出异常。默认自带的不会抛出异常，ReThrowConsoleErrorHandler 继承了ConsoleErrorHandler方法，打印异常后抛出
 
     ```java
-       public class ReThrowConsoleErrorHandler extends ConsoleErrorHandler{
-               @Override
-               public void processExcption(BeetlException ex, Writer writer){
-                       super.processExcption(ex, writer);
-                       throw ex;
-               }
-       }
+        public class ReThrowConsoleErrorHandler extends ConsoleErrorHandler{
+                @Override
+                public void processExcption(BeetlException ex, Writer writer){
+                        super.processExcption(ex, writer);
+                        throw ex;
+                }
+        }
     ```
 
 beetl 提供 ErrorInfo类来wrap BeetlException，转化为较为详细的提示信息，他具有如下信息
@@ -1864,34 +1864,34 @@ public class DefaultNativeSecurityManager implements NativeSecurityManager{
 -   继承布局：采用模板变量和include
 
     ```javascript
-          <%
-                  var jsPart = {
-          %>
-          web页面js部分
+            <%
+                    var jsPart = {
+            %>
+            web页面js部分
 
-          <% }; %>
+            <% }; %>
 
-          <%
-                  var htmlPart = {
-          %>
-          web页面html部分
+            <%
+                    var htmlPart = {
+            %>
+            web页面html部分
 
-          <% };
-          include("/inc/layout.html",{jsSection:jsPart,htmlSection:htmlPart}){}
-          %>
+            <% };
+            include("/inc/layout.html",{jsSection:jsPart,htmlSection:htmlPart}){}
+            %>
     ```
 
-          layout.html页面如下：
+            layout.html页面如下：
 
     ```xml
-          <body>
-          <head>
-          ${jsSection}
-          </head>
-          <body>
-          .......
-          ${htmlSection}
-          </body>
+            <body>
+            <head>
+            ${jsSection}
+            </head>
+            <body>
+            .......
+            ${htmlSection}
+            </body>
     ```
 
 
@@ -2874,9 +2874,9 @@ ENGINE=org.beetl.core.engine.DefaultTemplateEngine
 -   编辑伪模型文件，对应于userList.html需要的全局变量，userList.html.var可以申明这些些变量
 
     ```javascript
-          var proudct = {id:1,name:'测试产品',pic:'xxxx.jpg'};
-          var userList = [{id:2,name:'用户一'}];
-          var session= {admin:{id:1,name:'admin'}};
+            var proudct = {id:1,name:'测试产品',pic:'xxxx.jpg'};
+            var userList = [{id:2,name:'用户一'}];
+            var session= {admin:{id:1,name:'admin'}};
     ```
 
 -   通过浏览器直接访问[http://ip:port/user/userList.html](http://ip:port/user/userList.html) ，监听器会预先执行userList.html.var，并将返回值作为模板的全局变量，传给userList.html
@@ -3097,20 +3097,20 @@ spelString: SpEL表达式字符串，必传(否则返回null) rootObject: 作为
 -   以Bean对象为根对象
 
     ```javascript
-          <% var now = date(); %>
-          ${spel('#root.year + 1900', now)}
+            <% var now = date(); %>
+            ${spel('#root.year + 1900', now)}
     ```
 
 -   直接new对象
 
     ```javascript
-          ${spel('(new java.util.Date()).year + 1900')}
+            ${spel('(new java.util.Date()).year + 1900')}
     ```
 
 -   直接引用Spring Bean
 
     ```javascript
-          ${spel('@testBean')}
+            ${spel('@testBean')}
     ```
 
 -   默认变量
@@ -3228,69 +3228,69 @@ Spring Security Expression相关语法，请阅读： [http://docs.spring.io/sp
 
 -   layout 提供一个布局功能，每个页面总是由一定布局，如页面头，菜单，页面脚，以及正文。 layout标签允许为正文指定一个布局，如下使用方式
 
-          content.html内容如下：
+            content.html内容如下：
 
     ```javascript
-          <%
-          //content.html内容如下：
-          layout("/inc/layout.html"){ %>
-          this is 正文
-          ..........
-          <% } %>
+            <%
+            //content.html内容如下：
+            layout("/inc/layout.html"){ %>
+            this is 正文
+            ..........
+            <% } %>
     ```
 
-          layout.html 是布局文件，内容如下
+            layout.html 是布局文件，内容如下
 
     ```javascript
-          <% include("/inc/header.html"){} %>
-          this is content:${layoutContent}
-          this is footer:
+            <% include("/inc/header.html"){} %>
+            this is content:${layoutContent}
+            this is footer:
     ```
 
-          运行content.html模板文件后，，正文文件的内容将被替换到layoutContent的地方，变成如下内容
+            运行content.html模板文件后，，正文文件的内容将被替换到layoutContent的地方，变成如下内容
 
     ```javascript
-          this is header
-          this is content:this is 正文
-          ............
-          this is footer:
+            this is header
+            this is content:this is 正文
+            ............
+            this is footer:
     ```
 
-          如果想往layout页面传入参数，则传入一个json变量，如下往layout.html页面传入一个用户登录时间
+            如果想往layout页面传入参数，则传入一个json变量，如下往layout.html页面传入一个用户登录时间
 
     ```javascript
-          <% layout("/inc/header.html",{'date':user.loginDate,'title':"内容页面"}){ %>
-          this is 正文
-          ..........
-          <% } %>
+            <% layout("/inc/header.html",{'date':user.loginDate,'title':"内容页面"}){ %>
+            this is 正文
+            ..........
+            <% } %>
     ```
 
-          如果layoutContent 命名有冲突，可以在layout第三个参数指定，如
+            如果layoutContent 命名有冲突，可以在layout第三个参数指定，如
 
     ```javascript
-          <% layout("/inc/header.html",{'date':user.loginDate,'title':"内容页面"},"myLayoutContent"){ %>
-          this is 正文
-          ..........
-          <% } %>
+            <% layout("/inc/header.html",{'date':user.loginDate,'title':"内容页面"},"myLayoutContent"){ %>
+            this is 正文
+            ..........
+            <% } %>
     ```
 
 -   cache 能Cache标签的内容，并指定多长时间刷新，如
 
     ```javascript
-          <% :cache('key2',10,false){  %>
-          内容体
-          <% } %>
+            <% :cache('key2',10,false){  %>
+            内容体
+            <% } %>
     ```
 
-          需要指定三个参数
+            需要指定三个参数
 
     -   第一个是cache的Key值
     -   第二个是缓存存在的时间，秒为单位
     -   第三个表示是否强制刷新，false表示不，true表示强制刷新
 
-        Cache默认实现org.beetl.ext.tag.cache.SimpleCacheManager. 你可以设置你自己的Cache实现，通过调用CacheTag. cacheManager= new YourCacheImplementation();
+          Cache默认实现org.beetl.ext.tag.cache.SimpleCacheManager. 你可以设置你自己的Cache实现，通过调用CacheTag. cacheManager= new YourCacheImplementation();
 
-        可以在程序里调用如下方法手工删除Cache：
+          可以在程序里调用如下方法手工删除Cache：
 
     ```java
       public void clearAll();
@@ -3303,17 +3303,17 @@ Spring Security Expression相关语法，请阅读： [http://docs.spring.io/sp
 -   includeJSP,可以在模板里包括一个jsp文件，如：
 
     ```javascript
-          <%
-          includeJSP("/xxxx.jsp",{"key":"value"}){}
-          %>
+            <%
+            includeJSP("/xxxx.jsp",{"key":"value"}){}
+            %>
     ```
 
-          key value 都是字符串，将以parameter的形式提供给jsp，因此jsp可以通过request.getParameter("key")来获取参数
+            key value 都是字符串，将以parameter的形式提供给jsp，因此jsp可以通过request.getParameter("key")来获取参数
 
-          主要注意的是，这个标签并非内置，需要手工注册一下
+            主要注意的是，这个标签并非内置，需要手工注册一下
 
     ```java
-          groupTemplate.registerTag("incdlueJSP",org.beetl.ext.jsp.IncludeJSPTag.class);
+            groupTemplate.registerTag("incdlueJSP",org.beetl.ext.jsp.IncludeJSPTag.class);
     ```
 
 

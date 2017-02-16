@@ -3,7 +3,7 @@
 >   -   作者: 闲大赋,Gavin.King,Sue,Zhoupan,woate,Darren
 >   -   社区 [http://ibeetl.com](http://ibeetl.com/)
 >   -   qq群 219324263
->   -   当前版本 2.8.3 , 另外还需要beetl([http://git.oschina.net/xiandafu/beetl2.0/attach_files](http://git.oschina.net/xiandafu/beetl2.0/attach_files)) 包
+>   -   当前版本 2.8.4 , 另外还需要beetl([http://git.oschina.net/xiandafu/beetl2.0/attach_files](http://git.oschina.net/xiandafu/beetl2.0/attach_files)) 包
 
 
 
@@ -37,12 +37,12 @@ maven 方式:
 <dependency>
 	<groupId>com.ibeetl</groupId>
 	<artifactId>beetlsql</artifactId>
-	<version>2.8.3</version>
+	<version>2.8.4</version>
 </dependency>
 <dependency>
 	<groupId>com.ibeetl</groupId>
 	<artifactId>beetl</artifactId>
-	<version>2.7.11</version>
+	<version>2.7.12</version>
 </dependency>
 ```
 
@@ -2148,7 +2148,87 @@ jdbcJavaTypes.put(new Integer(Types.LONGVARCHAR), String.class); // -1
 
 ```
 
-#### 25.3 事务管理
+#### 25.3 PreparedStatment
+
+BeanProcessor.setPreparedStatementPara用于JDBC设置参数，内容如下:
+
+
+
+```java
+public  void setPreparedStatementPara(String sqlId,PreparedStatement ps,List<SQLParameter> objs) throws SQLException {
+		for (int i = 0; i < objs.size(); i++) {
+			SQLParameter para = objs.get(i);
+			Object o = para.value;
+			if(o==null){
+				ps.setObject(i + 1, o);
+				continue ;
+			}
+			// 兼容性修改：oralce 驱动 不识别util.Date
+			if(this.dbName.equals("oracle")){
+				Class c = o.getClass();
+				if(c== java.util.Date.class){
+					o = new Timestamp(((java.util.Date) o).getTime());
+				}
+			}
+			
+			if(Enum.class.isAssignableFrom(o.getClass())){
+				o = EnumKit.getValueByEnum(o);
+			}
+			
+			//clob or text
+			if(o.getClass()==char[].class){
+				o = new String((char[])o);
+			}
+			
+			
+			int jdbcType = para.getJdbcType();
+			if(jdbcType==0){
+				ps.setObject(i + 1, o);
+			}else{
+				//通常一些特殊的处理
+				throw new UnsupportedOperationException(jdbcType+",默认处理器并未处理此jdbc类型");
+			}
+			
+		}
+	}
+```
+
+#### 
+
+SQLParameter 包含了sql对应参数的值，也包含参数对应的变量名，如果该变量还有类型说明，则jdbcType不为0，如下某个sql
+
+
+
+```java
+select * from user where create_time>#createTime,typeofDate#
+```
+
+此时，SQLParameter.value 是createTime对应的值，SQLParameter.expression是字符串"createTime",
+
+由于使用了typeof开头的格式化函数，typeofDate 意思是指此值应当着java.sql.Types.Date 来处理（然而，默认的BeanProcessor 并不会处理SQLParameter.jdbcType）
+
+
+
+#### 25.4 自定义BeanProcessor
+
+你可以为Beeetsql指定一个默认的BeanProcessor，也可以为某些特定的sqlid指定BeanProcessor，SqlManager提供了俩个方法来完成
+
+```java
+public void setDefaultBeanProcessors(BeanProcessor defaultBeanProcessors) {
+		this.defaultBeanProcessors = defaultBeanProcessors;
+}
+
+public void setProcessors(Map<String, BeanProcessor> processors) {
+		this.processors = processors;
+}
+
+```
+
+
+
+
+
+#### 25.5 事务管理
 
 BeetlSql 是一个简单的Dao工具，不含有事务管理，完全依赖web框架的事务管理机制，监听开始事务，结束事务等事件，如果你使用Spring，JFinal框架，无需担心事务，已经集成好了，如果你没有这些框架，也可以用Beetlsq
 
