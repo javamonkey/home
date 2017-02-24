@@ -1778,7 +1778,7 @@ jdbcSql是渲染过后的sql，jdbcPara 是对应的参数值
 
 
 
-### 22. Hibernate,MyBatis,MySQL 对比
+### 22. Hibernate,MyBatis,BeetlSQL 对比
 
 [https://my.oschina.net/xiandafu/blog/617542](https://my.oschina.net/xiandafu/blog/617542) 提供了12项对比并给与评分。在犹豫使用BeetlSQL，可以参考这个全面的对比文章
 
