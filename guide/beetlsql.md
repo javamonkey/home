@@ -3,7 +3,7 @@
 >   -   作者: 闲大赋,Gavin.King,Sue,Zhoupan,woate,Darren
 >   -   社区 [http://ibeetl.com](http://ibeetl.com/)
 >   -   qq群 219324263
->   -   当前版本 2.8.4 , 另外还需要beetl([http://git.oschina.net/xiandafu/beetl2.0/attach_files](http://git.oschina.net/xiandafu/beetl2.0/attach_files)) 包
+>   -   当前版本 2.8.5 , 另外还需要beetl([http://git.oschina.net/xiandafu/beetl2.0/attach_files](http://git.oschina.net/xiandafu/beetl2.0/attach_files)) 包
 
 
 
@@ -23,7 +23,7 @@ BeetSql是一个全功能DAO工具， 同时具有Hibernate 优点 & Mybatis优�
     -   具备Interceptor功能，可以调试，性能诊断SQL，以及扩展其他功能
 -   其他
     -   内置支持主从数据库支持的开源工具
-    -   支持跨数据库平台，开发者所需工作减少到最小，目前跨数据库支持mysql,postgres,oracle,sqlserver,h2,sqllite.
+    -   支持跨数据库平台，开发者所需工作减少到最小，目前跨数据库支持mysql,postgres,oracle,sqlserver,h2,sqllite,DB2.
 
 
 
@@ -37,13 +37,9 @@ maven 方式:
 <dependency>
 	<groupId>com.ibeetl</groupId>
 	<artifactId>beetlsql</artifactId>
-	<version>2.8.4</version>
+	<version>2.8.5</version>
 </dependency>
-<dependency>
-	<groupId>com.ibeetl</groupId>
-	<artifactId>beetl</artifactId>
-	<version>2.7.12</version>
-</dependency>
+
 ```
 
 或者依次下载beetlsql，beetl 最新版本 包放到classpath里
@@ -294,10 +290,11 @@ ConnectionSource source = ConnectionSourceHelper.getMasterSlave(master,slaves)
 -   public <T> List<T> all(Class<T> clazz, int start, int size) 翻页
 -   public int allCount(Class<?> clazz) 总数
 -   public <T> List<T> template(T t) 根据模板查询，返回所有符合这个模板的数据库 同上，mapper可以提供额外的映射，如处理一对多，一对一
+-   public <T>  T templateOne(T t) 根据模板查询，返回一条结果，如果没有找到，返回null
 -   public <T> List<T> template(T t,int start,int size) 同上，可以翻页
 -   public <T> long templateCount(T t) 获取符合条件的个数
 
-翻页的start，系统默认位从1开始，为了兼容各个数据库系统，会自动翻译成数据库习俗，比如start为1，会认为mysql，postgres从0开始（从start－1开始），oralce从1开始（start－0）开始。
+翻页的start，系统默认位从1开始，为了兼容各个数据库系统，会自动翻译成数据库习俗，比如start为1，会认为mysql，postgres从0开始（从start－1开始），oralce，sqlserver，db2从1开始（start－0）开始。
 
 然而，如果你只用特定数据库，可以按照特定数据库习俗来，比如，你只用mysql，start为0代表起始纪录，需要配置
 
@@ -328,6 +325,7 @@ public class User  {
 
 -   public <T> List<T> select(String sqlId, Class<T> clazz, Map<String, Object> paras) 根据sqlid来查询，参数是个map
 -   public <T> List<T> select(String sqlId, Class<T> clazz, Object paras) 根据sqlid来查询，参数是个pojo
+-   public <T> List<T> select(String sqlId, Class<T> clazz) 根据sqlid来查询，无参数
 -   public <T> List<T> select(String sqlId, Class<T> clazz, Map<String, Object> paras, int start, int size)， 增加翻页
 -   public <T> List<T> select(String sqlId, Class<T> clazz, Object paras, int start, int size) ，增加翻页
 -   public <T> T selectSingle(String id,Object paras, Class<T> target) 根据sqlid查询，输入是Pojo，将对应的唯一值映射成指定的taget对象，如果未找到，则返回空。需要注意的时候，有时候结果集本生是空，这时候建议使用unique
@@ -415,15 +413,17 @@ PageQuery 对象也提供了 orderBy属性，用于数据库排序，如 "id des
 
 #### 3.4. 更新API
 
+添加，删除和更新均使用下面的API
+
 ##### 3.4.1. 自动生成sql
 
 -   public void insert(Object paras) 插入paras到paras关联的表
 -   public void insert(Object paras,boolean autoAssignKey) 插入paras到paras对象关联的表,并且指定是否自动将数据库主键赋值到paras里
 -   public void insertTemplate(Object paras) 插入paras到paras关联的表,忽略为null值或者为空值的属性
--   public void insertTemplate(Object paras,boolean autoAssignKey) 插入paras到paras对象关联的表,并且指定是否自动将数据库主键赋值到paras里,忽略为null值或者为空值的属性
+-   public void insertTemplate(Object paras,boolean autoAssignKey) 插入paras到paras对象关联的表,并且指定是否自动将数据库主键赋值到paras里,忽略为null值或者为空值的属性，调用此方法，对应的数据库必须主键自增。
 -   public void insert(Class<?> clazz,Object paras) 插入paras到clazz关联的表
--   public void insert(Class<?> clazz,Object paras,KeyHolder holder)，插入paras到clazz关联的表，如果需要主键，可以通过holder的getKey来获取
--   public int insert(Class clazz,Object paras,boolean autoAssignKey) 插入paras到clazz关联的表，并且指定是否自动将数据库主键赋值到paras里
+-   public void insert(Class<?> clazz,Object paras,KeyHolder holder)，插入paras到clazz关联的表，如果需要主键，可以通过holder的getKey来获取，调用此方法，对应的数据库必须主键自增
+-   public int insert(Class clazz,Object paras,boolean autoAssignKey) 插入paras到clazz关联的表，并且指定是否自动将数据库主键赋值到paras里，调用此方法，对应的数据库必须主键自增。
 -   public int updateById(Object obj) 根据主键更新，所有值参与更新
 -   public int updateTemplateById(Object obj) 根据主键更新，属性为null的不会更新
 -   public int updateBatchTemplateById(Class clazz,List<?> list) 批量根据主键更新,属性为null的不会更新
@@ -431,9 +431,9 @@ PageQuery 对象也提供了 orderBy属性，用于数据库排序，如 "id des
 -   public int[] updateByIdBatch(List<?> list) 批量更新
 -   public void insertBatch(Class clazz,List<?> list) 批量插入数据
 
-##### 3.4.2. 通过sqlid更新
+##### 3.4.2. 通过sqlid更新（删除）
 
--   public int insert(String sqlId,Object paras,KeyHolder holder) 根据sqlId 插入，并返回主键，主键id由paras对象所指定
+-   public int insert(String sqlId,Object paras,KeyHolder holder) 根据sqlId 插入，并返回主键，主键id由paras对象所指定，调用此方法，对应的数据库表必须主键自增。
 -   public int insert(String sqlId,Object paras,KeyHolder holder,String keyName) 同上，主键由keyName指定
 -   public int insert(String sqlId,Map paras,KeyHolder holder,String keyName)，同上，参数通过map提供
 -   public int update(String sqlId, Object obj) 根据sqlid更新
@@ -1095,7 +1095,42 @@ TAG.pageTag= org.beetl.sql.core.engine.PageQueryTag
 
 EmptyExpressionFunction 用在很多地方,如template 类操作,where语句里的条件判断,它 沿用了beetl习惯,对于不存在的变量,或者为null的变量,都返回true,同时如果是字符串,为空字符串也返回true,数组,集合也是这样,有些项目,认为空字符串应该算有值而不应该返回true,你可以参考EmptyExpressionFunction的实现,按照项目语义来定义isEmpty
 
+#### 11.6. isEmpty 和 isNotEmpty
 
+模板类查询和模板更新，以及Sql语句里的判断都依赖于isEmpty函数判断变量是否存在以及是否为null，2.8.4以前版本对空字符串也认为是空，2.8.4之后版本则仅仅判断对象是否存在以及是否为null
+
+```properties
+where 1=1  
+@if(!isEmpty(connent)){
+  and 
+@}
+```
+
+如上代码，如果content存在，且不为null，则进入if代码块
+
+如果想兼容以前的判断的方式，即认为空字符串也是空（不推荐这么用了），则需要在btsql-ext.properties，再次使以前的实现方式
+
+，
+
+```properties
+FN.isEmpty=org.beetl.sql.ext.EmptyExpressionFunction
+FN.isNotEmpty=org.beetl.sql.ext.IsNotEmptyExpressionFunction
+```
+
+
+
+你也可以使用beetl的安全输出来表示，比如上面的sql代码，可以用安全输出
+
+
+
+```properties
+where 1=1  
+@if(null!=content!){
+  and 
+@}
+```
+
+如上代码，content ! 是安全表达式，如果不存在或者为null，则为null，然后通过与null比较。
 
 ### 12. SQL 模板基于Beetl实现
 
