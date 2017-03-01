@@ -1113,8 +1113,8 @@ where 1=1
 ，
 
 ```properties
-FN.isEmpty=org.beetl.sql.ext.EmptyExpressionFunction
-FN.isNotEmpty=org.beetl.sql.ext.IsNotEmptyExpressionFunction
+FN.isEmpty = org.beetl.ext.fn.EmptyExpressionFunction
+FN.isNotEmpty = org.beetl.ext.fn.IsNotEmptyExpressionFunction
 ```
 
 
