@@ -2115,10 +2115,10 @@ Web集成模块向模板提供web标准的变量，做如下说明
 
 -   request 中的所有attribute.在模板中可以直接通过attribute name 来引用，如在controller层 request.setAttribute("user",user),则在模板中可以直接用${user.name} .
 -   session 提供了session会话，模板通过session["name"],或者session.name 引用session里的变量
--   request 标准的HTTPSerlvetRequest,可以在模板里引用request属性（getter），如${request.requestURL}。
+-   request 标准的HTTPServletRequest,可以在模板里引用request属性（getter），如${request.requestURL}。
 -   parameter 用户读取用户提交的参数。如${parameter.userId} (仅仅2.2.7以上版本支持)
 -   ctxPath Web应用ContextPath
--   servlet 是WebVariable的实例，包含了HTTPSession,HTTPSerlvetRequest,HTTPSerlvetResponse.三个属性，模板中可以通过request.response,session 来引用，如 ${serlvet.request.requestURL};
+-   servlet 是WebVariable的实例，包含了HTTPSession,HTTPServletRequest,HTTPServletResponse.三个属性，模板中可以通过request.response,session 来引用，如 ${servlet.request.requestURL};
 -   所有的GroupTemplate的共享变量
 -   pageCtx是一个内置方法 ，仅仅在web开发中，用于设置一个变量，然后可以在页面渲染过程中，调用此api获取，如pageCtx("title","用户添加页面")，在其后任何地方，可以pageCtx("title") 获取该变量。(仅仅2.2.7以上版本支持)
 
@@ -2268,7 +2268,7 @@ public class WebRender{
 
 
 
-#### 4.3. Serlvet集成
+#### 4.3. Servlet集成
 
 只需要在Servlet代码里引用ServletGroupTemplate就能集成Beetl，他提供了一个render(String child, HttpServletRequest request, HttpServletResponse response)方法。例子如下：
 
@@ -2281,7 +2281,7 @@ protected void doGet(HttpServletRequest request,HttpServletResponse response) th
 }
 ```
 
-ServletGroupTemplate同其他web集成一样，将读取配置文件来配置，如果需要通过代码配置，可以在Serlvet listener里 ServletGroupTemplate.instance().getGroupTemplate()方法获取GroupTemplate
+ServletGroupTemplate同其他web集成一样，将读取配置文件来配置，如果需要通过代码配置，可以在Servlet listener里 ServletGroupTemplate.instance().getGroupTemplate()方法获取GroupTemplate
 
 
 
