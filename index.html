@@ -77,11 +77,11 @@
 				</transition-group>
 				<div>
 					<h1>{{i18n.consumer}}</h1>
-					<ul id="consumer">
+					<transition-group tag="ul" id="consumer" appear>
 						<!-- 新增使用案例请往js中consumer数组添加对象 -->
-						<li v-for="c of consumer"><a :target="c.u?'_blank':''" rel="nofllow external" :href="c.u||'javascript:;'" :title="c.n"><img v-if="c.i" :src="c.i"><i v-if="!c.i" :class="'iconfont icon-'+(c.icon||'beetl')"></i>{{c.n}}</a></li>
-						<li><a href="mailto:xiandafu@126.com?subject=Beetl官网使用案例展示申请&body=闲·大赋您好，我们的网站使用了您的Beetl（BeetlSQL），我们的网址是："><i class="iconfont icon-email"></i>{{i18n.consumer_apply}}</a></li>
-					</ul>
+						<li v-for="c,i of consumer" :key="c.n" v-if="i<4"><a :target="c.u?'_blank':''" rel="nofllow external" :href="c.u||'javascript:;'" :title="c.n"><img v-if="c.i" :src="c.i"><i v-if="!c.i" :class="'iconfont icon-'+(c.icon||'beetl')"></i>{{c.n}}</a></li>
+						<li key="apply"><a href="mailto:xiandafu@126.com?subject=Beetl官网使用案例展示申请&body=闲·大赋您好，我们的网站使用了您的Beetl（BeetlSQL），我们的网址是："><i class="iconfont icon-email"></i>{{i18n.consumer_apply}}</a></li>
+					</transition-group>
 				</div>
 			</main>
 			<footer>
@@ -246,6 +246,9 @@
 				methods:{language:function(){this.lang = this.lang=='en'?'zh-cn':'en';localStorage.localize = this.lang;}},
 				computed:{i18n:function(){return lang[this.lang]}}
 			})
+			setInterval(function(){
+				consumer.push.apply(consumer,consumer.splice(0,1))
+			},3000)
 			//百度统计
 			var _hmt = _hmt || [];
 			(function() {
