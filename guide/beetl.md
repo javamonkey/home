@@ -768,7 +768,7 @@ Beetl内置函数请参考附录，以下列出了常用的函数
 -   **pageCtx** ，仅仅在web开发中，设置一个变量，然后可以在页面渲染过程中，调用此api获取，如pageCtx("title","用户添加页面")，在其后任何地方，可以pageCtx("title") 获取该变量
 -   **type.new** 创建一个对象实例，如 var user = type.new("com.xx.User"); 如果配置了IMPORT_PACKAGE，则可以省略包名，type.new("User")
 -   **type.name** 返回一个实例的名字，var userClassName = type.name(user),返回"User"
-
+-   **global** 返回一个全局变量值，参数是一个字符串，如 var user = global("user_"+i);
 
 
 #### 2.20. 安全输出
@@ -3020,6 +3020,7 @@ ERROR_HANDLER = org.beetl.ext.web.WebErrorHandler
 -   **pageCtx** ，仅仅在web开发中，设置一个变量，然后可以在页面渲染过程中，调用此api获取，如pageCtx("title","用户添加页面")，在其后任何地方，可以pageCtx("title") 获取该变量
 -   **type.new** 创建一个对象实例，如 var user = type.new("com.xx.User"); 如果配置了IMPORT_PACKAGE，则可以省略包名，type.new("User")
 -   **type.name** 返回一个实例的名字，var userClassName = type.name(user),返回"User"
+-   **global** 返回一个全局变量值，参数是一个字符串，如 var user = global("user_"+i);
 
 ##### 5.1.2. 字符串相关方法
 
