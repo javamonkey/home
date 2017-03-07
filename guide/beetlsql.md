@@ -1805,7 +1805,7 @@ SQLResult 如下：
 ```java
 public class SQLResult {
 	public String jdbcSql;
-	public List<Object> jdbcPara;
+	public List<SQLParameter> jdbcPara;
 }
 ```
 
