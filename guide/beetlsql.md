@@ -3,7 +3,7 @@
 >   -   作者: 闲大赋,Gavin.King,Sue,Zhoupan,woate,Darren
 >   -   社区 [http://ibeetl.com](http://ibeetl.com/)
 >   -   qq群 219324263
->   -   当前版本 2.8.5 , 另外还需要beetl([http://git.oschina.net/xiandafu/beetl2.0/attach_files](http://git.oschina.net/xiandafu/beetl2.0/attach_files)) 包
+>   -   当前版本 2.8.6
 
 
 
@@ -37,10 +37,11 @@ maven 方式:
 <dependency>
 	<groupId>com.ibeetl</groupId>
 	<artifactId>beetlsql</artifactId>
-	<version>2.8.5</version>
+	<version>2.8.6</version>
 </dependency>
-
 ```
+
+
 
 或者依次下载beetlsql，beetl 最新版本 包放到classpath里
 
@@ -135,7 +136,7 @@ List<User> list2 = sqlManager.select("user.select",User.class,query2);
 
 #### 2.4. SQL文件例子
 
-通常一个项目还是有少量复杂sql，可能只有5，6行，也可能有上百行，放在单独的sql文件里更容易编写和维护，为了能执行上例的user.select,需要在classpath里建立一个sql目录（ClasspathLoader 配置成sql目录，参考上一节ClasspathLoader初始化的代码）以及下面的user.md 文件，内容如下
+通常一个项目还是有少量复杂sql，可能只有5，6行，也可能有上百行，放在单独的sql文件里更容易编写和维护，为了能执行上例的user.select,需要在classpath里建立一个sql目录（在src目录下建立一个sql目录，或者maven工程的resources目录。ClasspathLoader 配置成sql目录，参考上一节ClasspathLoader初始化的代码）以及下面的user.md 文件，内容如下
 
 ```markdown
 select
@@ -2281,3 +2282,12 @@ sql.insert(user);
 DSTransactionManager.commit();
 ```
 
+
+
+> 注意:ConnectionSourceHelper.getSimple() 获得的是一个简单的cs，没有事务管理器参与，建议你用
+>
+> getSingle(DataSource ds),返回DefaultConnectionSource具备事务管理。
+>
+> 
+>
+> 
