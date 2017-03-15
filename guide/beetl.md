@@ -1105,7 +1105,7 @@ var d = @user.getAge(c);
 可以调用instance的public方法和属性，也可以调用静态类的属性和方法 ,需要加一个 @指示此调用是直接调用class，其后的表达式是java风格的。
 
 >   -   GroupTemplate可以配置为不允许直接调用Class，具体请参考配置文件.
->   -   也可以通过安全管理器配置到底哪些类Beetl不允许调用，具体请参考高级用法。默认情况，java.lang.Runtime,和 java.lang.Process不允许在模板里调用。你自己的安全管理器也许可以配置为不能直接访问DAO类（避免了以前jsp可以访问任意代码带来的危害）
+>   -   也可以通过安全管理器配置到底哪些类Beetl不允许调用，具体请参考高级用法。默认情况，java.lang.Runtime,和 java.lang.Process不允许在模板里调用。你自己的安全管理器也可以配置为不能直接访问DAO类（避免了以前jsp可以访问任意代码带来的危害）
 >   -   请按照java规范写类名和方法名，属性名。这样便于beetl识别到底调用的是哪个类，哪个方法。否则会抛出错误
 >   -   可以省略包名，只用类名。beetl将搜索包路径找到合适的类（需要设置配置“IMPORT_PACKAGE=包名.;包名.”，包名后需要跟一个“.”, 或者调用Configuration.addPkg)方法具体请参考附件配置文件说明
 >   -   内部类（包括枚举）访问同java一样，如User类有个内部枚举类Gender，访问是User$Gender
