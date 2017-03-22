@@ -399,7 +399,7 @@ PageQuery 对象也提供了 orderBy属性，用于数据库排序，如 "id des
 >
 >   ```
 >   select page("*") from xxx 
->   @pageIgnoreTag{
+>   @pageIgnoreTag(){
 >    order by id 
 >   @}
 >   ```
