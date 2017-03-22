@@ -1,10 +1,10 @@
-## Beetl2.7.12 中文文档
+## Beetl2.7.13 中文文档
 
 Beetl作者：李家智 <[xiandafu@126.com](mailto:xiandafu@126.com)>
 
 ### 1. 什么是Beetl
 
-Beetl目前版本是2.7.12,相对于其他java模板引擎，具有功能齐全，语法直观,性能超高，以及编写的模板容易维护等特点。使得开发和维护模板有很好的体验。是新一代的模板引擎。总得来说，它的特性如下：
+Beetl目前版本是2.7.13,相对于其他java模板引擎，具有功能齐全，语法直观,性能超高，以及编写的模板容易维护等特点。使得开发和维护模板有很好的体验。是新一代的模板引擎。总得来说，它的特性如下：
 
 -   功能完备：作为主流模板引擎，Beetl具有相当多的功能和其他模板引擎不具备的功能。适用于*各种应用场景*，从对响应速度有很高要求的大网站到功能繁多的CMS管理系统都适合。Beetl本身还具有很多独特功能来完成模板编写和维护，这是其他模板引擎所不具有的。
 -   非常简单：类似Javascript语法和习俗，只要半小时就能通过半学半猜完全掌握用法。拒绝其他模板引擎那种非人性化的语法和习俗。同时也能支持html 标签，使得开发CMS系统比较容易
@@ -39,8 +39,7 @@ Beetl目前版本是2.7.12,相对于其他java模板引擎，具有功能齐全�
 >
 >   -   需要通读基本用法，大部分都是讲解语法，而语法跟js很接近，所以可以快速预览，但Beetl是针对模板设计， 所以像安全输出，标签和html标签，全局变量，临时变量和共享变量，布局技术，以及直接调用java代码等还需要认真读一遍。
 >   -   如果从事web开发，还需要阅读web集成里的第一节“web提供的全局变量”，如果web里还使用ajax技术，可以阅读“整合ajax的局部渲染技术”。
->   -   包含有spring,jfinal,jodd,struts 等demo可以作为参考学习用 [http://ibeetl.com/community/?/article/4](http://ibeetl.com/community/?/article/4)
->   -   任何问题，都可以在ibeetl.com 社区上提问。目前答复率是100%，提问需要详细说明自己的期望，出错信息，附上代码或者图片
+>   -   包含有spring,jfinal,jodd,struts 等demo可以作为参考学习用https://git.oschina.net/xiandafu 任何问题，都可以在ibeetl.com 社区上提问。目前答复率是100%，提问需要详细说明自己的期望，出错信息，附上代码或者图片
 
 
 
@@ -70,7 +69,7 @@ Beetl目前版本是2.7.12,相对于其他java模板引擎，具有功能齐全�
 <dependency>
         <groupId>com.ibeetl</groupId>
         <artifactId>beetl</artifactId>
-        <version>2.7.11</version>
+        <version>2.7.13</version>
 </dependency>
 ```
 
@@ -133,7 +132,7 @@ MVC_STRICT = FALSE
 RESOURCE_LOADER=org.beetl.core.resource.ClasspathResourceLoader
 #classpath 根路径
 RESOURCE.root= /
-#是否检测文件变化
+#是否检测文件变化,开发用true合适，但线上要改为false
 RESOURCE.autoCheck= true
 #自定义脚本方法文件的Root目录和后缀
 RESOURCE.functionRoot = functions
@@ -307,7 +306,7 @@ var c = ${a}+"beetl"; //应该是var c = a+"beetl"
 
 占位符\-\-#{ }\-\#\#
 
-你也可以与团队达成一致意见来选择团队喜爱择定界符号和占位符号。
+你也可以与团队达成一致意见来选择团队喜爱的定界符号和占位符号。
 
 定界符号里是表达式，如果表达式跟定界符或者占位符有冲突，可以在用 “\” 符号，如
 
@@ -381,7 +380,7 @@ hello,${user.name};
 
 #### 2.9. 共享变量
 
-共享变量指在所有模板中都可以引用的变量，可过groupTemplate.setSharedVars(Map<String, Object> sharedVars)传入的变量,这些变量能在 **所有模板** 的任何一个地方
+共享变量指在所有模板中都可以引用的变量，可通过groupTemplate.setSharedVars(Map<String, Object> sharedVars)传入变量,这些变量能用在 **所有模板** 的任何一个地方
 
 ```java
 //.....
@@ -421,7 +420,7 @@ var content = {
 <% }; %>
 ```
 
-第2行定义了一个模板变量content = { …} ; 此变量跟临时变量一样，可以在其他地方使用，最常见的用户是用于复杂的布局。请参考高级用法布局
+第2行定义了一个模板变量content = { …} ; 此变量跟临时变量一样，可以在其他地方使用，最常见的用法是用于复杂的布局。请参考高级用法布局
 
 
 
@@ -434,7 +433,7 @@ var content = {
 3.  如果模板变量是Map类，这可以通过[]来访问，如${map[“name”]},如果key值是字符串类型，也可以使用${map.name}.但不建议这么使用，因为会让模板阅读者误以为是一个Pojo对象
 4.  Beetl也支持Generic Get方式，即如果对象有一个public Object get(String key)方法，可以通过”.”号或者[]来访问，譬如 ${activityRecord.name}或者${activityRecord[“name”] }都将调用activityRecord的 get(String key)方法。如果对象既有具体属性，又有Generic get（这种模型设计方式是不值得鼓励），则以具体属性优先级高.
 5.  Beetl也可以通过[]来引用属性，如${user[“name”]} 相当于${user.name}.这跟javascript保持一致。但建议不这么做，因为容易让阅读模板的人误认为这是一个Map类型
-6.  Beetl 还可以定位额外的对象属性，而无需更改java对象，这叫着虚拟属性，如，对于所有集合，数组，都有共同的虚拟熟悉size.虚拟属性是“.~”+虚拟1属性名
+6.  Beetl 还可以定义额外的对象属性，而无需更改java对象，这叫着虚拟属性，如，对于所有集合，数组，都有共同的虚拟属性size.虚拟属性是“.~”+虚拟属性名
 
 ```javascript
 template.binding("list",service.getUserList());
@@ -484,7 +483,7 @@ var f = 122228833330322.1112h
 %>
 ```
 
-Beetl里定义的临时变量类型默认对应的java是Int型或者double类型，对于模板常用情况说，已经够了.如果需要定义长精度类型（对应java的BigDecimal），则需要在数字末尾加上h以表示这是长精度BigDecimal，其后的计算和输出以及逻辑表达式都将按照长精度类型来考虑。
+Beetl里定义的临时变量类型默认对应的java类型是Int型或者double类型，对于模板常用情况，已经够了.如果需要定义长精度类型（对应java的BigDecimal），则需要在数字末尾加上h以表示这是长精度BigDecimal，其后的计算和输出以及逻辑表达式都将按照长精度类型来考虑。
 
 
 
@@ -711,7 +710,7 @@ error代表了一个异常，你可以通过error.message 来获取可能的错�
 
 #### 2.18. 虚拟属性
 
-虚拟属性也是对象的属性，但是虚拟的，非模型对象的真实属性，这样的好处是当模板需要额外的用于显示的属性的时候但又不想更改模型，便可以采用这种办法 如beetl内置的虚拟属性.~size 针对了数组以及集合类型。
+虚拟属性也是对象的属性，是虚拟的，非模型对象的真实属性，这样的好处是当模板需要额外的用于显示的属性的时候但又不想更改模型，便可以采用这种办法 如beetl内置的虚拟属性.~size 针对了数组以及集合类型。
 
 ```javascript
 ${user.gender}
@@ -773,7 +772,7 @@ Beetl内置函数请参考附录，以下列出了常用的函数
 
 #### 2.20. 安全输出
 
-安全输出是任何一个模板引擎必须重视的问题，否则，将极大困扰模板开发者。Beetl中，如果要输出的模板变量为null，则beetl将不做输出，这点不同于JSP，JSP输出null，也不同于Feemarker，如果没有用!,它会报错.
+安全输出是任何一个模板引擎必须重视的问题，否则，将极大困扰模板开发者。Beetl中，如果要输出的模板变量为null，则beetl将不做输出，这点不同于JSP，JSP输出null，也不同于Freemarker，如果没有用!,它会报错.
 
 模板中还有俩种情况会导致模板输出异常
 
@@ -854,13 +853,13 @@ if(has(flag)){
 
 ```javascript
 <%
-if(has(flag)||flag==0){
+if(has(flag)&&flag==0){
         //code
 }
 %>
 ```
 
-如果flag不存在，或者flag存在，但值是0，都将执行if语句
+如果flag存在，而且值是0，都将执行if语句
 
 但是，有更为简便的方法是直接用安全输出，如
 
@@ -872,7 +871,7 @@ if(flag!0==0){
 %>
 ```
 
-flag!0 取值是这样的，如果flag不存在，则为0，如果存在，则取值flag的值，类似三元表达式 has(flag)?falg:0
+flag!0 取值是这样的，如果flag不存在，则为0，如果存在，则取值flag的值，类似三元表达式 if((has(flag)?flag:0)==0)
 
 ##### 2.20.2. 安全输出表达式
 
@@ -1045,7 +1044,7 @@ public class SimpleHtmlTag extends Tag{
 
 #### 2.24. 绑定变量的HTML标签
 
-对于html标签（参考上一节），Beetl还 支持将标签实现类（java代码）里的对象作为临时变量，被标签体引用。此时需要实现GeneralVarTagBinding (此类是Tag的子类） 该类提供另外3个个方法 - void binds(Object… array) 子类在render方法里调用此类以实现变量绑定，绑定顺序同在模板中申明的顺序 - void bind(String name, Object value) 子类在render方法里调用此类以实现变量绑定，name是模板中申明的变量名，用此方法绑定不如binds更灵活，不再推荐 - Object getAttributeValue 获得标签的属性 - Map getAttributes 获得标签的所有属性
+对于html标签（参考上一节），Beetl还 支持将标签实现类（java代码）里的对象作为临时变量，被标签体引用。此时需要实现GeneralVarTagBinding (此类是Tag的子类） 该类提供另外3个个方法 - void binds(Object… array) 子类在render方法里调用此类以实现变量绑定，绑定顺序同在模板中声明的顺序 - void bind(String name, Object value) 子类在render方法里调用此类以实现变量绑定，name是模板中声明的变量名，用此方法绑定不如binds更灵活，不再推荐 - Object getAttributeValue 获得标签的属性 - Map getAttributes 获得标签的所有属性
 
 ```java
 public class TagSample extends GeneralVarTagBinding{
@@ -1167,6 +1166,7 @@ for(value in idList) .....
 
 需要注意的是，如果在类型声明里提供的是类名，而不是类全路径，这样必须在配置文件里申明类的搜索路径(（需要设置配置IMPORT_PACKAGE=包名.;包名.，或者调用Configuration.addPkg))，默认的搜索路径有java.util. 和 java.lang.
 
+> 类型声明本用于eclipse插件用来提示，但eclipse插件暂时没有时间去做，所以类型申明现在不推荐使用
 
 
 #### 2.29. 错误处理
@@ -1220,12 +1220,12 @@ var c = a+2;
 BeetlKit 提供了一些便利的方法让你立刻能使用Beetl模板引擎。提供了如下方法
 
 -   `public static String render(String template, Map<String, Object> paras)` 渲染模板，使用paras参数，渲染结果作为字符串返回
--   `public static void renderTo(String template, Writer writer, Map<String, Object> paras)` 渲染模板，使用paras参数，渲染结果作为字符串返回
+-   `public static void renderTo(String template, Writer writer, Map<String, Object> paras)` 渲染模板，使用paras参数
 -   `public static void execute(String script, Map<String, Object> paras)` 执行某个脚本
 -   `public static Map execute(String script, Map<String, Object> paras, String[] locals)` 执行某个脚本，将locals指定的变量名和模板执行后相应值放入到返回的Map里
 -   `public static Map executeAndReturnRootScopeVars(String script)` 执行某个脚本，返回所有顶级scope的所有变量和值
 -   `public static String testTemplate(String template, String initValue)` 渲染模板template，其变量来源于intValue脚本运行的结果，其所有顶级Scope的变量都将作为template的变量
--   `public static String testTemplate(String template, String initValue)` 渲染模板template，其变量来源于intValue脚本运行的结果，其所有顶级Scope的变量都将作为template的变量
+
 
 ```java
 String template = "var a=1,c=2+1;";
@@ -1251,7 +1251,7 @@ System.out.println(result);
 
 #### 3.1. 配置GroupTemplate
 
-Beetl建议通过配置文件配置配置GroupTemplate，主要考虑到未来可能IDE插件会支持Beetl模板，模板的属性，和函数等如果能通过配置文件获取，将有助于IDE插件识别。 配置GroupTemplate有俩种方法
+Beetl建议通过配置文件配置GroupTemplate，主要考虑到IDE插件未来可能会支持Beetl模板，模板的属性，和函数等如果能通过配置文件获取，将有助于IDE插件识别。 配置GroupTemplate有俩种方法
 
 -   配置文件： 默认配置在/org/beetl/core/beetl-default.properties 里，Beetl首先加载此配置文件，然后再加载classpath里的beetl.properties,并用后者覆盖前者。配置文件通过Configuration类加载，因此加载完成后，也可以通过此类API来修改配置信息
 -   通过调用GroupTemplate提供的方法来注册函数，格式化函数，标签函数等
@@ -1267,11 +1267,11 @@ RESOURCE.root= /
 RESOURCE.autouCheck= true
 ```
 
-第1行指定了模板加载器类，在beetl与其他框架集成的时候，模板加载器不一定根据这个配置，比如spring，他的RESOURCE_LOADER以spring的配置为准
+第1行指定了模板加载器类，在beetl与其他框架集成的时候，模板加载器不一定根据这个配置，比如spring，它的RESOURCE_LOADER以spring的配置为准
 
 第4行指定了模板根目录的路径，此处/ 表示位于classpath 根路径下
 
-第6行是否自动检测模板变化，默认为true，开发环境下自动检测模板是否更改。关于如何如何自定义ResouceLoader，请参考下一章
+第6行是否自动检测模板变化，默认为true，开发环境下自动检测模板是否更改。关于如何自定义ResouceLoader，请参考下一章
 
 配置文件第三部分是扩展部分，如方法，格式化函数等
 
@@ -1341,7 +1341,7 @@ call方法有俩个参数，第一个是数组，这是由模板传入的，对�
 
 ##### 3.2.2. 使用普通的java类
 
-尽管实现Function对于模板引擎来说，是效率最高的方式，但考虑到很多系统只有util类，这些类里的方法仍然可以注册为模板函数。其规则很简单，就是该类的所有public方法。如果需还要Context 变量，则需要在方法最后一个参数加上Context即可，如
+尽管实现Function对于模板引擎来说，是效率最高的方式，但考虑到很多系统只有util类，这些类里的方法仍然可以注册为模板函数。其规则很简单，就是该类的所有public方法。如果还需要Context 变量，则需要在方法最后一个参数加上Context即可，如
 
 ```java
 public class util{
@@ -1360,7 +1360,7 @@ public class util{
 
 ##### 3.2.3. 使用模板文件作为方法
 
-可以不用写java代码，模板文件也能作为一个方法。默认情况下，需要将模板文件放到Root的functions目录下，且扩展名为.html(可以配置文件属性来修改此俩默认值) 方法参数分别是para0,para1…..
+可以不用写java代码，模板文件也能作为一个方法。默认情况下，需要将模板文件放到Root的functions目录下，且扩展名为.html(可以配置文件属性来修改这俩个默认值) 方法参数分别是para0,para1…..
 
 如下root/functions/page.fn
 
@@ -1511,19 +1511,19 @@ tag类提供了如下属性和方法供使用
 
       User类的所有虚拟属性将执行eval方法，此方法根据年纪属性来输出对应的描述。
 
--   public void registerVirtualAttributeEval(VirtualAttributeEval e) 为一些类注册需要属性，VirtualAttributeEval.isSupport方法将判断是否应用虚拟属性到此类
+- public void registerVirtualAttributeEval(VirtualAttributeEval e) 为一些类注册需要属性，VirtualAttributeEval.isSupport方法将判断是否应用虚拟属性到此类
 
-            如下是虚拟属性类的定义
+         如下是虚拟属性类的定义
 
-    ```java
+    ​```java
             public interface VirtualClassAttribute{
                     public Object eval(Object o, String attributeName, Context ctx);
             }
-
+    
             public interface VirtualAttributeEval extends VirtualClassAttribute{
                     public boolean isSupport(Class c, String attributeName);
             }
-    ```
+    ​```
 
 
 
@@ -1708,7 +1708,7 @@ public abstract class Resource{
 
 #### 3.8. 使用CompositeResourceLoader
 
-组合加载器，可以包含多个已有的ResourceLoader，如下代码创建一个包含俩个文件和内存的ResourceLoader
+组合加载器，可以包含多个已有的ResourceLoader，如下代码将创建一个包含俩个文件和内存的ResourceLoader
 
 ```java
 FileResourceLoader fileLoader1 = new FileResourceLoader(path1);
@@ -1758,13 +1758,13 @@ include("db:1"){}
 
 1.  想将错误输出到页面而不是控制台
 
-2.  错误输出美化一下，而不是自带的格式
+2. 错误输出美化一下，而不是自带的格式
 
-3.  错误输出的内容做调整，如不输出错误行的模板内容，而仅仅是错误提示
+3. 错误输出的内容做调整，如不输出错误行的模板内容，而仅仅是错误提示
 
-4.  错误输出到日志系统里
+4. 错误输出到日志系统里
 
-5.  不仅仅输出日志，还抛出异常。默认自带的不会抛出异常，ReThrowConsoleErrorHandler 继承了ConsoleErrorHandler方法，打印异常后抛出
+5. 不仅仅输出日志，还抛出异常。默认自带的不会抛出异常，ReThrowConsoleErrorHandler 继承了ConsoleErrorHandler方法，打印异常后抛出
 
     ```java
         public class ReThrowConsoleErrorHandler extends ConsoleErrorHandler{
@@ -1861,7 +1861,7 @@ public class DefaultNativeSecurityManager implements NativeSecurityManager{
 
       这样，title和user成为全局变量，能被header.html 及其子页面引用到
 
--   继承布局：采用模板变量和include
+- 继承布局：采用模板变量和include
 
     ```javascript
             <%
@@ -1905,6 +1905,8 @@ Beetl性能已经很快了，有些策略能更好提高性能
 -   通过@type 来申明全局变量类型，这不能提高运行性能，但有助于模板维护
 -   自定义ResourceLoader的isModified必须尽快返回，因此每次渲染模板的时候都会调用此方法
 
+
+
 为什么Beetl性能这么好…………(待续)
 
 
@@ -1919,7 +1921,7 @@ Beetl模板引擎模板在同一个虚拟机里缓存Beetl 脚本。也可以将
 
 #### 3.15. 定制输出
 
-占位符输出允许定制。如所有日期类型都按照某个格式化输出，而不需要显示的使用格式化输出，或者为了防止跨脚本站点攻击，需要对类型为String的值做检查等，不必使用格式化函数，可以直接对占位符输出进行定制，代码如下
+占位符输出允许定制。如所有日期类型都按照某个格式化输出，而不需显式的使用格式化输出，或者为了防止跨脚本站点攻击，需要对类型为String的值做检查等，不必使用格式化函数，可以直接对占位符输出进行定制，代码如下
 
 ```java
 PlaceholderST.output = new PlaceholderST.Output(){
@@ -1947,7 +1949,7 @@ for(var i=0;i<10000000;i++){
 %>
 ```
 
-此时，需要定制模板引擎，遇到for循环的时候，应该限制循环次数，譬如，在线体验限制最多循5次，这是通过定义替换GeneralForStatement类来完成的，这个类对应了for(exp;exp;exp) ，我们需要改成如下样子：
+此时，需要定制模板引擎，遇到for循环的时候，应该限制循环次数，譬如，在线体验限制最多循环5次，这是通过定义替换GeneralForStatement类来完成的，这个类对应了for(exp;exp;exp) ，我们需要改成如下样子：
 
 ```java
 class RestrictForStatement extends GeneralForStatement{
@@ -2116,9 +2118,9 @@ Web集成模块向模板提供web标准的变量，做如下说明
 -   request 中的所有attribute.在模板中可以直接通过attribute name 来引用，如在controller层 request.setAttribute("user",user),则在模板中可以直接用${user.name} .
 -   session 提供了session会话，模板通过session["name"],或者session.name 引用session里的变量
 -   request 标准的HTTPServletRequest,可以在模板里引用request属性（getter），如${request.requestURL}。
--   parameter 用户读取用户提交的参数。如${parameter.userId} (仅仅2.2.7以上版本支持)
+-   parameter 读取用户提交的参数。如${parameter.userId} (仅仅2.2.7以上版本支持)
 -   ctxPath Web应用ContextPath
--   servlet 是WebVariable的实例，包含了HTTPSession,HTTPServletRequest,HTTPServletResponse.三个属性，模板中可以通过request.response,session 来引用，如 ${servlet.request.requestURL};
+-   servlet 是WebVariable的实例，包含了HTTPSession,HTTPServletRequest,HTTPServletResponse.三个属性，模板中可以通过request,response,session 来引用，如 ${servlet.request.requestURL};
 -   所有的GroupTemplate的共享变量
 -   pageCtx是一个内置方法 ，仅仅在web开发中，用于设置一个变量，然后可以在页面渲染过程中，调用此api获取，如pageCtx("title","用户添加页面")，在其后任何地方，可以pageCtx("title") 获取该变量。(仅仅2.2.7以上版本支持)
 
@@ -2142,7 +2144,7 @@ public class GlobalExt implements WebRenderExt{
 }
 ```
 
-这样，每次在模板里都可以访问变量sysVersion了，不需要再controller里设置，或者通过servlet filter来设置
+这样，每次在模板里都可以访问变量sysVersion了，不需要在controller里设置，或者通过servlet filter来设置
 
 
 
@@ -2323,7 +2325,7 @@ public ModelAndView index(HttpServletRequest req) {
 
 #### 4.5. SpringMVC集成高级
 
-spring集成还允许注册被spring容器管理的Function，Tag等，也还允许配置多个视图解析器等功能
+spring集成还允许注册被spring容器管理的Function，Tag等，也允许配置多个视图解析器等功能
 
 ```xml
 <bean name="beetlConfig" class="org.beetl.ext.spring.BeetlGroupUtilConfiguration" init-method="init">
@@ -2386,7 +2388,7 @@ public class TestTag extends Tag {
 -   sharedVars,同functions，类型是Map<String, Object>，可以在此设置共享变量
 -   configProperties，类型是Properties，可以覆盖配置文件的某些属性
 
-如下配置，指定了三个视图解析器，一个用于beetl页面渲染，一个用于cms，采用了beetl技术，另外一个一些遗留的页面采用jsp
+如下配置，指定了三个视图解析器，一个用于beetl页面渲染，一个用于cms，采用了beetl技术，另外一个是一些遗留的页面采用jsp
 
 ```xml
 <bean name="beetlConfig" class="org.beetl.ext.spring.BeetlGroupUtilConfiguration" init-method="init">
@@ -2443,7 +2445,7 @@ public class TestTag extends Tag {
 
 Beetl视图解析器属性同spring自带的视图解析器一样，支持contentType,order,prefix,suffix等属性。
 
-注意视图解析器里属性viewNames，这个用于判断controller返回的path到底应该交给哪个视图解析器来做。
+注意视图解析器里的属性viewNames，这个用于判断controller返回的path到底应该交给哪个视图解析器来做。
 
 -   以/template开头的是beetlViewResolver来渲染。
 -   以/cmstemplate是交给cmsBeetlViewResolver渲染。
@@ -2865,13 +2867,13 @@ ENGINE=org.beetl.core.engine.DefaultTemplateEngine
 
 -   配置监听器，监听器指定对*.btl的请求进行监听(假定模板名字都是以btl.结尾)。
 
--   实现监听器，该监听器继承父类 org.beetl.ext.web.SimpleCrossFilter，实现protected abstract GroupTemplate getGroupTemplate()方法。依据不同的集成方式，比如你的环境是Servlet，则只需要调用ServletGroupTemplate.instance().getGroupTemplate(),如果是Jfinal，需要调用BeetlRenderFactory.groupTemplate等
+- 实现监听器，该监听器继承父类 org.beetl.ext.web.SimpleCrossFilter，实现protected abstract GroupTemplate getGroupTemplate()方法。依据不同的集成方式，比如你的环境是Servlet，则只需要调用ServletGroupTemplate.instance().getGroupTemplate(),如果是Jfinal，需要调用BeetlRenderFactory.groupTemplate等
 
--   SimpleCrossFilter 提供一些有用的方法，可以帮助你定制一些特性，可以参考源码了解
+- SimpleCrossFilter 提供一些有用的方法，可以帮助你定制一些特性，可以参考源码了解
 
--   置完成后，对于要测试的模板，可以新建一个对应的伪模型文件，比如要测试模板WebRoot/user/userList.html,可以新建立WebRoot/values/user/userList.html.var 。 values是监听器默认的伪模型的根目录
+- 置完成后，对于要测试的模板，可以新建一个对应的伪模型文件，比如要测试模板WebRoot/user/userList.html,可以新建立WebRoot/values/user/userList.html.var 。 values是监听器默认的伪模型的根目录
 
--   编辑伪模型文件，对应于userList.html需要的全局变量，userList.html.var可以申明这些些变量
+- 编辑伪模型文件，对应于userList.html需要的全局变量，userList.html.var可以申明这些些变量
 
     ```javascript
             var proudct = {id:1,name:'测试产品',pic:'xxxx.jpg'};
@@ -2879,9 +2881,9 @@ ENGINE=org.beetl.core.engine.DefaultTemplateEngine
             var session= {admin:{id:1,name:'admin'}};
     ```
 
--   通过浏览器直接访问[http://ip:port/user/userList.html](http://ip:port/user/userList.html) ，监听器会预先执行userList.html.var，并将返回值作为模板的全局变量，传给userList.html
+- 通过浏览器直接访问[http://ip:port/user/userList.html](http://ip:port/user/userList.html) ，监听器会预先执行userList.html.var，并将返回值作为模板的全局变量，传给userList.html
 
--   可以将一些公共的变量放到WebRoot/values/common.var里（比如上面代码的session）. 监听器会先执行common.var,然后再执行userList.html.var
+- 可以将一些公共的变量放到WebRoot/values/common.var里（比如上面代码的session）. 监听器会先执行common.var,然后再执行userList.html.var
 
 >   直接访问模板前提是使用了伪模型，这与实际的项目采用的模型并不一致，因此当模板采用伪模型验证后，需要重启web应用，才能使用真正的模型去测试，否则，模板引擎会报错，这是因为beetl默认的FastRuntimeEngine会根据模型优化模板，对同一个模板不同的模型会报错，除非采用DefaultTemplateEngine 或者页面申明类型变量是动态的。
 
@@ -2984,7 +2986,7 @@ ajax 片段渲染也支持默认情况下不渲染，仅仅做为一个片段使
 
 #### 4.13. 在页面输出错误提示信息
 
-2.2.3版本以后，新增加org.beetl.ext.web.WebErrorHandler,可以在web开发的时候在页面输出提示信息，在产品模式下载后台输出提示信息（通过配置属性ESOURCE.autoCheck= true来认为是开发模式），仅仅需要配置如下:
+2.2.3版本以后，新增加org.beetl.ext.web.WebErrorHandler,可以在web开发的时候在页面输出提示信息，在产品模式下在后台输出提示信息（通过配置属性ESOURCE.autoCheck= true来认为是开发模式），仅仅需要配置如下:
 
 ```properties
 ERROR_HANDLER = org.beetl.ext.web.WebErrorHandler
@@ -3095,42 +3097,42 @@ spelString: SpEL表达式字符串，必传(否则返回null) rootObject: 作为
       ${spel('#root.intArray.?[#this>10]', {intArray: intArray})}
     ```
 
--   以Bean对象为根对象
+- 以Bean对象为根对象
 
     ```javascript
             <% var now = date(); %>
             ${spel('#root.year + 1900', now)}
     ```
 
--   直接new对象
+- 直接new对象
 
     ```javascript
             ${spel('(new java.util.Date()).year + 1900')}
     ```
 
--   直接引用Spring Bean
+- 直接引用Spring Bean
 
     ```javascript
             ${spel('@testBean')}
     ```
 
--   默认变量
+- 默认变量
 
--   \#root 表示SpEL的根对象, 由spel函数第二参数传入，默认是一个空map
+- \#root 表示SpEL的根对象, 由spel函数第二参数传入，默认是一个空map
 
--   \#context 表示Beetl执行上下文
+- \#context 表示Beetl执行上下文
 
--   \#global 表示Beetl的共享变量Map，由于Beetl上下文无法获取临时变量名，临时变量建议使用根对象的方式传入
+- \#global 表示Beetl的共享变量Map，由于Beetl上下文无法获取临时变量名，临时变量建议使用根对象的方式传入
 
--   \#ctxPath 表示Servlet Context Path（由Beetl WebRender提供）
+- \#ctxPath 表示Servlet Context Path（由Beetl WebRender提供）
 
--   \#servlet 可以从中获取到Servlet request，response，session原生实例（由Beetl WebRender提供）
+- \#servlet 可以从中获取到Servlet request，response，session原生实例（由Beetl WebRender提供）
 
--   \#parameter 表示请求参数Map（由Beetl WebRender提供）
+- \#parameter 表示请求参数Map（由Beetl WebRender提供）
 
--   \#request 表示请求对象（由Beetl WebRender提供）
+- \#request 表示请求对象（由Beetl WebRender提供）
 
--   \#session 表示会话域属性Map（由Beetl WebRender提供）
+- \#session 表示会话域属性Map（由Beetl WebRender提供）
 
 sputil 提供了spring内置的一些功能，如
 
@@ -3220,60 +3222,60 @@ Spring Security Expression相关语法，请阅读： [http://docs.spring.io/sp
       如果想往子模板中传入参数，则可以后面跟一个json变量
 
     ```javascript
-      <% include("/header.html",{'user':user,'id',user.id}){} %>
+      <% include("/header.html",{'user':user,'id':user.id}){} %>
     ```
 
       这样user，和id 可以在header.html被引用，并成为header.html的全局变量
 
       >   (beetl1.2 也叫includeFileTemplate ，2.0仍然支持，但不再文档里体现了)
 
--   layout 提供一个布局功能，每个页面总是由一定布局，如页面头，菜单，页面脚，以及正文。 layout标签允许为正文指定一个布局，如下使用方式
+- layout 提供一个布局功能，每个页面总是由一定布局，如页面头，菜单，页面脚，以及正文。 layout标签允许为正文指定一个布局，如下使用方式
 
-            content.html内容如下：
+         content.html内容如下：
 
-    ```javascript
+    ​```javascript
             <%
             //content.html内容如下：
             layout("/inc/layout.html"){ %>
             this is 正文
             ..........
             <% } %>
-    ```
-
+    ​```
+    
             layout.html 是布局文件，内容如下
-
-    ```javascript
+    
+    ​```javascript
             <% include("/inc/header.html"){} %>
             this is content:${layoutContent}
             this is footer:
-    ```
-
+    ​```
+    
             运行content.html模板文件后，，正文文件的内容将被替换到layoutContent的地方，变成如下内容
-
-    ```javascript
+    
+    ​```javascript
             this is header
             this is content:this is 正文
             ............
             this is footer:
-    ```
-
+    ​```
+    
             如果想往layout页面传入参数，则传入一个json变量，如下往layout.html页面传入一个用户登录时间
-
-    ```javascript
+    
+    ​```javascript
             <% layout("/inc/header.html",{'date':user.loginDate,'title':"内容页面"}){ %>
             this is 正文
             ..........
             <% } %>
-    ```
-
+    ​```
+    
             如果layoutContent 命名有冲突，可以在layout第三个参数指定，如
-
-    ```javascript
+    
+    ​```javascript
             <% layout("/inc/header.html",{'date':user.loginDate,'title':"内容页面"},"myLayoutContent"){ %>
             this is 正文
             ..........
             <% } %>
-    ```
+    ​```
 
 -   cache 能Cache标签的内容，并指定多长时间刷新，如
 
@@ -3286,8 +3288,8 @@ Spring Security Expression相关语法，请阅读： [http://docs.spring.io/sp
             需要指定三个参数
 
     -   第一个是cache的Key值
-    -   第二个是缓存存在的时间，秒为单位
-    -   第三个表示是否强制刷新，false表示不，true表示强制刷新
+    - 第二个是缓存存在的时间，秒为单位
+    - 第三个表示是否强制刷新，false表示不，true表示强制刷新
 
           Cache默认实现org.beetl.ext.tag.cache.SimpleCacheManager. 你可以设置你自己的Cache实现，通过调用CacheTag. cacheManager= new YourCacheImplementation();
 
@@ -3301,7 +3303,7 @@ Spring Security Expression相关语法，请阅读： [http://docs.spring.io/sp
       public void clearAll(String... keys);
     ```
 
--   includeJSP,可以在模板里包括一个jsp文件，如：
+- includeJSP,可以在模板里包括一个jsp文件，如：
 
     ```javascript
             <%
@@ -3321,7 +3323,7 @@ Spring Security Expression相关语法，请阅读： [http://docs.spring.io/sp
 
 #### 5.4. 性能优化的秘密
 
-Beetl2.0目前只完成了解释引擎，使用解释引擎好处是可以适用于各种场景，性能测试表明，Beetl2.0引擎是Freemaker的4－6倍，跟最好的 的编译引擎性能相比，也相差只有30%百分点。为什么Beetl能跑的如此之快呢，简单的说，有如下策略
+Beetl2.0目前只完成了解释引擎，使用解释引擎好处是可以适用于各种场景，性能测试表明，Beetl2.0引擎是Freemaker的4－6倍，跟最好的编译引擎性能相比，也相差只有30%百分点。为什么Beetl能跑的如此之快呢，简单的说，有如下策略
 
 -   优化IO输出，允许使用字节直接输出，模板中的静态文本事先转化为字节
 -   encode优化，对于number类型，输出通常是.toString 转化成String，然后encode输出，这中间浪费了大量的资源，Beetl实现了encode，输出一步到位
