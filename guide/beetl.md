@@ -3092,21 +3092,21 @@ spelString: SpEL表达式字符串，必传(否则返回null) rootObject: 作为
 -   列表筛选（以自定义Map为根对象传入局部变量）
 
     ```javascript
-      <% var intArray = [12, 1, 2, 3]; %>
-      ${spel('#root.intArray.?[#this>10]', {intArray: intArray})}
+<% var intArray = [12, 1, 2, 3]; %>
+${spel('#root.intArray.?[#this>10]', {intArray: intArray})}
     ```
 
 - 以Bean对象为根对象
 
     ```javascript
-            <% var now = date(); %>
-            ${spel('#root.year + 1900', now)}
+<% var now = date(); %>
+${spel('#root.year + 1900', now)}
     ```
 
 - 直接new对象
 
     ```javascript
-            ${spel('(new java.util.Date()).year + 1900')}
+${spel('(new java.util.Date()).year + 1900')}
     ```
 
 - 直接引用Spring Bean
@@ -3173,29 +3173,29 @@ sputil.javaScript(String input)
 -   auth() 对应类: org.beetl.ext.spring.AuthenticationFunction 方法无参数 返回值: 返回当前安全上下文中的用户认证凭证Authentication实例 如果当前环境不存在Spring Security安全上下文，将返回null值
 -   urlIf(\<url\>, \<method\>) 对应类: org.beetl.ext.spring.AccessUrlIfFunction 参数: url: 字符串表示的测试URL Path，不需要指定Context Path，缺省会直接返回true method: 字符串表示的访问方式, 默认为GET, 建议全大写 返回值: 测试当前登录用户是否能访问指定的URL Path, 返回true or false
 
-示例:
+    示例:
 
-```javascript
+    ```javascript
 urlIf('/system/admin_update.do', 'POST'))
-```
+    ```
 
-如果当前环境不存在Spring Security安全上下文，将返回true 如果当前环境不存在用户认证凭证，作为匿名登录进行测试
+    如果当前环境不存在Spring Security安全上下文，将返回true 如果当前环境不存在用户认证凭证，作为匿名登录进行测试
 
 -   expIf(\<exp\>) 对应类: org.beetl.ext.spring.AccessExpressionIfFunction 参数: exp: Spring Security安全表达式，缺省会直接返回true 返回值: 测试当前登录用户是否满足指定的安全表达式，返回true or false 示例:
 
     ```javascript
-      expIf('isAuthenticated()')
+expIf('isAuthenticated()')
     ```
 
-如果当前环境不存在Spring Security安全上下文，将返回true 如果当前环境不存在用户认证凭证，作为匿名登录进行测试
+    如果当前环境不存在Spring Security安全上下文，将返回true 如果当前环境不存在用户认证凭证，作为匿名登录进行测试
 
-注意: 使用此方法，必须开启Spring Security的expression功能(use-expressions="true")：
+    注意: 使用此方法，必须开启Spring Security的expression功能(use-expressions="true")：
 
-```xml
+    ```xml
 <sec:http auto-config="true" use-expressions="true"></sec:http>
-```
+    ```
 
-Spring Security Expression相关语法，请阅读： [http://docs.spring.io/spring-security/site/docs/current/reference/htmlsingle/#el-access](http://docs.spring.io/spring-security/site/docs/current/reference/htmlsingle/#el-access)
+    Spring Security Expression相关语法，请阅读： [http://docs.spring.io/spring-security/site/docs/current/reference/htmlsingle/#el-access](http://docs.spring.io/spring-security/site/docs/current/reference/htmlsingle/#el-access)
 
 ##### 5.1.7. shiro
 
@@ -3290,32 +3290,30 @@ this is 正文
     - 第二个是缓存存在的时间，秒为单位
     - 第三个表示是否强制刷新，false表示不，true表示强制刷新
 
-          Cache默认实现org.beetl.ext.tag.cache.SimpleCacheManager. 你可以设置你自己的Cache实现，通过调用CacheTag. cacheManager= new YourCacheImplementation();
+      Cache默认实现org.beetl.ext.tag.cache.SimpleCacheManager. 你可以设置你自己的Cache实现，通过调用CacheTag. cacheManager= new YourCacheImplementation();
 
-          可以在程序里调用如下方法手工删除Cache：
+      可以在程序里调用如下方法手工删除Cache：
 
     ```java
-      public void clearAll();
-
-      public void clearAll(String key);
-
-      public void clearAll(String... keys);
+public void clearAll();
+public void clearAll(String key);
+public void clearAll(String... keys);
     ```
 
 - includeJSP,可以在模板里包括一个jsp文件，如：
 
     ```javascript
-            <%
-            includeJSP("/xxxx.jsp",{"key":"value"}){}
-            %>
+<%
+includeJSP("/xxxx.jsp",{"key":"value"}){}
+%>
     ```
 
-            key value 都是字符串，将以parameter的形式提供给jsp，因此jsp可以通过request.getParameter("key")来获取参数
+     key value 都是字符串，将以parameter的形式提供给jsp，因此jsp可以通过request.getParameter("key")来获取参数
 
-            主要注意的是，这个标签并非内置，需要手工注册一下
+     主要注意的是，这个标签并非内置，需要手工注册一下
 
     ```java
-            groupTemplate.registerTag("incdlueJSP",org.beetl.ext.jsp.IncludeJSPTag.class);
+groupTemplate.registerTag("incdlueJSP",org.beetl.ext.jsp.IncludeJSPTag.class);
     ```
 
 

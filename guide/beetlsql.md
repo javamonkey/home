@@ -479,7 +479,6 @@ String md5 = sql.executeOnConnection(new OnConnection<String>(){
 });
 ```
 
-    ​
 
 #### 3.6. 其他
 
