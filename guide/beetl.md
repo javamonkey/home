@@ -1513,17 +1513,16 @@ tag类提供了如下属性和方法供使用
 
 - public void registerVirtualAttributeEval(VirtualAttributeEval e) 为一些类注册需要属性，VirtualAttributeEval.isSupport方法将判断是否应用虚拟属性到此类
 
-         如下是虚拟属性类的定义
+    如下是虚拟属性类的定义
 
-    ​```java
-            public interface VirtualClassAttribute{
-                    public Object eval(Object o, String attributeName, Context ctx);
-            }
-    
-            public interface VirtualAttributeEval extends VirtualClassAttribute{
-                    public boolean isSupport(Class c, String attributeName);
-            }
-    ​```
+    ```java
+public interface VirtualClassAttribute{
+        public Object eval(Object o, String attributeName, Context ctx);
+}
+public interface VirtualAttributeEval extends VirtualClassAttribute{
+        public boolean isSupport(Class c, String attributeName);
+}
+    ```
 
 
 
@@ -3231,63 +3230,63 @@ Spring Security Expression相关语法，请阅读： [http://docs.spring.io/sp
 
 - layout 提供一个布局功能，每个页面总是由一定布局，如页面头，菜单，页面脚，以及正文。 layout标签允许为正文指定一个布局，如下使用方式
 
-         content.html内容如下：
+    content.html内容如下：
 
-    ​```javascript
-            <%
-            //content.html内容如下：
-            layout("/inc/layout.html"){ %>
-            this is 正文
-            ..........
-            <% } %>
+    ```javascript
+<%
+//content.html内容如下：
+layout("/inc/layout.html"){ %>
+this is 正文
+..........
+<% } %>
     ​```
     
-            layout.html 是布局文件，内容如下
+    layout.html 是布局文件，内容如下
     
-    ​```javascript
-            <% include("/inc/header.html"){} %>
-            this is content:${layoutContent}
-            this is footer:
+    ```javascript
+<% include("/inc/header.html"){} %>
+this is content:${layoutContent}
+this is footer:
     ​```
     
-            运行content.html模板文件后，，正文文件的内容将被替换到layoutContent的地方，变成如下内容
+    运行content.html模板文件后，，正文文件的内容将被替换到layoutContent的地方，变成如下内容
     
-    ​```javascript
-            this is header
-            this is content:this is 正文
-            ............
-            this is footer:
+    ```javascript
+this is header
+this is content:this is 正文
+............
+this is footer:
+    ```
+    
+    如果想往layout页面传入参数，则传入一个json变量，如下往layout.html页面传入一个用户登录时间
+    
+    ```javascript
+<% layout("/inc/header.html",{'date':user.loginDate,'title':"内容页面"}){ %>
+this is 正文
+..........
+<% } %>
     ​```
     
-            如果想往layout页面传入参数，则传入一个json变量，如下往layout.html页面传入一个用户登录时间
+    如果layoutContent 命名有冲突，可以在layout第三个参数指定，如
     
-    ​```javascript
-            <% layout("/inc/header.html",{'date':user.loginDate,'title':"内容页面"}){ %>
-            this is 正文
-            ..........
-            <% } %>
-    ​```
-    
-            如果layoutContent 命名有冲突，可以在layout第三个参数指定，如
-    
-    ​```javascript
-            <% layout("/inc/header.html",{'date':user.loginDate,'title':"内容页面"},"myLayoutContent"){ %>
-            this is 正文
-            ..........
-            <% } %>
+    ```javascript
+<% layout("/inc/header.html",{'date':user.loginDate,'title':"内容页面"},"myLayoutContent"){ %>
+this is 正文
+..........
+<% } %>
     ​```
 
 -   cache 能Cache标签的内容，并指定多长时间刷新，如
 
     ```javascript
-            <% :cache('key2',10,false){  %>
-            内容体
-            <% } %>
+<% :cache('key2',10,false){  %>
+内容体
+<% } %>
     ```
 
-            需要指定三个参数
+    需要指定三个参数
 
-    -   第一个是cache的Key值
+    - 第一个是cache的Key值
     - 第二个是缓存存在的时间，秒为单位
     - 第三个表示是否强制刷新，false表示不，true表示强制刷新
 
@@ -3339,7 +3338,7 @@ Beetl2.0目前只完成了解释引擎，使用解释引擎好处是可以适用
 >   -   Beetl 性能揭秘 2 ：语言如何存取变量 [http://my.oschina.net/xiandafu/blog/293167](http://my.oschina.net/xiandafu/blog/293167)
 >   -   Beetl 性能揭秘 1 ：如何输出一个整型变量 [http://my.oschina.net/xiandafu/blog/284823](http://my.oschina.net/xiandafu/blog/284823)
 
-#### 5.5. eclipse 插件
+#### 5.5. Eclipse 插件
 
 
 * 启动Eclipse
@@ -3350,26 +3349,25 @@ Beetl2.0目前只完成了解释引擎，使用解释引擎好处是可以适用
 
 * 弹出的对话框中Name随意填写，如填写“beetl”，Location请填写
 
-   ~~~
-   http://ibeetl.com/eclipse/
-   ~~~
+   > http://ibeetl.com/eclipse/
 
 选中您要安装的Beetl Eclipse Plugin，按提示依次Next，直至Finish重启Eclipse即可.
 
 使用说明：
-1 工程属性里有个beetl属性，可以指定定界符号等，默认是<%%> ${}。也可以指定模板根目录（可选，不必手工填写，在模板单击定位里会提示你选择）
-2 ctrl-2 定位到下一个beetl 块
-3 ctrl-3 定位到上一个beetl块
-4 ctrl-4 将普通文件以beetl editor方式打开，并保持同步编辑 
-5 ctrl-5 静态文本全部折叠和打开静态文本折叠
-6 可以ctrl+单击字符串定位到字符串对应的模板文件，第一次使用的时候，需要选择模板根目录，随后，也可以在project属性的beetl配置里配置模板根目录
-7 alt-/ 进行上下文提示。也可以键入此快速输入定界符号和占位符号
-8 alt-shift-p 从{ 快速移动到 匹配的}，或者反之亦然。如果只单击{ 则会框选住匹配的} 而光标不移动
-9 选中任何id，都能全文框选住同样的id。
-11 ctrl-/ 单行注释，或者取消注释
-12 通常eclipse具有的快捷操作方式，beetl仍然予以保留不变 
-13 具备一定的错误提示，目前只提示第一个发现的错误。
-14 双击{ } 可以选中之间的内容
+
+1. 工程属性里有个beetl属性，可以指定定界符号等，默认是<%%> ${}。也可以指定模板根目录（可选，不必手工填写，在模板单击定位里会提示你选择）
+2. ctrl-2 定位到下一个beetl 块
+3. ctrl-3 定位到上一个beetl块
+4. ctrl-4 将普通文件以beetl editor方式打开，并保持同步编辑 
+5. ctrl-5 静态文本全部折叠和打开静态文本折叠
+6. 可以ctrl+单击字符串定位到字符串对应的模板文件，第一次使用的时候，需要选择模板根目录，随后，也可以在project属性的beetl配置里配置模板根目录
+7. alt-/ 进行上下文提示。也可以键入此快速输入定界符号和占位符号
+8. alt-shift-p 从{ 快速移动到 匹配的}，或者反之亦然。如果只单击{ 则会框选住匹配的} 而光标不移动
+9. 选中任何id，都能全文框选住同样的id。
+11. ctrl-/ 单行注释，或者取消注释
+12. 通常eclipse具有的快捷操作方式，beetl仍然予以保留不变 
+13. 具备一定的错误提示，目前只提示第一个发现的错误。
+14. 双击{ } 可以选中之间的内容
 
 
 #### 5.6. 性能测试对比
@@ -3401,7 +3399,7 @@ Beetl2.0目前只完成了解释引擎，使用解释引擎好处是可以适用
 >
 >   这个性能测试基本上结合了国内外的模板引擎，随着JDK版本的升级，JDK8提高了反射能力，减少了和Freemarker等模板引擎的性能差距，但Beetl依旧以3倍以上的性能优势秒杀Freemarker。
 
-#### 5.6. Beetl 开发团队
+#### 5.7. Beetl 开发团队
 
 作者
 
