@@ -2119,7 +2119,7 @@ Trans.rollback()
 这章补充一下结果集和java类型的映射，以及事务管理
 
 
-#### 25.1 ResultSet结果集到Bean的转化
+#### 25.1. ResultSet结果集到Bean的转化
 数据库返回的ResultSet将根据Pojo对象的属性来做适当的转化，比如对于数据库如果定义了一个浮点类型，而Java端属性如果是double，则转成double，如果是BigDecimal，则转成BigDecial,如果定义为int类型，则转为int类型。BeanProcessor 类负责处理这种转化，开发者也可以实现自己的BeanProcessor来为特定的sql做转化，比如将数据库日期类型转为Java的Long类型。
 如在BeanProcessor.createBean代码里
 
@@ -2137,7 +2137,7 @@ this.callSetter(bean, prop, value,propType);
 
 BeanProcessor 会根据属性类型取出对应的处理类，然后处理ResultSet，如果你先自定义处理类，你可以重新添加一个JavaSqlTypeHandler到handlers
 
-#### 25.2 ResultSet结果集到Map的转化
+#### 25.2. ResultSet结果集到Map的转化
 
 ResultSet转为Map的时候，有不一样则，根据数据库返回的列类型来做转化，数据库如果定义了一个浮点类型，则使用默认的BigDecimal类型
 
@@ -2184,7 +2184,7 @@ jdbcJavaTypes.put(new Integer(Types.LONGVARCHAR), String.class); // -1
 
 ```
 
-#### 25.3 PreparedStatment
+#### 25.3. PreparedStatment
 
 BeanProcessor.setPreparedStatementPara用于JDBC设置参数，内容如下:
 
@@ -2245,7 +2245,7 @@ select * from user where create_time>#createTime,typeofDate#
 
 
 
-#### 25.4 自定义BeanProcessor
+#### 25.4. 自定义BeanProcessor
 
 你可以为Beeetsql指定一个默认的BeanProcessor，也可以为某些特定的sqlid指定BeanProcessor，SqlManager提供了俩个方法来完成
 
@@ -2264,7 +2264,7 @@ public void setProcessors(Map<String, BeanProcessor> processors) {
 
 
 
-#### 25.5 事务管理
+#### 25.5. 事务管理
 
 BeetlSql 是一个简单的Dao工具，不含有事务管理，完全依赖web框架的事务管理机制，监听开始事务，结束事务等事件，如果你使用Spring，JFinal框架，无需担心事务，已经集成好了，如果你没有这些框架，也可以用Beetlsq
 
