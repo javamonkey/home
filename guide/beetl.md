@@ -3339,9 +3339,40 @@ Beetl2.0目前只完成了解释引擎，使用解释引擎好处是可以适用
 >   -   Beetl 性能揭秘 2 ：语言如何存取变量 [http://my.oschina.net/xiandafu/blog/293167](http://my.oschina.net/xiandafu/blog/293167)
 >   -   Beetl 性能揭秘 1 ：如何输出一个整型变量 [http://my.oschina.net/xiandafu/blog/284823](http://my.oschina.net/xiandafu/blog/284823)
 
+#### 5.5. eclipse 插件
 
 
-#### 5.5. 性能测试对比
+* 启动Eclipse
+
+* 打开菜单栏按一下菜单路径依次打开
+
+   Help -> Install New Softwave… ->点击Add按钮弹出一个对话框
+
+* 弹出的对话框中Name随意填写，如填写“beetl”，Location请填写
+
+   ~~~
+   http://ibeetl.com/eclipse/
+   ~~~
+
+选中您要安装的Beetl Eclipse Plugin，按提示依次Next，直至Finish重启Eclipse即可.
+
+使用说明：
+1 工程属性里有个beetl属性，可以指定定界符号等，默认是<%%> ${}。也可以指定模板根目录（可选，不必手工填写，在模板单击定位里会提示你选择）
+2 ctrl-2 定位到下一个beetl 块
+3 ctrl-3 定位到上一个beetl块
+4 ctrl-4 将普通文件以beetl editor方式打开，并保持同步编辑 
+5 ctrl-5 静态文本全部折叠和打开静态文本折叠
+6 可以ctrl+单击字符串定位到字符串对应的模板文件，第一次使用的时候，需要选择模板根目录，随后，也可以在project属性的beetl配置里配置模板根目录
+7 alt-/ 进行上下文提示。也可以键入此快速输入定界符号和占位符号
+8 alt-shift-p 从{ 快速移动到 匹配的}，或者反之亦然。如果只单击{ 则会框选住匹配的} 而光标不移动
+9 选中任何id，都能全文框选住同样的id。
+11 ctrl-/ 单行注释，或者取消注释
+12 通常eclipse具有的快捷操作方式，beetl仍然予以保留不变 
+13 具备一定的错误提示，目前只提示第一个发现的错误。
+14 双击{ } 可以选中之间的内容
+
+
+#### 5.6. 性能测试对比
 
 测试用例一 [https://github.com/javamonkey/ebm](https://github.com/javamonkey/ebm)
 
