@@ -2890,7 +2890,7 @@ ENGINE=org.beetl.core.engine.DefaultTemplateEngine
 
 #### 4.12. 整合ajax的局部渲染技术
 
-越来越多web网站依赖于ajax，如table的翻页，流行方式是浏览器发出ajax请求，后台处理后返回一个json，浏览器端将json数据拆开，拼成一条一条的行数据，然后生成dom节点，追加到表格里。 作为另外一种可选技术，beetl支持局部渲染技术，允许后台处理返回的是一个完成的html片段，这样，前端浏览器可以直接将这个html片段追加到表格里。在我做的性能测试里，俩种方式性能差别不大([http://beetlajax.oschina.mopaas.com/](http://beetlajax.oschina.mopaas.com/))
+越来越多web网站依赖于ajax，如table的翻页，流行方式是浏览器发出ajax请求，后台处理后返回一个json，浏览器端将json数据拆开，拼成一条一条的行数据，然后生成dom节点，追加到表格里。 作为另外一种可选技术，beetl支持局部渲染技术，允许后台处理返回的是一个完成的html片段，这样，前端浏览器可以直接将这个html片段追加到表格里。在我做的性能测试里，俩种方式性能差别不大([http://bbs.ibeetl.com/ajax//](http://bbs.ibeetl.com/ajax/))
 
 比如模板index.html有很多动态内容，有动态生成的菜单，有右侧的top10，也有核心区域的表格，大概内容如下
 
@@ -2918,13 +2918,15 @@ ENGINE=org.beetl.core.engine.DefaultTemplateEngine
 %>
 ```
 
-\#ajax 用于告诉告诉模板引擎，此处是个局部渲染标记，标记为"userTable",对于正常渲染视图"index.html"页面,#ajax标记没什么用处,table仍能得到正常渲染。如果渲染的视图是index.html#userTable,则模板只会渲染#ajax标记得模板片段，其他部分将忽略。关于完整例子，可以参考[http://beetlajax.oschina.mopaas.com/](http://beetlajax.oschina.mopaas.com/)
+\#ajax 用于告诉告诉模板引擎，此处是个局部渲染标记，标记为"userTable",对于正常渲染视图"index.html"页面,#ajax标记没什么用处,table仍能得到正常渲染。如果渲染的视图是index.html#userTable,则模板只会渲染#ajax标记得模板片段，其他部分将忽略。关于完整例子，可以参考[https://git.oschina.net/xiandafu/beetlajax](https://git.oschina.net/xiandafu/beetlajax)
 
 后台代码如下:
 
 ```javascript
 render("/index.html#userTable");
 ```
+
+只需要在模板路径后加上#就表示渲染的并非是整个模板，而是模板的一部分，这一部分由#后面的标记来标示
 
 ajax 片段渲染也支持默认情况下不渲染，仅仅做为一个片段使用，如一个页面有许多后台交互操作，并返回相应的html片段，可以将这些html片段也放到同一个模板里，使用ajax norender，表示渲染整个模板的时候默认并不需要渲染此ajax片段
 
