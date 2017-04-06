@@ -38,7 +38,7 @@
 					</li>
 					<li><a href="/beetlonline"><i class="iconfont icon-trial"></i> {{i18n.trial}}</a></li>
 	
-					<li><a href="http://42.96.162.109/bbs/bbs/index/1.html"><i class="iconfont icon-forum"></i> {{i18n.forum}}</a></li>
+					<li><a href="http://bbs.ibeetl.com/bbs/bbs/index/1.html"><i class="iconfont icon-forum"></i> {{i18n.forum}}</a></li>
 	
 					<li>
 						<a href="javascript:;"><i class="iconfont icon-download"></i> {{i18n.download}}</a>
@@ -65,7 +65,7 @@
 				</nav>
 			</div>
 			<transition appear>
-			<form v-show="tab==1" method="POST" action="http://42.96.162.109/beetlonline/t" target="result" @submit="run">
+			<form v-show="tab==1" method="POST" action="http://121.42.237.11/beetlonline/t" target="result" @submit="run">
 				<label>{{i18n.chapter}}</label>
 				<select class="form-select" v-model="chapter">
 					<option v-for="(v,k) of chapterData" :value="k">{{v}}</option>
