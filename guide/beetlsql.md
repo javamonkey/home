@@ -3,7 +3,7 @@
 >   -   作者: 闲大赋,Gavin.King,Sue,Zhoupan,woate,Darren
 >   -   社区 [http://ibeetl.com](http://ibeetl.com/)
 >   -   qq群 219324263
->   -   当前版本 2.8.6
+>   -   当前版本 2.8.9
 
 
 
@@ -37,7 +37,7 @@ maven 方式:
 <dependency>
 	<groupId>com.ibeetl</groupId>
 	<artifactId>beetlsql</artifactId>
-	<version>2.8.6</version>
+	<version>2.8.9</version>
 </dependency>
 ```
 
@@ -94,7 +94,7 @@ public class User  {
 写一个java的Main方法，内容如下
 
 ```java
-ConnectionSource source = ConnectionSourceHelper.getSimple(driver, url, "", userName, password);
+ConnectionSource source = ConnectionSourceHelper.getSimple(driver, url, userName, password);
 DBStyle mysql = new MySqlStyle();
 // sql语句放在classpagth的/sql 目录下
 SQLLoader loader = new ClasspathLoader("/sql");
@@ -1074,7 +1074,7 @@ CHARSET = UTF-8
 OFFSET_START_ZERO =  true
 ```
 
-无论是从0开始还是从开始，都不影响beetlsql根据特定数据库翻译成目标数据库的sql语句，这只是一个个人习惯，如系统只有mysql数据库 那从0开始，比较符合mysql的习惯。
+无论是从0开始还是从开始，都不影响beetlsql根据特定数据库翻译成目标数据库的sql语句，这只是一个约定好的习惯，beetlsql会处理跨数据库翻页的
 
 
 
@@ -1667,7 +1667,7 @@ where name = #name#
 -   MySqlStyle mysql 数据库支持
 -   OracleStyle oralce支持
 -   PostgresStyle postgres数据库支持
--   其他还有SQLServer,H2,SQLLite 数据库支持
+-   其他还有SQLServer,H2,SQLLite ，DB2数据库支持
 
 
 
@@ -1686,6 +1686,10 @@ config.preferBigDecimal(true);
 config.setBaseClass("com.test.User");
 sqlManager.genPojoCode("UserRole","com.test",config);
 ```
+
+生成的路径位于工程的scr目录下，beetlsql自动判断是传统java项目还是maven项目，以使得生成的代码和sql放到正确的位置上。你也可以通过调用GenKit.setSrcPathRelativeToSrc 来设置代码生成路径，调用setResourcePathRelativeToSrc来设置生成的sql文件路径
+
+
 
 config 类用来配置生成喜爱,目前支持生成pojo是否继承某个基类, 是否用BigDecimal代替Double,是否采用Date而不是Timestamp来表示日期，是否是直接输出到控制台而不是文件等 生成的代码如下：
 
@@ -1806,10 +1810,30 @@ SQLResult 如下：
 public class SQLResult {
 	public String jdbcSql;
 	public List<SQLParameter> jdbcPara;
+  	public Object[] toObjectArray(){}
 }
 ```
 
-jdbcSql是渲染过后的sql，jdbcPara 是对应的参数值
+jdbcSql是渲染过后的sql，jdbcPara 是对应的参数描述，toObjectArray 是sql对应的参数值。
+
+SQLParameter 用来描述参数，主要包含了
+
+* value: 参数值
+* expression ，参数对应的表达式,如下sql
+
+~~~sql
+select * from user where id = #id#
+~~~
+
+则expression 就是字符串id
+
+* type，expression 类型，因为sql里有可能是一个复杂的表达式，因此type有如下值
+
+  NAME_GENEARL:简单的表达式，如id
+
+  NAME_EXPRESSION：复杂表达式，比如函数调用，逻辑运算表达式
+
+对于开发者来说，只需呀关心sql对应的参数值即可，因此可以调用toObjectArray得到。
 
 
 
@@ -2144,6 +2168,10 @@ ResultSet转为Map的时候，有不一样则，根据数据库返回的列类�
 
 ```java
 
+String columnName = rsmd.getColumnLabel(i);
+if (null == columnName || 0 == columnName.length()) {
+  columnName = rsmd.getColumnName(i);
+}
 int colType = rsmd.getColumnType(i);
 Class  classType = JavaType.jdbcJavaTypes.get(colType);
 JavaSqlTypeHandler handler = handlers.get(classType);
@@ -2154,7 +2182,6 @@ if(handler==null){
 tp.setIndex(i);
 tp.setTarget(classType);
 Object value = handler.getValue(tp);
-
 ```
 
 JavaType 定义了默认的数据库类型到Java类型的转化，从而获取适当的 JavaSqlTypeHandler，如果没有定义，则使用默认的handler，仅仅使用resultSet.getObject(i)来获取值
@@ -2180,8 +2207,9 @@ jdbcJavaTypes.put(new Integer(Types.BINARY), byte[].class); // -2 二进制
 jdbcJavaTypes.put(new Integer(Types.LONGVARCHAR), String.class); // -1
 
 ...... 
-
 ```
+
+有些框架，在使用Map的时候，添加了更多的灵活性，比如通过columnName 来片段是否该字段是字典字段，比如豆油后缀"_dict",如果是，则从缓存或者查询响应的字典数据，放到ThreadLocal里，以一次性将查询结果，相关字典数据返回
 
 #### 25.3. PreparedStatment
 
