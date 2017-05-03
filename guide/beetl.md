@@ -494,7 +494,7 @@ Beetl支持类似Javascript,java的条件表达式 如\>，\<，==，!=，\>= , 
 ```javascript
 <%
 var a = 1;
-var b=="good";
+var b="good";
 var c = null;
 
 if(a!=1&&b=="good"&&c==null){
@@ -2115,7 +2115,7 @@ return a+1;
 Web集成模块向模板提供web标准的变量，做如下说明
 
 -   request 中的所有attribute.在模板中可以直接通过attribute name 来引用，如在controller层 request.setAttribute("user",user),则在模板中可以直接用${user.name} .
--   session 提供了session会话，模板通过session["name"],或者session.name 引用session里的变量
+-   session 提供了session会话，模板通过session["name"],或者session.name 引用session里的变量.注意，session并非serlvet里的标准session对象。参考servlet来获取HTTPSession。
 -   request 标准的HTTPServletRequest,可以在模板里引用request属性（getter），如${request.requestURL}。
 -   parameter 读取用户提交的参数。如${parameter.userId} (仅仅2.2.7以上版本支持)
 -   ctxPath Web应用ContextPath
