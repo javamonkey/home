@@ -1,10 +1,10 @@
-## Beetl2.7.13 中文文档
+## Beetl2.7.14中文文档
 
 Beetl作者：李家智 <[xiandafu@126.com](mailto:xiandafu@126.com)>
 
 ### 1. 什么是Beetl
 
-Beetl目前版本是2.7.13,相对于其他java模板引擎，具有功能齐全，语法直观,性能超高，以及编写的模板容易维护等特点。使得开发和维护模板有很好的体验。是新一代的模板引擎。总得来说，它的特性如下：
+Beetl目前版本是2.7.14,相对于其他java模板引擎，具有功能齐全，语法直观,性能超高，以及编写的模板容易维护等特点。使得开发和维护模板有很好的体验。是新一代的模板引擎。总得来说，它的特性如下：
 
 -   功能完备：作为主流模板引擎，Beetl具有相当多的功能和其他模板引擎不具备的功能。适用于*各种应用场景*，从对响应速度有很高要求的大网站到功能繁多的CMS管理系统都适合。Beetl本身还具有很多独特功能来完成模板编写和维护，这是其他模板引擎所不具有的。
 -   非常简单：类似Javascript语法和习俗，只要半小时就能通过半学半猜完全掌握用法。拒绝其他模板引擎那种非人性化的语法和习俗。同时也能支持html 标签，使得开发CMS系统比较容易
@@ -69,7 +69,7 @@ Beetl目前版本是2.7.13,相对于其他java模板引擎，具有功能齐全�
 <dependency>
         <groupId>com.ibeetl</groupId>
         <artifactId>beetl</artifactId>
-        <version>2.7.13</version>
+        <version>2.7.14</version>
 </dependency>
 ```
 
@@ -768,6 +768,7 @@ Beetl内置函数请参考附录，以下列出了常用的函数
 -   **type.new** 创建一个对象实例，如 var user = type.new("com.xx.User"); 如果配置了IMPORT_PACKAGE，则可以省略包名，type.new("User")
 -   **type.name** 返回一个实例的名字，var userClassName = type.name(user),返回"User"
 -   **global** 返回一个全局变量值，参数是一个字符串，如 var user = global("user_"+i);
+-   **cookie** 返回指定的cookie对象 ，如var userCook = cookie("user"),allCookies = cookie();
 
 
 #### 2.20. 安全输出
@@ -1516,12 +1517,12 @@ tag类提供了如下属性和方法供使用
     如下是虚拟属性类的定义
 
     ```java
-public interface VirtualClassAttribute{
+    public interface VirtualClassAttribute{
         public Object eval(Object o, String attributeName, Context ctx);
-}
-public interface VirtualAttributeEval extends VirtualClassAttribute{
+    }
+    public interface VirtualAttributeEval extends VirtualClassAttribute{
         public boolean isSupport(Class c, String attributeName);
-}
+    }
     ```
 
 
@@ -2858,31 +2859,95 @@ ENGINE=org.beetl.core.engine.DefaultTemplateEngine
 
 
 
-#### 4.11. 直接Web中运行Beetl模板
+#### 4.11. MVC分离开发
 
-对于web应用来说，必须通过controller才能渲染模板，beetl也可以写完模板后，在未完成controller情况下，直接渲染模板 此方法既可以作为通常的全栈式开发人员使用，也可以用于前端人员单独开发模板用。
+   对于web应用来说，必须通过controller才能渲染模板，beetl也可以写完模板后，在未完成controller情况下，直接渲染模板 此方法既可以作为通常的全栈式开发人员使用，也可以用于前端人员单独开发模板用。
+  Beetl使用WebSimulate来模拟模板渲染或者REST请求返回json数据，WebSimulate 会取出请求路径，然后执行values目录下同一个请求路径的脚本，脚本的顶级变量都将作为全局变量，并渲染请求路径同名的的模板文件。
+  比如请求路径是http://127.0.0.1:8080/user/userlist.html, 则WebSimulate会执行/values/user/userlist.html.var 脚本，获取到所有顶级变量，并渲染/user/userlist.html 页面
+  如果脚本定义了名为json的变量，则WebSimulate 返回的是json数据，否则，则是模板渲染
+  如果脚本里还定义了ajax变量，则认为是局部渲染，ajax变量因为字符串，就是代表ajaxId
+  WebSimulate允许使用path变量，且在values目录下，用$$代替，比如对于REST请求
+  /user/1,如果在values目录下有/values/users/$$.var, 则能匹配上此模拟脚本
+  WebSimulate对应到脚本的时候，允许根据HTTP METHOD对应，比如一个REST的GET请求 /user/1,可以对应/values/user/$$.get.var
+  对应的关系，总是精确匹配优先，对于/user/1,优先精确匹配/user/1.var,其次是/user/$$.get.var, 最后才是/user/$$.var
+  则WebSimulate 在执行脚本的时候，总是先读取/values/common.var, 以获得需要的公共变量
+  
+安装WebSimulate较为简单，以springboot为例子
 
-步骤如下：
+~~~java
+@Controller
+@RequestMapping("/simulate")
+public class SimulateController {
+	@Autowired
+	WebSimulate webSimulate;
+	
+	
+	@RequestMapping("/**/*.html")
+	public void simluateView(HttpServletRequest request,HttpServletResponse response){
+		webSimulate.execute(request, response);
+	}
+	
+	@RequestMapping("/api/**")
+	public void simluateJson(HttpServletRequest request,HttpServletResponse response){
+		webSimulate.execute(request, response);
+	}
+}
+~~~
 
--   配置监听器，监听器指定对*.btl的请求进行监听(假定模板名字都是以btl.结尾)。
+如上，所有以/smulate 开头的请求，都会使用模拟数据来支持分离开发，其中simluateView来模拟视图渲染，simluateJson来模拟REST请求的数据
 
-- 实现监听器，该监听器继承父类 org.beetl.ext.web.SimpleCrossFilter，实现protected abstract GroupTemplate getGroupTemplate()方法。依据不同的集成方式，比如你的环境是Servlet，则只需要调用ServletGroupTemplate.instance().getGroupTemplate(),如果是Jfinal，需要调用BeetlRenderFactory.groupTemplate等
+WebSimulate 初始化代码如下
+~~~java
+@Bean
+	public WebSimulate getWebSmulate(BeetlSpringViewResolver resolver){
+		WebSimulate webSimulate = new WebSimulate(resolver.getConfig().getGroupTemplate()){
+			
+			public String getValuePath(HttpServletRequest request){
+				return this.removePreffix( request.getServletPath());
+			}
 
-- SimpleCrossFilter 提供一些有用的方法，可以帮助你定制一些特性，可以参考源码了解
+		
+			protected String getRenderPath(HttpServletRequest request)
+			{
+				return this.removePreffix( request.getServletPath());
+			}
+			
+			private String removePreffix(String path){
+				return path.replaceFirst("/simulate", "");
+			}
+		};
+		return webSimulate;
+	}
+~~~
 
-- 置完成后，对于要测试的模板，可以新建一个对应的伪模型文件，比如要测试模板WebRoot/user/userList.html,可以新建立WebRoot/values/user/userList.html.var 。 values是监听器默认的伪模型的根目录
+WebSimulate 通常可以直接使用，但本例子中，为了完全模拟，需要去掉/simulate"，这样不必要创建一个/values/simulate
 
-- 编辑伪模型文件，对应于userList.html需要的全局变量，userList.html.var可以申明这些些变量
+如上配置完毕，如果普通模板请求
+~~~
+/simulate/user/userlist.html
+~~~
+将会执行/values/user/userlist.html.var 的脚本，比如，模拟users数据
+~~~javascript
 
-    ```javascript
-            var proudct = {id:1,name:'测试产品',pic:'xxxx.jpg'};
-            var userList = [{id:2,name:'用户一'}];
-            var session= {admin:{id:1,name:'admin'}};
-    ```
+var users = [{"name":"xiandafu"}，{"name":"lucy"}];
 
-- 通过浏览器直接访问[http://ip:port/user/userList.html](http://ip:port/user/userList.html) ，监听器会预先执行userList.html.var，并将返回值作为模板的全局变量，传给userList.html
+~~~
 
-- 可以将一些公共的变量放到WebRoot/values/common.var里（比如上面代码的session）. 监听器会先执行common.var,然后再执行userList.html.var
+如果一个REST请求
+~~~~
+/simulate/api/user/1
+~~~~
+可以创建如下文件/values/api/user/$$.get.var,内容直接返回一个json字符串
+
+~~~javascript
+var json = "{'success':true}";
+~~~
+
+> WebSimulate 构造的时候需要一个实现JsonUtil的类(Beetl并不自带json序列化工具)，这样，对于要返回的json数据，可以不必向上面的例子那样，返回json字符串，可以返回一个对象，如Map，然后交给jsonUtil来序列化返回客户端
+
+> 脚本本身可以获取模拟请求的参数，如session，parameter等，从而灵活的模拟数据，具体请参考WebSimulate源码
+
+
 
 >   直接访问模板前提是使用了伪模型，这与实际的项目采用的模型并不一致，因此当模板采用伪模型验证后，需要重启web应用，才能使用真正的模型去测试，否则，模板引擎会报错，这是因为beetl默认的FastRuntimeEngine会根据模型优化模板，对同一个模板不同的模型会报错，除非采用DefaultTemplateEngine 或者页面申明类型变量是动态的。
 
@@ -3024,6 +3089,7 @@ ERROR_HANDLER = org.beetl.ext.web.WebErrorHandler
 -   **type.new** 创建一个对象实例，如 var user = type.new("com.xx.User"); 如果配置了IMPORT_PACKAGE，则可以省略包名，type.new("User")
 -   **type.name** 返回一个实例的名字，var userClassName = type.name(user),返回"User"
 -   **global** 返回一个全局变量值，参数是一个字符串，如 var user = global("user_"+i);
+-   **cookie** 返回指定的cookie对象 ，如var userCook = cookie("user"),allCookies = cookie();
 
 ##### 5.1.2. 字符串相关方法
 
@@ -3094,21 +3160,21 @@ spelString: SpEL表达式字符串，必传(否则返回null) rootObject: 作为
 -   列表筛选（以自定义Map为根对象传入局部变量）
 
     ```javascript
-<% var intArray = [12, 1, 2, 3]; %>
-${spel('#root.intArray.?[#this>10]', {intArray: intArray})}
+    <% var intArray = [12, 1, 2, 3]; %>
+    ${spel('#root.intArray.?[#this>10]', {intArray: intArray})}
     ```
 
 - 以Bean对象为根对象
 
     ```javascript
-<% var now = date(); %>
-${spel('#root.year + 1900', now)}
+    <% var now = date(); %>
+    ${spel('#root.year + 1900', now)}
     ```
 
 - 直接new对象
 
     ```javascript
-${spel('(new java.util.Date()).year + 1900')}
+    ${spel('(new java.util.Date()).year + 1900')}
     ```
 
 - 直接引用Spring Bean
@@ -3173,20 +3239,20 @@ sputil.javaScript(String input)
 下列三个函数只需以函数的方式定义在BeetlGroupUtilConfiguration的functions中即可，与spel函数一样的，函数名声明在functions中，可以更改
 
 -   auth() 对应类: org.beetl.ext.spring.AuthenticationFunction 方法无参数 返回值: 返回当前安全上下文中的用户认证凭证Authentication实例 如果当前环境不存在Spring Security安全上下文，将返回null值
--   urlIf(\<url\>, \<method\>) 对应类: org.beetl.ext.spring.AccessUrlIfFunction 参数: url: 字符串表示的测试URL Path，不需要指定Context Path，缺省会直接返回true method: 字符串表示的访问方式, 默认为GET, 建议全大写 返回值: 测试当前登录用户是否能访问指定的URL Path, 返回true or false
+- urlIf(\<url\>, \<method\>) 对应类: org.beetl.ext.spring.AccessUrlIfFunction 参数: url: 字符串表示的测试URL Path，不需要指定Context Path，缺省会直接返回true method: 字符串表示的访问方式, 默认为GET, 建议全大写 返回值: 测试当前登录用户是否能访问指定的URL Path, 返回true or false
 
     示例:
 
     ```javascript
-urlIf('/system/admin_update.do', 'POST'))
+    urlIf('/system/admin_update.do', 'POST'))
     ```
 
     如果当前环境不存在Spring Security安全上下文，将返回true 如果当前环境不存在用户认证凭证，作为匿名登录进行测试
 
--   expIf(\<exp\>) 对应类: org.beetl.ext.spring.AccessExpressionIfFunction 参数: exp: Spring Security安全表达式，缺省会直接返回true 返回值: 测试当前登录用户是否满足指定的安全表达式，返回true or false 示例:
+- expIf(\<exp\>) 对应类: org.beetl.ext.spring.AccessExpressionIfFunction 参数: exp: Spring Security安全表达式，缺省会直接返回true 返回值: 测试当前登录用户是否满足指定的安全表达式，返回true or false 示例:
 
     ```javascript
-expIf('isAuthenticated()')
+    expIf('isAuthenticated()')
     ```
 
     如果当前环境不存在Spring Security安全上下文，将返回true 如果当前环境不存在用户认证凭证，作为匿名登录进行测试
@@ -3194,7 +3260,7 @@ expIf('isAuthenticated()')
     注意: 使用此方法，必须开启Spring Security的expression功能(use-expressions="true")：
 
     ```xml
-<sec:http auto-config="true" use-expressions="true"></sec:http>
+    <sec:http auto-config="true" use-expressions="true"></sec:http>
     ```
 
     Spring Security Expression相关语法，请阅读： [http://docs.spring.io/spring-security/site/docs/current/reference/htmlsingle/#el-access](http://docs.spring.io/spring-security/site/docs/current/reference/htmlsingle/#el-access)
@@ -3235,55 +3301,56 @@ expIf('isAuthenticated()')
     content.html内容如下：
 
     ```javascript
-<%
-//content.html内容如下：
-layout("/inc/layout.html"){ %>
-this is 正文
-..........
-<% } %>
+    <%
+    //content.html内容如下：
+    layout("/inc/layout.html"){ %>
+    this is 正文
+    ..........
+    <% } %>
     ​```
-    
+
     layout.html 是布局文件，内容如下
-    
-    ```javascript
-<% include("/inc/header.html"){} %>
-this is content:${layoutContent}
-this is footer:
+
+    ​```javascript
+    <% include("/inc/header.html"){} %>
+    this is content:${layoutContent}
+    this is footer:
     ​```
-    
+
     运行content.html模板文件后，，正文文件的内容将被替换到layoutContent的地方，变成如下内容
-    
-    ```javascript
-this is header
-this is content:this is 正文
-............
-this is footer:
+
+    ​```javascript
+    this is header
+    this is content:this is 正文
+    ............
+    this is footer:
     ```
-    
+
     如果想往layout页面传入参数，则传入一个json变量，如下往layout.html页面传入一个用户登录时间
-    
+
     ```javascript
-<% layout("/inc/header.html",{'date':user.loginDate,'title':"内容页面"}){ %>
-this is 正文
-..........
-<% } %>
+    <% layout("/inc/header.html",{'date':user.loginDate,'title':"内容页面"}){ %>
+    this is 正文
+    ..........
+    <% } %>
     ​```
-    
+
     如果layoutContent 命名有冲突，可以在layout第三个参数指定，如
-    
-    ```javascript
-<% layout("/inc/header.html",{'date':user.loginDate,'title':"内容页面"},"myLayoutContent"){ %>
-this is 正文
-..........
-<% } %>
+
+    ​```javascript
+    <% layout("/inc/header.html",{'date':user.loginDate,'title':"内容页面"},"myLayoutContent"){ %>
+    this is 正文
+    ..........
+    <% } %>
     ​```
+    ```
 
--   cache 能Cache标签的内容，并指定多长时间刷新，如
+- cache 能Cache标签的内容，并指定多长时间刷新，如
 
     ```javascript
-<% :cache('key2',10,false){  %>
-内容体
-<% } %>
+    <% :cache('key2',10,false){  %>
+    内容体
+    <% } %>
     ```
 
     需要指定三个参数
@@ -3297,17 +3364,17 @@ this is 正文
       可以在程序里调用如下方法手工删除Cache：
 
     ```java
-public void clearAll();
-public void clearAll(String key);
-public void clearAll(String... keys);
+    public void clearAll();
+    public void clearAll(String key);
+    public void clearAll(String... keys);
     ```
 
 - includeJSP,可以在模板里包括一个jsp文件，如：
 
     ```javascript
-<%
-includeJSP("/xxxx.jsp",{"key":"value"}){}
-%>
+    <%
+    includeJSP("/xxxx.jsp",{"key":"value"}){}
+    %>
     ```
 
      key value 都是字符串，将以parameter的形式提供给jsp，因此jsp可以通过request.getParameter("key")来获取参数
@@ -3315,7 +3382,7 @@ includeJSP("/xxxx.jsp",{"key":"value"}){}
      主要注意的是，这个标签并非内置，需要手工注册一下
 
     ```java
-groupTemplate.registerTag("incdlueJSP",org.beetl.ext.jsp.IncludeJSPTag.class);
+    groupTemplate.registerTag("incdlueJSP",org.beetl.ext.jsp.IncludeJSPTag.class);
     ```
 
 
@@ -3364,10 +3431,10 @@ Beetl2.0目前只完成了解释引擎，使用解释引擎好处是可以适用
 7. alt-/ 进行上下文提示。也可以键入此快速输入定界符号和占位符号
 8. alt-shift-p 从{ 快速移动到 匹配的}，或者反之亦然。如果只单击{ 则会框选住匹配的} 而光标不移动
 9. 选中任何id，都能全文框选住同样的id。
-11. ctrl-/ 单行注释，或者取消注释
-12. 通常eclipse具有的快捷操作方式，beetl仍然予以保留不变 
-13. 具备一定的错误提示，目前只提示第一个发现的错误。
-14. 双击{ } 可以选中之间的内容
+10. ctrl-/ 单行注释，或者取消注释
+11. 通常eclipse具有的快捷操作方式，beetl仍然予以保留不变 
+12. 具备一定的错误提示，目前只提示第一个发现的错误。
+13. 双击{ } 可以选中之间的内容
 
 
 #### 5.6. 性能测试对比
