@@ -3,7 +3,7 @@
 >   -   作者: 闲大赋,Gavin.King,Sue,Zhoupan,woate,Darren
 >   -   社区 [http://ibeetl.com](http://ibeetl.com/)
 >   -   qq群 219324263
->   -   当前版本 2.8.9
+>   -   当前版本 2.8.11
 
 
 
@@ -37,7 +37,7 @@ maven 方式:
 <dependency>
 	<groupId>com.ibeetl</groupId>
 	<artifactId>beetlsql</artifactId>
-	<version>2.8.9</version>
+	<version>2.8.11</version>
 </dependency>
 ```
 
@@ -133,6 +133,8 @@ List<User> list2 = sqlManager.select("user.select",User.class,query2);
 ```
 
 
+
+> BeetlSql2.8.11 提供了 SQLManagerBuilder来链式创建SQLManager
 
 #### 2.4. SQL文件例子
 
@@ -2315,6 +2317,51 @@ DSTransactionManager.commit();
 >
 > getSingle(DataSource ds),返回DefaultConnectionSource具备事务管理。
 >
-> 
->
-> 
+
+
+
+### 25.6. 设置自己的BaseMapper
+
+Beetlsql提供了BaseMapper来内置了CRUD等方法，你可以自己定制属于你的“BaseMapper”
+
+~~~java
+ // 自定义一个基接口, 并获取基接口配置构建器
+ MapperConfigBuilder builder = this.sqlManager.setBaseMapper(MyMapper.class).getBuilder();
+
+/*
+* 这两个方法名与 MyMapper接口保持一致. 为了告诉beetlsql, 遇见这个方法名, 帮我用对应的实现类来处理. 这样扩展性更高,
+* 更自由.不必等着开源作者来提供实现.
+*
+* 里面已经内置BaseMapper的所有方法, 用户只需要在自定义的基接口上定义与BaseMapper相同的方法名就可以使用
+*/
+builder.addAmi("selectCount", new AllCountAmi());
+
+builder.addAmi("selectAll", new AllAmi());
+
+UserDao dao = sqlManager.getMapper(UserDao.class);
+long count = dao.selectCount();
+~~~
+
+如上代码设置了MyMapper 为SQLManager的基础mapper，MyMapper定义如下，仅仅定义了三个内置方法
+~~~java
+public interface MyMapper<T> {
+    long selectCount();
+
+    List<T> selectAll();
+
+    List<Integer> selectIds();
+}
+~~~
+
+通过bulder.addAmi可以为每个方法指定一个是新的实现，Beetlsql已经内置了一些列的实现内，你可以扩展，实现
+
+~~~java
+
+public interface MapperInvoke {
+	public Object call(SQLManager sm,Class entityClass,String sqlId,Method m,Object[] args);
+}
+~~~
+
+如果你想定制自己的"BaseMapper"，请参考org.beetl.sql.core.mapper.internal.* 所有类
+
+
