@@ -3,7 +3,7 @@
 >   -   作者: 闲大赋,Gavin.King,Sue,Zhoupan,woate,Darren
 >   -   社区 [http://ibeetl.com](http://ibeetl.com/)
 >   -   qq群 219324263
->   -   当前版本 2.8.11
+>   -   当前版本 2.8.13
 
 
 
@@ -37,7 +37,7 @@ maven 方式:
 <dependency>
 	<groupId>com.ibeetl</groupId>
 	<artifactId>beetlsql</artifactId>
-	<version>2.8.11</version>
+	<version>2.8.13</version>
 </dependency>
 ```
 
@@ -657,7 +657,7 @@ public interface UserDao extends BaseMapper<User> {
 	@Sql(value=" update user set age = ? where id = ? ")
 	public void updateAge(int age,int id);
 
-	@Sql(value=" select name from user",returnType=String.class)
+	@Sql(value=" select name from user")
 	public List<String> allNames();
 
 }
@@ -699,7 +699,17 @@ public List<User> queryUser(String name,Integer age,int start,int size);
 -   参数列表里如果有List 或者Map[],则期望对应的是一个updateBatch操作
 -   参数列表里如果@RowStart ,@RowSize,则认为是翻页语句
 -   参数里如果有PageQuery,则认为是翻页查询
--   在查询中，返回的是List，但类型非Mapper指定的类型，无论是用@Sql ,还是 @SqlStatement，需要用returnType来说明，如上例子allNames 返回一个List<String>而不是List<User>,因此需要使用returnType做额外说明
+-   注解的returnType 已经在2.8.12 版本以后不再需要，因为用泛型已经能说明返回类型，因此如下俩个是等同的
+
+~~~java
+@Sql(value=" select name from user")
+public List<String> allNames();
+
+@Sql(value=" select name from user",returnType=String.class)
+public List allNames();
+~~~
+
+
 
 Mapper 也支持使用JDBC SQL，这时候需要采用Sql注解
 
@@ -794,9 +804,16 @@ public Long getId() {
 
 
 
-#### 7.3. @ColumnIgnore
+#### 7.3.  忽略属性
+BeetlSql提供InsertIgnore,UpdateIgnore俩个注解,前者用于内置插入的时候忽略，后者用于内置更新的时候忽略。
+```java
+@UpdateIgnore
+public Date getBir(){
+	return  bir;
+}
+```
 
-在beetlsql 内置的insert或者update方法的时候，使用此注解的字段（作用于getter方法）将根据注解的属性来决定是否忽略此字段
+在beetlsql较早版本提供了ColumnIgnore， 提供insert或者update属性用来忽略
 
 ```java
 @ColumnIgnore(insert=true,update=false)
@@ -806,6 +823,8 @@ public Date getBir(){
 ```
 
 如上例子，插入的时候忽略bir属性（往往是因为数据库指定了默认值为当前时间），更新的时候不能忽略 @ColumnIgnore的insert默认是true，update是false，因此也可以直接用 @ColumnIgnore()
+
+
 
 
 
@@ -1329,7 +1348,7 @@ public class YearFunction implements Function{
 -   join, 用逗号连接集合或者数组，并输出？，用于in，如
 
 ```sql
-select * from user where status in ( #join(ids)＃)
+select * from user where status in ( #join(ids)#)
 			-- 输出成  select * from user where status in (?,?,?)
 ```
 

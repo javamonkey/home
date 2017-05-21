@@ -1,10 +1,10 @@
-## Beetl2.7.14中文文档
+## Beetl2.7.15中文文档
 
 Beetl作者：李家智 <[xiandafu@126.com](mailto:xiandafu@126.com)>
 
 ### 1. 什么是Beetl
 
-Beetl目前版本是2.7.14,相对于其他java模板引擎，具有功能齐全，语法直观,性能超高，以及编写的模板容易维护等特点。使得开发和维护模板有很好的体验。是新一代的模板引擎。总得来说，它的特性如下：
+Beetl目前版本是2.7.15,相对于其他java模板引擎，具有功能齐全，语法直观,性能超高，以及编写的模板容易维护等特点。使得开发和维护模板有很好的体验。是新一代的模板引擎。总得来说，它的特性如下：
 
 -   功能完备：作为主流模板引擎，Beetl具有相当多的功能和其他模板引擎不具备的功能。适用于*各种应用场景*，从对响应速度有很高要求的大网站到功能繁多的CMS管理系统都适合。Beetl本身还具有很多独特功能来完成模板编写和维护，这是其他模板引擎所不具有的。
 -   非常简单：类似Javascript语法和习俗，只要半小时就能通过半学半猜完全掌握用法。拒绝其他模板引擎那种非人性化的语法和习俗。同时也能支持html 标签，使得开发CMS系统比较容易
@@ -69,7 +69,7 @@ Beetl目前版本是2.7.14,相对于其他java模板引擎，具有功能齐全�
 <dependency>
         <groupId>com.ibeetl</groupId>
         <artifactId>beetl</artifactId>
-        <version>2.7.14</version>
+        <version>2.7.15</version>
 </dependency>
 ```
 
@@ -2871,7 +2871,7 @@ ENGINE=org.beetl.core.engine.DefaultTemplateEngine
   WebSimulate对应到脚本的时候，允许根据HTTP METHOD对应，比如一个REST的GET请求 /user/1,可以对应/values/user/$$.get.var
   对应的关系，总是精确匹配优先，对于/user/1,优先精确匹配/user/1.var,其次是/user/$$.get.var, 最后才是/user/$$.var
   则WebSimulate 在执行脚本的时候，总是先读取/values/common.var, 以获得需要的公共变量
-  
+
 安装WebSimulate较为简单，以springboot为例子
 
 ~~~java
@@ -3047,6 +3047,18 @@ ajax 片段渲染也支持默认情况下不渲染，仅仅做为一个片段使
 >   -   从用户体验上来讲，Beetl 采用ajax标记，混合了传统的模板渲染和ajax加载。用户进入页面即能看到数据，而经典的ajax json方式还需要异步加载，显示延迟。另外如果页面同时有多个ajax加载，则会对服务器造成很大的压力。
 >   -   关心服务器cpu消耗？ 模板方式消耗更多的cpu，json方式则少点。但是俩者差距并不大。而且更多的web网站面临的情况是有富余的服务器CPU能力
 >   -   关心客户端CPU消耗？ 过多的js无疑是客户端运行慢的主要原因。如果采用经典的json方式，返回的json数据必然还需要经过js的计算和渲染。会影响客户机器cpu。
+
+
+
+符号#ajax 实际上用来标记一个模板渲染片段，它还有个别名的叫#fragment，俩着是一样的，比如
+~~~java
+<%
+#fragment part2:{
+	println("part2");
+
+}
+%>
+~~~
 
 
 
