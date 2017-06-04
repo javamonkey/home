@@ -3,7 +3,7 @@
 >   -   作者: 闲大赋,Gavin.King,Sue,Zhoupan,woate,Darren
 >   -   社区 [http://ibeetl.com](http://ibeetl.com/)
 >   -   qq群 219324263
->   -   当前版本 2.8.13
+>   -   当前版本 2.8.15
 
 
 
@@ -37,7 +37,7 @@ maven 方式:
 <dependency>
 	<groupId>com.ibeetl</groupId>
 	<artifactId>beetlsql</artifactId>
-	<version>2.8.13</version>
+	<version>2.8.15</version>
 </dependency>
 ```
 
@@ -751,8 +751,8 @@ public void queryUser(PageQuery query);
 
 #### 7.1. @AutoID 和 @AssignID ，@SeqID
 
--   @AutoID,作用于getter方法，告诉beetlsql，这是自增主键,对应于数据自增长
--   @AssignID，作用于getter方法，告诉beetlsql，这是程序设定
+-   @AutoID,作用于属性字段或者getter方法，告诉beetlsql，这是自增主键,对应于数据自增长
+-   @AssignID，作用于属性字段或者getter方法，告诉beetlsql，这是程序设定
 
 ```java
 @AssignID()
@@ -805,7 +805,7 @@ public Long getId() {
 
 
 #### 7.3.  忽略属性
-BeetlSql提供InsertIgnore,UpdateIgnore俩个注解,前者用于内置插入的时候忽略，后者用于内置更新的时候忽略。
+BeetlSql提供InsertIgnore,UpdateIgnore俩个注解,作用于属性字段或者getter方法，前者用于内置插入的时候忽略，后者用于内置更新的时候忽略。
 ```java
 @UpdateIgnore
 public Date getBir(){
@@ -883,7 +883,7 @@ public class QueryUser ..
 #### 7.6. @TableTemplate
 
 -   @TableTemplate() 用于模板查询，如果没有任何值，将按照主键降序排，也就是order by 主键名称 desc
--   @DateTemplate()，作用于日期字段的getter方法上，有俩个属性accept 和 compare 方法，分别表示 模板查询中，日期字段如果不为空，所在的日期范围，如
+-   @DateTemplate()，作用于日期字段的属性字段或者getter方法，有俩个属性accept 和 compare 方法，分别表示 模板查询中，日期字段如果不为空，所在的日期范围，如
 
 ```java
 @DateTemplate(accept="minDate,maxDate",compare=">=,<")
@@ -919,6 +919,31 @@ Mapper中的注解，包括常用的	SqlStatement ，SqlStatementType ，Sql,Par
 #### 7.8. ORMQuery
 
 beetlsql 支持在实体类上增加ORMQuery注解,这样对于实体的查询,会触发懒加载,从而实现ORM 查询功能,具体参考ORM 查询一章
+
+
+
+#### 7.9 @Version
+
+注解@Version作用在类型为int,long的属性或者getter方法上，用于乐观锁实现。
+
+~~~java
+public class Credit   implements Serializable{
+	private Integer id ;
+	private Integer balance ;
+	@Version
+	private Integer version ;
+~~~
+
+当调用内置的updateById，或者updateTemlateById的时候，被@Version注解的字段将作为where条件的一部分
+~~~
+┏━━━━━ Debug [credit._gen_updateTemplateById] ━━━
+┣ SQL：	 update `credit` set `balance`=?, `version`=`version`+1 where `id` = ? and `version` = ?
+┣ 参数：	 [15, 1, 5]
+┣ 位置：	 org.beetl.sql.test.QuickTest.main(QuickTest.java:38)
+┣ 时间：	 4ms
+┣ 更新：	 [1]
+┗━━━━━ Debug [credit._gen_updateTemplateById] ━━━
+~~~
 
 
 
