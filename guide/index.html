@@ -20,7 +20,7 @@
 				<label for="toggle_switch"><span class="btn-bar"></span><span class="btn-bar"></span><span class="btn-bar"></span></label>
 				<ul>
 					<li>
-						<a href="javascript:;"><i class="iconfont icon-beetl"></i> Beetl {{i18n.guide.title}}</a>
+						<a href="/guide/#beetl"><i class="iconfont icon-beetl"></i> Beetl {{i18n.guide.title}}</a>
 						<ul>
 							<li><a href="/guide/#beetl"><i class="iconfont icon-guide"></i> {{i18n.guide.standard}}</a></li>
 							<li><a href="/guide/beetl.html" target="_blank"><i class="iconfont icon-wendang"></i> {{i18n.guide.faster}}</a></li>
@@ -28,7 +28,7 @@
 						</ul>
 					</li>
 					<li>
-						<a href="javascript:;"><i class="iconfont icon-beetl"></i> BeetlSQL {{i18n.guide.title}}</a>
+						<a href="/guide/#beetlsql"><i class="iconfont icon-beetl"></i> BeetlSQL {{i18n.guide.title}}</a>
 						<ul>
 							<li><a href="/guide/#beetlsql"><i class="iconfont icon-guide"></i> {{i18n.guide.standard}}</a></li>
 							<li><a href="/guide/beetlsql.html" target="_blank"><i class="iconfont icon-wendang"></i> {{i18n.guide.faster}}</a></li>
@@ -69,9 +69,9 @@
 		</aside>
 	</div>
 	<link href="http://cdn.bootcss.com/github-markdown-css/2.6.0/github-markdown.min.css" rel="stylesheet" >
-	<link href="http://cdn.bootcss.com/highlight.js/9.11.0/styles/github-gist.min.css" rel="stylesheet">
+	<link href="http://cdn.bootcss.com/highlight.js/9.12.0/styles/github-gist.min.css" rel="stylesheet">
 	<link href="http://cdn.bootcss.com/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
-	<script src="http://cdn.bootcss.com/highlight.js/9.11.0/highlight.min.js"></script>
+	<script src="http://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
 	<script src="http://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
 	<script src="http://cdn.bootcss.com/lodash.js/4.17.4/lodash.min.js"></script>
 	<script src="http://cdn.bootcss.com/vue/2.3.3/vue.min.js"></script>
@@ -82,16 +82,16 @@
 	var lang={"zh-cn":{guide:{title:"文档",standard:"在线文档",faster:"极速文档",md:"Markdown下载"},trial:"在线体验",forum:"论坛",download:"下载",donate:"捐助作者",language:"English"},en:{guide:{title:"Guide",standard:"Online Guide",faster:"Faster Ed.",md:"Markdown"},trial:"Trial",forum:"Forum",download:"Download",donate:"Donate",language:"中文"}};
 	var localize = (localStorage.localize||navigator.language||navigator.browserLanguage).toLowerCase();
 	if(localize!='zh-cn')localize='en';
-	function loadDoc(){var a=["beetl","beetlsql"],b=location.hash.substr(1);a.indexOf(b)<0&&(b="beetl"),document.title=b+"中文文档",toc=[],$(window).scrollTop(0),NProgress.start(),$.get(b+".md?_="+(new Date).getDay(),function(a){marked(a,{renderer:render,highlight:function(a){return hljs.highlightAuto(a).value}},function(a,b){beetl.search="",beetl.doc=b,Vue.set(beetl,"nav",toc),NProgress.done()})})}function localSearch(a,b,c){try{var d=new RegExp(a,"i");b.forEach(function(b){b.text.match(d)&&c.push(b),b.child.length&&localSearch(a,b.child,c)})}catch(e){}return c}var toc,beetl=new Vue({el:"#beetl",data:{lang:localize,doc:"",nav:[],search:""},computed:{searchlist:function(){return localSearch(this.search,this.nav,[])}},components:{navmenu:{name:"navmenu",props:["list"],template:'<transition-group v-if="list.length" tag="ul" appear><li v-for="n of list" :title="n.text" :key="n.text"><a :href="n.href" @click="beetl.jump" v-html="n.text"></a><navmenu  v-if="list.length" :list="n.child"></navmenu></li></transition-group>'}},methods:{jump:function(a){this.search="",a.preventDefault();var b=$(a.target.getAttribute("href")).offset().top-70;$(window).scrollTop(b)},language:function(){this.lang="en"==this.lang?"zh-cn":"en",localStorage.localize=this.lang}},computed:{searchlist:function(){return localSearch(this.search,this.nav,[])},i18n:function(){return lang[this.lang]}}}),render=new marked.Renderer;render.heading=function(a,b){var e,c=/^((\d+_)+).*/.exec(a.replace(/\./g,"_")),d="<h"+b;return c?(d+=' id="beetl_'+c[1]+'" class="_anchor">',e={href:"#beetl_"+c[1],text:a,child:[]},3==b?toc.push(e):4==b?toc[toc.length-1].child.push(e):5==b&&toc[toc.length-1].child[toc[toc.length-1].child.length-1].child.push(e)):d+=">",d+=a+"</h"+b+">"},$(window).on("scroll",_.throttle(function(){var d,a=$(window),b=a.scrollTop(),c=a.height();$("#nav .active").removeClass("active"),$("._anchor").each(function(){var f,g,h;return b<=this.offsetTop?(f=d&&b+2*c/3<this.offsetTop?d.id:this.id,g=$('#nav a[href="#'+f+'"]').addClass("active"),h=$("#nav"),h.stop().animate({scrollTop:g.offset().top-h.offset().top+h.scrollTop()-(h.height()-g.height())/2},"fast"),!1):(d=this,void 0)})},300)).on("resize",function(){$(this).trigger("scroll")}).on("hashchange",loadDoc),loadDoc();
+	function loadDoc(){var a=["beetl","beetlsql"],b=location.hash.substr(1);a.indexOf(b)<0&&(b="beetl"),document.title=b+"中文文档",toc=[],$(window).scrollTop(0),NProgress.start(),$.get(b+".md?_="+(new Date).getDay(),function(a){marked(a,{renderer:render,highlight:function(a){return hljs.highlightAuto(a).value}},function(a,b){beetl.search="",beetl.doc=b,Vue.set(beetl,"nav",toc),NProgress.done()})})}function localSearch(a,b,c){try{var d=new RegExp(a,"i");b.forEach(function(b){b.text.match(d)&&c.push(b),b.child.length&&localSearch(a,b.child,c)})}catch(e){}return c}var toc,beetl=new Vue({el:"#beetl",data:{lang:localize,doc:"",nav:[],search:""},computed:{searchlist:function(){return localSearch(this.search,this.nav,[])}},components:{navmenu:{name:"navmenu",props:["list"],template:'<transition-group v-if="list.length" tag="ul" appear><li v-for="n of list" :title="n.text" :key="n.text"><a :href="n.href" @click="beetl.jump" v-html="n.text"></a><navmenu  v-if="list.length" :list="n.child"></navmenu></li></transition-group>'}},methods:{jump:function(a){this.search="",a.preventDefault();var b=$(a.target.getAttribute("href")).offset().top-70;$(window).scrollTop(b)},language:function(){this.lang="en"==this.lang?"zh-cn":"en",localStorage.localize=this.lang}},computed:{searchlist:function(){return localSearch(this.search,this.nav,[])},i18n:function(){return lang[this.lang]}}}),render=new marked.Renderer;render.heading=function(a,b){var e,c=/^(\d+(_\d+)*).*/.exec(a.replace(/\./g,"_")),d="<h"+b;return c?(d+=' id="beetl_'+c[1]+'" class="_anchor">',e={href:"#beetl_"+c[1],text:a,child:[]},3==b?toc.push(e):4==b?toc[toc.length-1].child.push(e):5==b&&toc[toc.length-1].child[toc[toc.length-1].child.length-1].child.push(e)):d+=">",d+=a+"</h"+b+">"},$(window).on("scroll",_.throttle(function(){var d,a=$(window),b=a.scrollTop(),c=a.height();$("#nav .active").removeClass("active"),$("._anchor").each(function(){var f,g,h;return b<=this.offsetTop?(f=d&&b+2*c/3<this.offsetTop?d.id:this.id,g=$('#nav a[href="#'+f+'"]').addClass("active"),h=$("#nav"),h.stop().animate({scrollTop:g.offset().top-h.offset().top+h.scrollTop()-(h.height()-g.height())/2},"fast"),!1):(d=this,void 0)})},300)).on("resize",function(){$(this).trigger("scroll")}).on("hashchange",loadDoc),loadDoc();
 	</script>
-<script>
+	<script>
 	var _hmt = _hmt || [];
-			(function() {
-			  var hm = document.createElement("script");
-			  hm.src = "https://hm.baidu.com/hm.js?acc69acbc4e6d4c69ecf77725d072490";
-			  var s = document.getElementsByTagName("script")[0]; 
-			  s.parentNode.insertBefore(hm, s);
-			})();
-</script>
+	(function() {
+		var hm = document.createElement("script");
+		hm.src = "https://hm.baidu.com/hm.js?acc69acbc4e6d4c69ecf77725d072490";
+		var s = document.getElementsByTagName("script")[0]; 
+		s.parentNode.insertBefore(hm, s);
+	})();
+	</script>
 </body>
 </html>

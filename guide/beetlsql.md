@@ -3,7 +3,7 @@
 >   -   作者: 闲大赋,Gavin.King,Sue,Zhoupan,woate,Darren
 >   -   社区 [http://ibeetl.com](http://ibeetl.com/)
 >   -   qq群 219324263
->   -   当前版本 2.8.15
+>   -   当前版本 2.8.16
 
 
 
@@ -37,7 +37,7 @@ maven 方式:
 <dependency>
 	<groupId>com.ibeetl</groupId>
 	<artifactId>beetlsql</artifactId>
-	<version>2.8.15</version>
+	<version>2.8.16</version>
 </dependency>
 ```
 
@@ -922,7 +922,7 @@ beetlsql 支持在实体类上增加ORMQuery注解,这样对于实体的查询,�
 
 
 
-#### 7.9 @Version
+#### 7.9. @Version
 
 注解@Version作用在类型为int,long的属性或者getter方法上，用于乐观锁实现。
 

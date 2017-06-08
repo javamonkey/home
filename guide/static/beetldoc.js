@@ -1,34 +1,6 @@
-var lang={
-	'zh-cn':{
-		guide:{
-			title:'文档',
-			standard:'标准文档',
-			faster:'极速文档',
-			md:'Markdown下载'
-		},
-		trial:'在线体验',
-		forum:'论坛',
-		download:'下载',
-		donate:'捐助作者',
-		language:'English'
-	},
-	'en':{
-		guide:{
-			title:'Guide',
-			standard:'Standard Ed.',
-			faster:'Faster Ed.',
-			md:'Markdown'
-		},
-		trial:'Trial',
-		forum:'Forum',
-		download:'Download',
-		donate:'Donate',
-		language:'中文'
-	}
-}
+var lang={"zh-cn":{guide:{title:"文档",standard:"在线文档",faster:"极速文档",md:"Markdown下载"},trial:"在线体验",forum:"论坛",download:"下载",donate:"捐助作者",language:"English"},en:{guide:{title:"Guide",standard:"Online Guide",faster:"Faster Ed.",md:"Markdown"},trial:"Trial",forum:"Forum",download:"Download",donate:"Donate",language:"中文"}};
 var localize = (localStorage.localize||navigator.language||navigator.browserLanguage).toLowerCase();
 if(localize!='zh-cn')localize='en';
-
 var beetl = new Vue({
 	el:'#beetl',
 	data:{lang:localize,doc:'',nav:[],search:''},
@@ -57,7 +29,7 @@ var beetl = new Vue({
 })
 var render = new marked.Renderer(),toc;
 render.heading = function(text,level){
-	var reg = /^((\d+_)+).*/.exec(text.replace(/\./g,'_')),tag = '<h'+level;
+	var reg = /^(\d+(_\d+)*).*/.exec(text.replace(/\./g,'_')),tag = '<h'+level;
 	if(reg){
 		tag += ' id="beetl_'+reg[1]+'" class="_anchor">';
 		var current = {href:'#beetl_'+reg[1],text:text,child:[]}
