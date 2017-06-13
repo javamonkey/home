@@ -3,7 +3,7 @@
 >   -   作者: 闲大赋,Gavin.King,Sue,Zhoupan,woate,Darren
 >   -   社区 [http://ibeetl.com](http://ibeetl.com/)
 >   -   qq群 219324263
->   -   当前版本 2.8.16
+>   -   当前版本 2.8.18
 
 
 
@@ -37,7 +37,7 @@ maven 方式:
 <dependency>
 	<groupId>com.ibeetl</groupId>
 	<artifactId>beetlsql</artifactId>
-	<version>2.8.16</version>
+	<version>2.8.18</version>
 </dependency>
 ```
 
@@ -458,7 +458,7 @@ PageQuery 对象也提供了 orderBy属性，用于数据库排序，如 "id des
 -   public int executeUpdate(String sql,Object paras) 返回成功执行条数
 -   public int executeUpdate(String sql,Map paras) 返回成功执行条数
 
-#### 3.5.2. 直接执行JDBC sql语句
+##### 3.5.2. 直接执行JDBC sql语句
 
 -   查询 public <T> List<T> execute(SQLReady p,Class<T> clazz) SQLReady包含了需要执行的sql语句和参数，clazz是查询结果，如
 
@@ -466,8 +466,17 @@ PageQuery 对象也提供了 orderBy属性，用于数据库排序，如 "id des
 List<User> list = sqlManager.execute(new SQLReady("select * from user where name=? and age = ?","xiandafu",18),User.class);)
 ```
 
--   更新 public int executeUpdate(SQLReady p) SQLReady包含了需要执行的sql语句和参数，返回更新结果
+-    public <T> PageQuery<T>  execute(SQLReady p, Class<T> clazz, PageQuery<T> pageQuery)
 
+~~~java
+String  jdbcSql = "  select *from user order by id";
+PageQuery query = new PageQuery(1,20);
+query = sql.execute(new SQLReady(jdbcSql), User.class, query);
+~~~
+
+注意:sql参数通过SQLReady 传递，而不是PageQuery。
+
+-   更新 public int executeUpdate(SQLReady p) SQLReady包含了需要执行的sql语句和参数，返回更新结果
 -   直接使用Connection public <T> T executeOnConnection(OnConnection<T> call),使用者需要实现onConnection方法的call方法，如调用存储过程
 
 ```java
@@ -659,6 +668,9 @@ public interface UserDao extends BaseMapper<User> {
 
 	@Sql(value=" select name from user")
 	public List<String> allNames();
+  
+  	@Sql(value=" select * from user where department_id=?")
+	public PageQuery<User> findUser(int page,int size,int departmentId);
 
 }
 ```
@@ -719,6 +731,15 @@ public void updateAge(int age,int id);
 @Sql("select * from user  ")
 public List<User> selectAll();
 ```
+
+如果JDBC SQL返回了PageQuery，则对应到翻页查询，要求方法的头俩个参数是数字类型，分别是页码，和每页记录数。剩下的为JDBC参数
+
+~~~java
+@Sql("select * from user ")
+PageQuery<User> getUser4(int pageNumber,String pageSize);
+~~~
+
+
 
 使用Mapper能增加Dao维护性，并能提高开发效率，建议在项目中使用。
 
@@ -1306,7 +1327,7 @@ select * from user where status = #@Constatns.RUNNING# and id = #@Constatns.getU
 
 
 
-#### 13.7. 判断对象非空空
+#### 13.7. 判断对象非空
 
 可以采用isEmpty判断变量表达式是否为空(为null)，是否存在，如果是字符串，是否是空字符串，如
 
