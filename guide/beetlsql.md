@@ -1069,7 +1069,7 @@ statu = 1
 
 ```markdown
 selectByUser
-==
+===
 * 这个sql语句用来查询用户的
 * status =1 表示查找有效用户
 
