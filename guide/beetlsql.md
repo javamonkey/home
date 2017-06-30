@@ -555,9 +555,8 @@ Beetlsql 默认提供了三种列明和属性名的映射类，推荐使用Under
 
 一般来讲，都建议数据库以下划线来区分单词，因此，使用UnderlinedNameConversion是个很好的选择
 
-​```java
-public class DefaultNameConversion extends NameConversion {
-
+```java
+	public class DefaultNameConversion extends NameConversion {
 	@Override
 	public String getTableName(Class<?> c) {
 		Table table = (Table)c.getAnnotation(Table.class);
@@ -578,7 +577,7 @@ public class DefaultNameConversion extends NameConversion {
 	}
 
 }
-​```
+```
 
 如果有特殊的表并不符合DefaultNameConversion实现方式，你可以重新实现上面的三个方法
 
@@ -593,7 +592,7 @@ public class DefaultNameConversion extends NameConversion {
 2 忽略静态变量以及被@Transient注解的属性；
 3 默认属性名与库表的字段名保持一致，如果不一致时，可以使用@Column注解。
 
-​```java
+```java
 @Table(name = "PF_TEST")
 public class TestEntity implements Serializable {
 	public static String S="SSS";
@@ -614,41 +613,41 @@ public class TestEntity implements Serializable {
 	}
 	getter setter...
 }
-​```
+```
 
 
 ### 5. 复合主键
 
 beetlsql 支持复合主键，无需像其他dao工具那样创建一个特别的主键对象，主键对象就是实体对象本生
 
-​```sql
+```sql
 CREATE TABLE `party` (
   `id1` int(11) NOT NULL,
   `id2` int(11) NOT NULL,
   `name` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`id1`,`id2`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-​```
+```
 
 Party代码如下
 
-​```java
+```java
 public class Party  {
 	private Integer id1 ;
 	private Integer id2 ;
 	private String name ;
 	//忽略其他 getter setter方法
 }
-​```
+```
 
 根据主键获取Party
 
-​```java
+```java
 Party key = new Party();
 key.setId1(1);
 key.setId2(2);
 Party party = sql.unique(Party.class, key);
-​```
+```
 
 
 
@@ -656,7 +655,7 @@ Party party = sql.unique(Party.class, key);
 
 SQLManager 提供了所有需要知道的API，但通过sqlid来访问sql有时候还是很麻烦，因为需要手敲字符串，另外参数不是map就是para，对代码理解没有好处，BeetlSql支持Mapper，将sql文件映射到一个interface。如下示例
 
-​```java
+```java
 public interface UserDao extends BaseMapper<User> {
 	// 使用"user.getCount"语句,无参数
 	public int getCount();
@@ -684,7 +683,7 @@ public interface UserDao extends BaseMapper<User> {
 	public PageQuery<User> findUser(int page,int size,int departmentId);
 
 }
-​```
+```
 
 -   Interface 可以继承BaseMapper，这样可以使用BaseMapper的一些公共方法，如insert，unqiue,single,updateById,deleteById等，也可以不继承
 
@@ -692,39 +691,39 @@ public interface UserDao extends BaseMapper<User> {
 
 -   方法参数可以是一个Object,或者是Map，这样，BeetlSql 自动识别为 sql的参数，也可以使用注解@Param来标注，或者混合这俩种情况 如:
 
-​```java
+```java
 public void setUserStatus(Map paras,@Param("name") String name);
 }
-​```
+```
 
 方法如果是查询语句，可以使用@RowStart，@RowSize 作为翻页参数，BeetlSQL将自动完成翻页功能
 
 注意 BeetlSQL 会根据 对应的方法对应的SQL语句，解析开头，如果是select开头，就认为是select操作，同理还有update，delete，insert。如果sql 模板不是以这些关键字开头，则需要使用注解 @SqlStatement
 
-​```java
+```java
 @SqlStatement(type=SqlStatementType.INSERT)
 public KeyHolder newUser(User user);// 添加用户
-​```
+```
 
 SqlStatement 也可在params申明参数名称
 
-​```java
+```java
 public List<User> queryUser(@Param("name") String name,@Param("age") Integer age,@RowStart int start,@RowSize int size);
 // or
 @SqlStatement(params="name,age,_st,_se")
 public List<User> queryUser(String name,Integer age,int start,int size);
-​```
+```
 
 -   查询语句返回的是List，则对应SQLManager.select
 -   查询语句返回的是Pojo，原始类型等非List类型，则对应的SQLManager.selectSignle，如上面的getCount
--   insert 语句 如果有KeyHolder，则表示需要获取主键，对应SQLManager.insert(…​.,keyHolder)方法
+-   insert 语句 如果有KeyHolder，则表示需要获取主键，对应SQLManager.insert(….,keyHolder)方法
 -   参数列表里只允许有一个Pojo或者Map，作为查询参数_root，否则，需要加上@Param
 -   参数列表里如果有List 或者Map[],则期望对应的是一个updateBatch操作
 -   参数列表里如果@RowStart ,@RowSize,则认为是翻页语句
 -   参数里如果有PageQuery,则认为是翻页查询
 -   注解的returnType 已经在2.8.12 版本以后不再需要，因为用泛型已经能说明返回类型，因此如下俩个是等同的
 
-​~~~java
+~~~java
 @Sql(value=" select name from user")
 public List<String> allNames();
 
@@ -736,16 +735,16 @@ public List allNames();
 
 Mapper 也支持使用JDBC SQL，这时候需要采用Sql注解
 
-​```java
+```java
 @Sql(value=" update user set age = ? where id = ? ")
 public void updateAge(int age,int id);
 @Sql("select * from user  ")
 public List<User> selectAll();
-​```
+```
 
 如果JDBC SQL返回了PageQuery，则对应到翻页查询，要求方法的头俩个参数是数字类型，分别是页码，和每页记录数。剩下的为JDBC参数
 
-​~~~java
+~~~java
 @Sql("select * from user ")
 PageQuery<User> getUser4(int pageNumber,String pageSize);
 ~~~
