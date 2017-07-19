@@ -3,7 +3,7 @@
 >   -   作者: 闲大赋,Gavin.King,Sue,Zhoupan,woate,Darren
 >   -   社区 [http://ibeetl.com](http://ibeetl.com/)
 >   -   qq群 219324263
->   -   当前版本 2.8.23
+>   -   当前版本 2.8.27
 
 
 
@@ -37,7 +37,7 @@ maven 方式:
 <dependency>
 	<groupId>com.ibeetl</groupId>
 	<artifactId>beetlsql</artifactId>
-	<version>2.8.23</version>
+	<version>2.8.27</version>
 </dependency>
 ```
 
@@ -289,6 +289,9 @@ ConnectionSource source = ConnectionSourceHelper.getMasterSlave(master,slaves)
 
 ##### 3.2.1. 模板类查询（自动生成sql）
 
+* public <T> T unique(Class<T> clazz,Object pk) 根据主键查询，如果未找到，抛出异常.
+* public <T> T single(Class<T> clazz,Object pk) 根据主键查询，如果未找到，返回null.
+
 -   public <T> List<T> all(Class<T> clazz) 查询出所有结果集
 -   public <T> List<T> all(Class<T> clazz, int start, int size) 翻页
 -   public int allCount(Class<?> clazz) 总数
@@ -337,7 +340,7 @@ public class User  {
 -   public <T> T selectUnique(String id,Map<String, Object> paras, Class<T> target) 根据sqlid查询，输入是Pojo或者Map，将对应的唯一值映射成指定的taget对象,如果未找到，则抛出异常
 -   public Integer intValue(String id,Object paras) 查询结果映射成Integer，如果找不到，返回null，输入是object
 -   public Integer intValue(String id,Map paras) 查询结果映射成Integer，如果找不到，返回null，输入是map，其他还有 longValue，bigDecimalValue
--   public <T> T unique(Class<T> clazz,Object pk) 根据主键查询，如果未找到，抛出异常.
+-   ​
 
 
 
@@ -978,6 +981,20 @@ public class Credit   implements Serializable{
 
 > BeetlSQL 也支持悲观锁实现，即采用select for update 方式，只要调用SQLManager.lock(Class cls,Object key)就可以对cls对应的的表的主键为key的记录使用行锁。只有事务结束后才，才释放此锁
 
+
+
+### 7.10 @SqlResource
+
+用在Mapper接口上，说明MD文件的位置，可以通过此注解指定一个在根目录下的某一个子目录位置。
+
+```java
+@SqlResource("platform.sysDict")
+public interface SysDictDao extends BaseMapper<SysDict> {
+   public List<SysDict> findAllList(@Param(value = "type") String type);
+}
+```
+
+如上findAllList方法对应的sql，将位于resources/sql/platform/sysDict.md(sql)里。
 
 
 ### 8. BeetlSQL 数据模型
