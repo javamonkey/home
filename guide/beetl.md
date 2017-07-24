@@ -4,7 +4,7 @@ Beetl作者：李家智 <[xiandafu@126.com](mailto:xiandafu@126.com)>
 
 ### 1. 什么是Beetl
 
-Beetl目前版本是2.7.18,相对于其他java模板引擎，具有功能齐全，语法直观,性能超高，以及编写的模板容易维护等特点。使得开发和维护模板有很好的体验。是新一代的模板引擎。总得来说，它的特性如下：
+Beetl目前版本是2.7.21,相对于其他java模板引擎，具有功能齐全，语法直观,性能超高，以及编写的模板容易维护等特点。使得开发和维护模板有很好的体验。是新一代的模板引擎。总得来说，它的特性如下：
 
 -   功能完备：作为主流模板引擎，Beetl具有相当多的功能和其他模板引擎不具备的功能。适用于*各种应用场景*，从对响应速度有很高要求的大网站到功能繁多的CMS管理系统都适合。Beetl本身还具有很多独特功能来完成模板编写和维护，这是其他模板引擎所不具有的。
 -   非常简单：类似Javascript语法和习俗，只要半小时就能通过半学半猜完全掌握用法。拒绝其他模板引擎那种非人性化的语法和习俗。同时也能支持html 标签，使得开发CMS系统比较容易
@@ -69,7 +69,7 @@ Beetl目前版本是2.7.18,相对于其他java模板引擎，具有功能齐全�
 <dependency>
         <groupId>com.ibeetl</groupId>
         <artifactId>beetl</artifactId>
-        <version>2.7.18</version>
+        <version>2.7.21</version>
 </dependency>
 ```
 
@@ -756,7 +756,8 @@ Beetl内置函数请参考附录，以下列出了常用的函数
 -   **isNotEmpty** 同上，判断对象是否不为空
 -   **has** 变量名为参数，判断是否存在此全局变量，如 has(userList),类似于1.x版本的exist("userList"),但不需要输入引号了
 -   **assert** 如果表达式为false，则抛出异常
--   **trunc** 截取数字，保留指定的小数位，如trunc(12.456,2) 输出是12.45
+-   trim 截取数字或者日期，返回字符,如trim(12.456,2)返回"12.45",trim(date,'yyyyy')返回"2017"
+-   **trunc** 截取数字，保留指定的小数位，如trunc(12.456,2) 输出是12.45.不推荐使用，因为处理float有问题，兼容原因保留了
 -   **decode** 一个简化的if else 结构，如 decode(a,1,"a=1",2,"a=2","不知道了")},如果a是1，这decode输出"a=1",如果a是2，则输出"a==2", 如果是其他值，则输出"不知道了"
 -   **debug** 在控制台输出debug指定的对象以及所在模板文件以及模板中的行数，如debug(1),则输出1 [在3行@/org/beetl/core/lab/hello.txt],也可以输出多个，如debug("hi",a),则输出hi,a=123,[在3行@/org/beetl/core/lab/hello.txt]
 -   **parseInt** 将数字或者字符解析为整形 如 parseInt("123");
@@ -2108,6 +2109,19 @@ return a+1;
 
 调用runScript后，map里将返回key分别为a,b,c，return。 值分别为1，当前日期，字符串'2，以及3。
 
+#### 3.18. 模板校验
+GroupTemplate 提供了validateTemplate和 validateScript方法用来校验模板，如果模板或者脚本有语法错误，则返回BeetlException，BeetlException包含了错误的具体信息，可以参考ConsoleErrorHandler来了解如何处理异常,如下是一个简单的处理片段
+~~~java
+BeetlException ex = groupTemplate.validateTemplate("/index.html");
+if(ex==null){
+  return 
+}
+ErrorInfo error = new ErrorInfo(ex);
+int line = error.getErrorTokenLine();
+String errorToken = error.getErrorTokenText()；
+String type = error.getType();
+~~~
+
 
 
 ### 4. Web集成
@@ -2452,6 +2466,19 @@ Beetl视图解析器属性同spring自带的视图解析器一样，支持conten
 -   以/cmstemplate是交给cmsBeetlViewResolver渲染。
 -   如果都没有匹配上，则是jsp渲染
 
+你也可以通过扩展名来帮助Spring决定采用哪种视图解析器，比如
+
+~~~xml
+<property name="viewNames">
+  <list>
+    <value>/**/*.btl</value>
+  </list>
+</property>
+
+~~~
+
+
+
 如果你想更改此规则，你只能增加canHandle方法指定你的逻辑了。详情参考org.springframework.web.servlet.view.UrlBasedViewResolver.canHandle
 
 对于仅仅需要redirect和forward的那些请求，需要加上相应的前缀
@@ -2462,6 +2489,16 @@ Beetl视图解析器属性同spring自带的视图解析器一样，支持conten
 其他集成需要注意的事项:
 
 -   spring集成，请不要使用spring的 前缀配置,改用beetl的RESOURCE.ROOT 配置，否则include，layout会找不到模板
+-   如果跟目录不是默认目录，可以通过添加root属性
+
+
+~~~xml
+<bean name="cmsbeetlConfig" class="org.beetl.ext.spring.BeetlGroupUtilConfiguration" init-method="init">
+  
+        <property name="root" value="/WEB-INF/views"/>
+</bean>
+~~~
+
 
 
 
@@ -2473,7 +2510,7 @@ Spring Boot 通过java config来配置 beetl需要的BeetlGroupUtilConfiguration
 @Configuration
 public class BeetlConf {
 
-        @Value("${beetl.templatesPath}") String templatesPath;//模板跟目录 
+        @Value("${beetl.templatesPath}") String templatesPath;//模板跟目录 ，比如 "templates"
         @Bean(initMethod = "init", name = "beetlConfig")
         public BeetlGroupUtilConfiguration getBeetlGroupUtilConfiguration() {
                 BeetlGroupUtilConfiguration beetlGroupUtilConfiguration = new BeetlGroupUtilConfiguration();
@@ -3089,7 +3126,8 @@ ERROR_HANDLER = org.beetl.ext.web.WebErrorHandler
 -   **isNotEmpty** 同上，判断对象是否不为空
 -   has 变量名为参数，判断是否存在此全局变量，如 has(userList),类似于1.x版本的exist("userList"),但不需要输入引号了
 -   **assert** 如果表达式为false，则抛出异常
--   **trunc** 截取数字，保留指定的小数位，如trunc(12.456,2) 输出是12.45
+-   trim 截取数字或者日期，返回字符,如trim(12.456,2)返回"12.45",trim(date,'yyyyy')返回"2017"
+-   **trunc** 截取数字，保留指定的小数位，如trunc(12.456,2) 输出是12.45.不推荐使用，因为处理float有问题，兼容原因保留了
 -   **decode** 一个简化的if else 结构，如 decode(a,1,"a=1",2,"a=2","不知道了")},如果a是1，这decode输出"a=1",如果a是2，则输出"a==2", 如果是其他值，则输出"不知道了"
 -   debug 在控制台输出debug指定的对象以及所在模板文件以及模板中的行数，如debug(1),则输出1 [在3行@/org/beetl/core/lab/hello.txt],也可以输出多个，如debug("hi",a),则输出hi,a=123,[在3行@/org/beetl/core/lab/hello.txt]
 -   **parseInt** 将数字或者字符解析为整形 如 parseInt("123");
@@ -3113,7 +3151,7 @@ ERROR_HANDLER = org.beetl.ext.web.WebErrorHandler
 -   **strutil.length** ${ strutil. length (“hello”),输出是5
 -   **strutil.subString** ${ strutil.subString (“hello”,1),输出是“ello”
 -   strutil.subStringTo ${ strutil.subStringTo (“hello”,1,2),输出是“e”
--   **strutil.split** ${ strutil.split (“hello,joeli”,”,”),输出是数组，有俩个元素，第一个是hello，第二个是joelli”
+-   **strutil.split** ${ strutil.split (“hello,joeli”,”,”),输出是数组，第一个是字符串，第二个是正则表达式。返回第一个是hello，第二个是joelli”
 -   strutil.contain ${ strutil.contain (“hello,”el”),输出是true
 -   **strutil.toUpperCase** ${ strutil.toUpperCase (“hello”),输出是HELLO
 -   **strutil.toLowerCase** ${ strutil.toLowerCase (“Hello”),输出是hello
@@ -3508,3 +3546,82 @@ Beetl2.0目前只完成了解释引擎，使用解释引擎好处是可以适用
 -   九月
 -   Daemons
 -   Darren
+
+### 5.8 Beetl常用错误解决
+
+#### 5.8.1 模板加载错误
+
+MVC框架如果加载不到模板，请先确认是否指定了正确的ResourceLoader。对于Spring Boot，使用的是ClassPathResourceLoaer，加载位于templates目录下的模板
+
+对于其他WEB应用,内部使用的是FileResourceLoader,模板根目录位于web根目录。
+
+Spring常见模板加载问题有可能如下原因
+
+* spring 配置使用了前缀，错误:
+
+~~~xml
+<property name="prefix" value="/WEB-INF/view/"></property>
+~~~
+
+可以指定模板根目录
+
+~~~xml
+<bean name="beetlConfig" class="org.beetl.ext.spring.BeetlGroupUtilConfiguration" init-method="init">
+        <property name="root" value="/WEB-INF/beetl.properties"/>
+~~~
+
+
+
+* spring 视图名使用了相对路径，错误
+~~~java
+return "userDetail.btl"
+~~~
+应该使用如下
+~~~java
+return "/user/user.btl"
+~~~
+
+* Spring Boot  自定义模板根目录
+
+如果模板不在resources/templates目录下，比如在resouces/pages/views下，应该用如下方式初始化
+
+~~~java
+ClasspathResourceLoader cploder = new ClasspathResourceLoader(BeetlTemplateConfig.class.getClassLoader(),
+					"pages/views");
+beetlGroupUtilConfiguration.setResourceLoader(cploder);
+			
+~~~
+
+
+如果以上办法如果还不行，请尝试调试ResourceLoader的exist的方法，找到加载模板不成功原因
+
+
+
+#### 5.8.2  开发模式下需改模板未刷新。
+
+这种现象主要出现在idea +maven的工程里，因为idea默认情况下不会同步模板文件到target某，因此即使你修改了模板，beetl也看不到变化。解决办法可以参考 渔泯小镇
+
+http://bbs.ibeetl.com/bbs/bbs/topic/612-1.html 
+
+如果是其他环境出现这个问题，请确认修改的模板是否同步到目标环境里
+
+#### 5.8.3 错误提示里有“directive dynamic "
+Beetl默认使用了了如下引擎
+~~~properties
+ENGINE=org.beetl.core.engine.FastRuntimeEngine
+~~~
+这个引擎会假设同一个模板里的同一个全局变量应该类型唯一，如果你的模板是公共模板，类型不一样，可以在模板顶部使用dynamic，比如
+
+~~~java
+<% directive dynamic xxx %>
+~~~
+如果你的模板这种情况很多，建议更换成默认引擎配置
+
+~~~properties
+ENGINE=org.beetl.core.engine.DefaultTemplateEngine
+~~~
+
+#### 5.8.4 Spring Boot 出现 ClassCastException
+Spring Boot 需要配置 spring-devtools.properties,请参考Spring Boot集成
+
+

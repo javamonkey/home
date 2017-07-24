@@ -3,7 +3,7 @@
 >   -   作者: 闲大赋,Gavin.King,Sue,Zhoupan,woate,Darren
 >   -   社区 [http://ibeetl.com](http://ibeetl.com/)
 >   -   qq群 219324263
->   -   当前版本 2.8.27
+>   -   当前版本 2.8.28
 
 
 
@@ -37,7 +37,7 @@ maven 方式:
 <dependency>
 	<groupId>com.ibeetl</groupId>
 	<artifactId>beetlsql</artifactId>
-	<version>2.8.27</version>
+	<version>2.8.28</version>
 </dependency>
 ```
 
@@ -983,7 +983,7 @@ public class Credit   implements Serializable{
 
 
 
-### 7.10 @SqlResource
+#### 7.10 @SqlResource
 
 用在Mapper接口上，说明MD文件的位置，可以通过此注解指定一个在根目录下的某一个子目录位置。
 
@@ -995,6 +995,8 @@ public interface SysDictDao extends BaseMapper<SysDict> {
 ```
 
 如上findAllList方法对应的sql，将位于resources/sql/platform/sysDict.md(sql)里。
+
+这通常用在系统数据库表较多或者有多个模块的时候。
 
 
 ### 8. BeetlSQL 数据模型
@@ -1054,6 +1056,48 @@ public class User  {
 ```
 
 
+
+不仅仅查询结果支持这种混合模型，查询条件也支持。BeetlSql在调用底层SQLScript的时候，传递的参数实际上是Map，包含了sql语句需要的键值对。有一个特殊的键是"_root", 如果Beetlsql未在Map中找到，则从"\_root"中查找，"\_root"可以是个Map，或者是个Pojo。从"\_root" 继续查找
+
+因为这个特性，BeetlSql的参数可以混合Map和Pojo。如下是一些常用例子
+
+~~~java
+Map map = new HashMap();
+User query = .....
+map.put("_root",query);
+map.put("maxAge",19);
+map.put("minAge",15);
+List<User> list = sqlManager.select("user.select",User.class,map);
+
+~~~
+
+sql语句可以使用user的所有属性，“user.select” 如下
+
+~~~sql
+select
+===
+
+select * from user where name = #name# and (age>=#minAge# and age<=maxAge)
+
+~~~
+
+翻页查询中的参数设置PageQuery.setParas 同样可以使用这种方式，或者直接通过PageQuery API完成
+
+~~~java
+PageQuery query = .....
+User user = ...
+query.setParas(user);
+query.setParas("maxAge",19);
+query.setParas("minAge",15);
+sqlManager.pageQuery("user.query",User.class,query)
+ 
+~~~
+
+实际上，在这种情况下，query对象最后构造的参数就是一个带有"\_root"键值的Map，当然，setParas直接设置一个带“\_root”的Map参数也可以。
+
+
+
+> 注意，不要使用TailBean的方法的set 来设置额外参数，尽管可以，但未来考虑不支持。因为TailBean还是放置查询结果。
 
 ### 9. Markdown方式管理
 
@@ -2156,17 +2200,50 @@ public class MyServiceImpl implements MyService {
 
 #### 24.2. SpringBoot集成
 
-采用java config方式
 
-参考 demo ，[http://git.oschina.net/xiandafu/springboot_beetl_beetlsql](http://git.oschina.net/xiandafu/springboot_beetl_beetlsql)
 
-spring boot集成需要注意的是要添加spring-devtools.properties文件,并配置如下选项
+~~~xml
+<dependency>
+	<groupId>com.ibeetl</groupId>
+	<artifactId>beetl-framework-starter</artifactId>
+	<version>1.1.6.RELEASE</version>
+</dependency>
+~~~
+beetl-framework-starter 会自动集成Spring Boot已经配置好的名为“dataSource”数据源，比如
 
+~~~java
+@Configuration
+public class DataSourceConfig {	
+  @Bean(name = "dataSource")
+  public DataSource datasource(Environment env) {
+    HikariDataSource ds = new HikariDataSource();
+    ds.setJdbcUrl(env.getProperty("spring.datasource.url"));
+    ds.setUsername(env.getProperty("spring.datasource.username"));
+    ds.setPassword(env.getProperty("spring.datasource.password"));
+    ds.setDriverClassName(env.getProperty("spring.datasource.driver-class-name"));
+    return ds;
+  }
+}
+
+~~~
+
+提供如下配置
+
+beetl-framework-starter  会读取application.properites如下配置
+
+* beetlsql.sqlPath，默认为/sql, 作为存放sql文件的根目录，位于/resources/sql目录下
+* beetlsql.nameConversion:  默认是org.beetl.sql.core.UnderlinedNameConversion,能将下划线分割的数据库命名风格转化为java驼峰命名风格，还有常用的DefaultNameConversion，数据库命名完全和Java命名一直，以及JPA2NameConversion，兼容JPA命名
+* beetl-beetlsql.dev：默认是true，即向控制台输出执行时候的sql，参数，执行时间，以及执行的位置，每次修改sql文件的时候，自动检测sql文件修改.
+* beetlsql.daoSuffix：默认为Dao。
+* beetlsql.basePackage：默认为com，此选项配置beetlsql.daoSuffix来自动扫描com包极其子包下的所有以Dao结尾的Mapper类。以本章例子而言，你可以配置“com.bee.sample.ch5.dao”
+* beetlsql.dbStyle ：数据库风格，默认是org.beetl.sql.core.db.MySqlStyle.对应不同的数据库，其他还有OracleStyle，PostgresStyle,SqlServerStyle,DB2SqlStyle,SQLiteStyle,H2Style
+
+
+>  如果不满足你要求，你也可以采用java config方式自己配置，或者参考beetl-framework-starter源码，参考 demo ，[http://git.oschina.net/xiandafu/springboot_beetl_beetlsql](http://git.oschina.net/xiandafu/springboot_beetl_beetlsql)，自己完成 spring boot集成需要注意的是要添加spring-devtools.properties文件,并配置如下选项
 ```properties
 restart.include.beetl=/beetl-xxx.jar
 restart.include.beetlsql=/beetlsql-xxx..jar
 ```
-
 spring-devtools.properties 为spring boot的配置文件,位于META-INF目录下
 
 
