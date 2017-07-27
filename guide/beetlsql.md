@@ -1562,15 +1562,15 @@ order by a.createTime
 ```
 因为count语句，无需要排序语句部分，而且，有些数据库，如SQLServer并不支持count语句被排序，因此可以使用pageIgnoreTag来解决夸数据库问题
 
-- whereTag
+- where
 
-该标签复用TrimTag，其工作过程是：判断whereTag里的sql内容是否为空，如果为空就不输出空字符串，如果不为空则判断sql是否以AND或OR开头，如果是，则去掉。例如模板内容如下：
+该标签复用TrimTag，其工作过程是：判断where 里的sql内容是否为空，如果为空就不输出空字符串，如果不为空则判断sql是否以AND或OR开头，如果是，则去掉。例如模板内容如下：
 
 ```markdown
 queryNewUser
 ===
 select a.* from user a 
-@whereTag(){
+@where(){
 @if(!isEmpty(age){
     and a.age=#age# 
 @}
@@ -1588,7 +1588,7 @@ a.age=?
 and a.status=? 
 ```
 
-当然，如果你不用whereTag，也可用where 1=1 来解决，我看并没有多大差别。
+当然，如果你不用where，也可用where 1=1 来解决，我看并没有多大差别。
 
 
 
