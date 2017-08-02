@@ -2430,7 +2430,7 @@ public class MyServiceImpl implements MyService {
 <dependency>
 	<groupId>com.ibeetl</groupId>
 	<artifactId>beetl-framework-starter</artifactId>
-	<version>1.1.6.RELEASE</version>
+	<version>1.1.7.RELEASE</version>
 </dependency>
 ~~~
 beetl-framework-starter 会自动集成Spring Boot已经配置好的名为“dataSource”数据源，比如
