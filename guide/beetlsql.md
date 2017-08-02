@@ -1,9 +1,9 @@
-## BeetlSQL2.8中文文档
+## BeetlSQL 2.9中文文档
 
 >   -   作者: 闲大赋,Gavin.King,Sue,Zhoupan,woate,Darren
 >   -   社区 [http://ibeetl.com](http://ibeetl.com/)
 >   -   qq群 219324263
->   -   当前版本 2.8.28
+>   -   当前版本 2.9.1
 
 
 
@@ -86,7 +86,7 @@ public class User  {
 }
 ```
 
-> 主键需要通过注解来说明，如@AutoID，或者@AssingID等，但如果是自增主键，且属性是名字是id，则不需要注解，自动认为是自增主键
+> 主键需要通过注解来说明，如@AutoID，或者@AssignID等，但如果是自增主键，且属性是名字是id，则不需要注解，自动认为是自增主键
 >
 
 #### 2.3. 代码例子
@@ -215,7 +215,7 @@ public class User  {
 >
 >   生成属性的时候，id总是在前面，后面依次是类型为Integer的类型，最后面是日期类型，剩下的按照字母排序放到中间。
 
-一旦有了User 类，如果你需要些sql语句，那么genSQLTemplateToConsole 将是个很好的辅助方法，可以输出一系列sql语句片段，你同样可以赋值粘贴到代码或者sql模板文件里（user.md),如上例所述，当调用genSQLTemplateToConsole的时候，生成如下
+一旦有了User 类，如果你需要写sql语句，那么genSQLTemplateToConsole 将是个很好的辅助方法，可以输出一系列sql语句片段，你同样可以赋值粘贴到代码或者sql模板文件里（user.md),如上例所述，当调用genSQLTemplateToConsole的时候，生成如下
 
 ```markdown
 sample
@@ -330,26 +330,47 @@ public class User  {
 ##### 3.2.2. 通过sqlid查询,sql语句在md文件里
 
 -   public <T> List<T> select(String sqlId, Class<T> clazz, Map<String, Object> paras) 根据sqlid来查询，参数是个map
--   public <T> List<T> select(String sqlId, Class<T> clazz, Object paras) 根据sqlid来查询，参数是个pojo
--   public <T> List<T> select(String sqlId, Class<T> clazz) 根据sqlid来查询，无参数
--   public <T> List<T> select(String sqlId, Class<T> clazz, Map<String, Object> paras, int start, int size)， 增加翻页
--   public <T> List<T> select(String sqlId, Class<T> clazz, Object paras, int start, int size) ，增加翻页
--   public <T> T selectSingle(String id,Object paras, Class<T> target) 根据sqlid查询，输入是Pojo，将对应的唯一值映射成指定的taget对象，如果未找到，则返回空。需要注意的时候，有时候结果集本生是空，这时候建议使用unique
--   public <T> T selectSingle(String id,Map<String, Object> paras, Class<T> target) 根据sqlid查询，输入是Map，将对应的唯一值映射成指定的taget对象，如果未找到，则返回空。需要注意的时候，有时候结果集本生是空，这时候建议使用unique
--   public <T> T selectUnique(String id,Object paras, Class<T> target) 根据sqlid查询，输入是Pojo或者Map，将对应的唯一值映射成指定的taget对象,如果未找到，则抛出异常
--   public <T> T selectUnique(String id,Map<String, Object> paras, Class<T> target) 根据sqlid查询，输入是Pojo或者Map，将对应的唯一值映射成指定的taget对象,如果未找到，则抛出异常
--   public Integer intValue(String id,Object paras) 查询结果映射成Integer，如果找不到，返回null，输入是object
--   public Integer intValue(String id,Map paras) 查询结果映射成Integer，如果找不到，返回null，输入是map，其他还有 longValue，bigDecimalValue
--   ​
 
+-   public <T> List<T> select(String sqlId, Class<T> clazz, Object paras) 根据sqlid来查询，参数是个pojo
+
+-   public <T> List<T> select(String sqlId, Class<T> clazz) 根据sqlid来查询，无参数
+
+-   public <T> T selectSingle(String id,Object paras, Class<T> target) 根据sqlid查询，输入是Pojo，将对应的唯一值映射成指定的target对象，如果未找到，则返回空。需要注意的时候，有时候结果集本身是空，这时候建议使用unique
+
+-   public <T> T selectSingle(String id,Map<String, Object> paras, Class<T> target) 根据sqlid查询，输入是Map，将对应的唯一值映射成指定的target对象，如果未找到，则返回空。需要注意的时候，有时候结果集本身是空，这时候建议使用unique
+
+-   public <T> T selectUnique(String id,Object paras, Class<T> target) 根据sqlid查询，输入是Pojo或者Map，将对应的唯一值映射成指定的target对象,如果未找到，则抛出异常
+
+-   public <T> T selectUnique(String id,Map<String, Object> paras, Class<T> target) 根据sqlid查询，输入是Pojo或者Map，将对应的唯一值映射成指定的target对象,如果未找到，则抛出异常
+
+-   public Integer intValue(String id,Object paras) 查询结果映射成Integer，如果找不到，返回null，输入是object
+
+-   public Integer intValue(String id,Map paras) 查询结果映射成Integer，如果找不到，返回null，输入是map，其他还有 longValue，bigDecimalValue
+
+> 注意，对于Map参数来说，有一个特殊的key叫着\_root,它代表了查询根对象，sql语句中未能找到的变量都会在试图从\_root 中查找，关于\_root对象，可以参考第8章。 在Map中使用\_root, 可以混合为sql提供参数，如下示例
+> ~~~java
+>
+> ~~~
+
+
+##### 3.2.3 指定范围查询
+
+- public <T> List<T> select(String sqlId, Class<T> clazz, Map<String, Object> paras, int start, int size)， 查询指定范围
+- public <T> List<T> select(String sqlId, Class<T> clazz, Object paras, int start, int size) ，查询指定范围
+
+> beetlsql 默认从1 开始，自动翻译为目标数据库的的起始行，如mysql的0，oracle的1
+>
+> 如果你想从0开始，参考11章，配置beetlsql
 
 
 
 #### 3.3. 翻页查询API
 
--   public <T> void pageQuery(String sqlId,Class<T> clazz,PageQuery query)
+~~~java
+public <T> void pageQuery(String sqlId,Class<T> clazz,PageQuery query)
+~~~
 
-BeetlSQL 提供一个PageQUery对象,用于web应用的翻页查询,BeetlSql假定有sqlId 和sqlId$count,俩个sqlId,并用这来个来翻页和查询结果总数.如:
+BeetlSQL 提供一个PageQuery对象,用于web应用的翻页查询,BeetlSql假定有sqlId 和sqlId$count,俩个sqlId,并用这来个来翻页和查询结果总数.如:
 
 ```markdown
 queryNewUser
@@ -375,7 +396,7 @@ a.*,b.name role_name
 from user a left join b ...
 ```
 
-如上sql,会在查询的时候转为俩条sql语句
+如上sql,会在pageQuery查询的时候转为俩条sql语句
 
 ```sql
 select count(1) from user a left join b...
@@ -398,7 +419,7 @@ PageQuery 对象也提供了 orderBy属性，用于数据库排序，如 "id des
 
 >   #### 跨数据库支持
 >
->   如果你打算使用PageQuery做翻页,且只想提供一个sql语句+page函数,那考虑到垮数据库,应该不要在这个sql语句里包含排序,因为大部分数据库都不支持. page函数生成的查询总数sql语句,因为包含了oder by,在大部分数据库都是会报错的的,比如:select count(1) form user order by name,在sqlserver,mysql,postgres都会出错,oracle允许这种情况, 因此,如果你要使用一条sql语句+page函数,建议排序用PageQuery对象里有排序属性oderBy,可用于排序,而不是放在sql语句里.
+>   如果你打算使用PageQuery做翻页,且只想提供一个sql语句+page函数,那考虑到跨数据库,应该不要在这个sql语句里包含排序,因为大部分数据库都不支持. page函数生成的查询总数sql语句,因为包含了oder by,在大部分数据库都是会报错的的,比如:select count(1) form user order by name,在sqlserver,mysql,postgresql都会出错,oracle允许这种情况, 因此,如果你要使用一条sql语句+page函数,建议排序用PageQuery对象里有排序属性oderBy,可用于排序,而不是放在sql语句里.
 >
 >   2.8版本以后也提供了标签函数 pageIgnoreTag，可以用在翻页查询里，当查询用作统计总数的时候，会忽略标签体内容，如
 >
@@ -411,11 +432,13 @@ PageQuery 对象也提供了 orderBy属性，用于数据库排序，如 "id des
 >
 >   如上语句，在求总数的时候，会翻译成 select count(1) from xxx
 >
->   如果你不打算使用PageQuery+一条sql的方式,而是用俩条sql来分别翻页查询和统计总数,那无所谓
+>   如果你不打算使用PageQuery+一条sql的方式,而是用两条sql来分别翻页查询和统计总数,那无所谓
 >
 >   或者你直接使用select 带有起始和读取总数的接口,也没有关系,可以在sql语句里包含排序
 
 
+
+如果PageQuery对象的totalRow属性大于等于0，则表示已经知道总数，则不会在进行求总数查询
 
 #### 3.4. 更新API
 
@@ -498,8 +521,14 @@ String md5 = sql.executeOnConnection(new OnConnection<String>(){
 
 ##### 3.6.1. 强制使用主或者从
 
+如果为SQLManager提供多个数据源，默认第一个为主库，其他为从库，更新语句将使用主库，查询语句使用从库库
+
+可以强制SQLManager 使用主或者从
+
 -   public void useMaster(DBRunner f) DBRunner里的beetlsql调用将使用主数据库库
 -   public void useSlave(DBRunner f) DBRunner里的beetlsql调用将使用从数据库库
+
+> 对于通常事务来说只读事务则从库，写操作事务则总是主库。关于主从支持，参考17章
 
 ##### 3.6.2. 生成Pojo代码和SQ片段
 
@@ -621,7 +650,7 @@ public class TestEntity implements Serializable {
 
 ### 5. 复合主键
 
-beetlsql 支持复合主键，无需像其他dao工具那样创建一个特别的主键对象，主键对象就是实体对象本生
+beetlsql 支持复合主键，无需像其他dao工具那样创建一个特别的主键对象，主键对象就是实体对象本身
 
 ```sql
 CREATE TABLE `party` (
@@ -656,132 +685,327 @@ Party party = sql.unique(Party.class, key);
 
 ### 6. 使用Mapper
 
-SQLManager 提供了所有需要知道的API，但通过sqlid来访问sql有时候还是很麻烦，因为需要手敲字符串，另外参数不是map就是para，对代码理解没有好处，BeetlSql支持Mapper，将sql文件映射到一个interface。如下示例
+SQLManager 提供了所有需要知道的API，但通过sqlid来访问sql有时候还是很麻烦，因为需要手敲字符串，另外参数不是map就是para，对代码理解没有好处，BeetlSql支持Mapper，将sql文件映射到一个interface接口。接口的方法名与sql文件desqlId一一对应。
 
-```java
-public interface UserDao extends BaseMapper<User> {
-	// 使用"user.getCount"语句,无参数
-	public int getCount();
-	//使用"user.setUserStatus" 语句
-	public void setUserStatus(Map paras); //更新用户状态
-	public void setUserAnnotherStatus(User user); //更新用户状态
-	//使用"user.findById", 传入参数id
-	public User findById(@Param("id") Integer id);
-	//or 使用params，一一对应
-	@SqlStatement(params="id,status")
-	public User findByIdAndStatus( Integer id,Integer status);
-	//翻页查询，使用"user.queryNewUser"
-	public void queryNewUser(PageQuery query) ;
-	// 使用_st,_sz 翻页
-	@SqlStatement(params="name,age,_st,_sz")
-	public List<User> queryUser( String name, Integer age,int start, int size);
-	//使用sqlready
-	@Sql(value=" update user set age = ? where id = ? ")
-	public void updateAge(int age,int id);
-	
-	@Sql(value=" select name from user")
-	public List<String> allNames();
-
-  	@Sql(value=" select * from user where department_id=?")
-	public PageQuery<User> findUser(int page,int size,int departmentId);
-
-}
-```
-
--   Interface 可以继承BaseMapper，这样可以使用BaseMapper的一些公共方法，如insert，unqiue,single,updateById,deleteById等，也可以不继承
-
--   Interface里的方法名与Sql文件对应，如果方法名对应错了，会在调用的时候报错找不到sql。
-
--   方法参数可以是一个Object,或者是Map，这样，BeetlSql 自动识别为 sql的参数，也可以使用注解@Param来标注，或者混合这俩种情况 如:
-
-```java
-public void setUserStatus(Map paras,@Param("name") String name);
-}
-```
-
-方法如果是查询语句，可以使用@RowStart，@RowSize 作为翻页参数，BeetlSQL将自动完成翻页功能
-
-注意 BeetlSQL 会根据 对应的方法对应的SQL语句，解析开头，如果是select开头，就认为是select操作，同理还有update，delete，insert。如果sql 模板不是以这些关键字开头，则需要使用注解 @SqlStatement
-
-```java
-@SqlStatement(type=SqlStatementType.INSERT)
-public KeyHolder newUser(User user);// 添加用户
-```
-
-SqlStatement 也可在params申明参数名称
-
-```java
-public List<User> queryUser(@Param("name") String name,@Param("age") Integer age,@RowStart int start,@RowSize int size);
-// or
-@SqlStatement(params="name,age,_st,_se")
-public List<User> queryUser(String name,Integer age,int start,int size);
-```
-
--   查询语句返回的是List，则对应SQLManager.select
--   查询语句返回的是Pojo，原始类型等非List类型，则对应的SQLManager.selectSignle，如上面的getCount
--   insert 语句 如果有KeyHolder，则表示需要获取主键，对应SQLManager.insert(….,keyHolder)方法
--   参数列表里只允许有一个Pojo或者Map，作为查询参数_root，否则，需要加上@Param
--   参数列表里如果有List 或者Map[],则期望对应的是一个updateBatch操作
--   参数列表里如果@RowStart ,@RowSize,则认为是翻页语句
--   参数里如果有PageQuery,则认为是翻页查询
--   注解的returnType 已经在2.8.12 版本以后不再需要，因为用泛型已经能说明返回类型，因此如下俩个是等同的
+接口必须实现BaseMapper接口（后面可以自定义一个Base接口），它提供内置的CRUID方法，如insert,unique,template,templateOne ,updateById等
 
 ~~~java
-@Sql(value=" select name from user")
-public List<String> allNames();
 
-@Sql(value=" select name from user",returnType=String.class)
-public List allNames();
+~~~
+
+BaseMapper 具备数据库常见的操作，接口只需要定义额外的方法与sqlId同名即可。
+
+~~~java
+public interface UserDao extends BaseMapper<User> {
+	List<User> select(String name);
+}
+~~~
+
+如上select将会对应如下md文件
+
+~~~markdown
+select
+===
+
+	select * from user where name = #name#
+	
+~~~
+
+如果你使用JDK8，不必为参数提供名称，自动对应。如果使用JDK8一下版本，则可以使用@Param注解
+
+~~~java
+
+List<User> select(@Param("name") String name);
+~~~
+
+BeetlSql的mapper方法总会根据调用方法名字，返回值，以及参数映射到SQLManager相应的查询接口，比如返回类型是List，意味着发起SQLManager.select 查询，如果返回是一个Map或者Pojo，则发起一次selectSingle查询，如果返回定义为List，则表示查询实体，如果定义为List<Long> ，则对应的查询结果映射为Long
+
+#### 6.1 内置CRUD
+
+BaseMapper包含了内置的常用查询，如下
+
+~~~java
+public interface BaseMapper<T> {
+
+	/**
+	 * 通用插入，插入一个实体对象到数据库，所以字段将参与操作，除非你使用ColumnIgnore注解
+	 * @param entity
+	 */
+	void insert(T entity);
+	/**
+	 * （数据库表有自增主键调用此方法）如果实体对应的有自增主键，插入一个实体到数据库，设置assignKey为true的时候，将会获取此主键
+	 * @param entity
+	 * @param autDbAssignKey 是否获取自增主键
+	 */
+	void insert(T entity,boolean autDbAssignKey);
+	/**
+	 * 插入实体到数据库，对于null值不做处理
+	 * @param entity
+	 */
+	void insertTemplate(T entity);
+	/**
+	 * 如果实体对应的有自增主键，插入实体到数据库，对于null值不做处理,设置assignKey为true的时候，将会获取此主键
+	 * @param entity
+	 * @param autDbAssignKey
+	 */
+	void insertTemplate(T entity,boolean autDbAssignKey);
+	/**
+	 * 批量插入实体。此方法不会获取自增主键的值，如果需要，建议不适用批量插入，适用
+	 * <pre>
+	 * insert(T entity,true);
+	 * </pre>
+	 * @param list
+	 */
+	void insertBatch(List<T> list);
+	/**
+	 * （数据库表有自增主键调用此方法）如果实体对应的有自增主键，插入实体到数据库，自增主键值放到keyHolder里处理
+	 * @param entity
+	 * @return
+	 */
+	KeyHolder insertReturnKey(T entity);
+	
+	/**
+	 * 根据主键更新对象，所以属性都参与更新。也可以使用主键ColumnIgnore来控制更新的时候忽略此字段
+	 * @param entity
+	 * @return
+	 */
+	int updateById(T entity);
+	/**
+	 * 根据主键更新对象，只有不为null的属性参与更新
+	 * @param entity
+	 * @return
+	 */
+	int updateTemplateById(T entity);
+	
+	/**
+	 * 根据主键删除对象，如果对象是复合主键，传入对象本生即可
+	 * @param key
+	 * @return
+	 */
+	int deleteById(Object key);
+	
+	/**
+	 * 根据主键获取对象，如果对象不存在，则会抛出一个Runtime异常
+	 * @param key
+	 * @return
+	 */
+	T unique(Object key);
+	/**
+	 * 根据主键获取对象，如果对象不存在，返回null
+	 * @param key
+	 * @return
+	 */
+	T single(Object key);
+	
+	
+	/**
+	 * 根据主键获取对象，如果在事物中执行会添加数据库行级锁(select * from table where id = ? for update)，如果对象不存在，返回null
+	 * @param key
+	 * @return
+	 */
+	T lock(Object key);
+	
+	/**
+	 * 返回实体对应的所有数据库记录
+	 * @return
+	 */
+	List<T> all();
+	/**
+	 * 返回实体对应的一个范围的记录
+	 * @param start
+	 * @param size
+	 * @return
+	 */
+	List<T> all(int start,int size);
+	/**
+	 * 返回实体在数据库里的总数
+	 * @return
+	 */
+	long allCount();
+	
+	/**
+	 * 模板查询，返回符合模板得所有结果。beetlsql将取出非null值（日期类型排除在外），从数据库找出完全匹配的结果集
+	 * @param entity
+	 * @return
+	 */
+	List<T> template(T entity);
+
+	
+	/**
+	 * 模板查询，返回一条结果,如果没有，返回null
+	 * @param entity
+	 * @return
+	 */
+	<T> T templateOne(T entity);
+
+	List<T> template(T entity,int start,int size);
+	/**
+	 * 符合模板得个数
+	 * @param entity
+	 * @return
+	 */
+	long templateCount(T entity);
+	
+	
+	
+	/**
+	 * 执行一个jdbc sql模板查询
+	 * @param sql
+	 * @param args
+	 * @return
+	 */
+	List<T> execute(String sql,Object... args);
+	/**
+	 * 执行一个更新的jdbc sql
+	 * @param sql
+	 * @param args
+	 * @return
+	 */
+	int executeUpdate(String sql,Object... args );
+	SQLManager getSQLManager();
+
+}
+
+
 ~~~
 
 
 
-Mapper 也支持使用JDBC SQL，这时候需要采用Sql注解
+#### 6.2 sqlId查询
 
-```java
+对于sqlId 是查询语句，返回值可以是任何类型，Mapper将视图将查询结果映射到定义的类型上，如下是一些常见例子
+
+~~~java
+public interface UserDao extends BaseMapper<User> {
+  // 使用"user.getCount"语句,无参数
+  public int getCount();
+  //使用"user.findById"语句，参数是id，返回User对象
+  public User findById(@Param("id") Integer id);
+  //使用"user.findById"语句，参数是id，返回User对象
+  public List<User> findByName(@Param("name") String name);
+  //使用user.findTop10OfIds语句, 查询结果映射为Long，比如“select id from user limit 10
+  public List<Long> findTop10OfIds();
+  //返回一个Map，不建议这么做，最后返回一个实体，或者实体+Map的混合模型(参考BeetlSql模型)
+  public List<Map<String,Object> findUsers(@Param("name") String name,@Param("departmentId") departmentId)
+  
+}
+~~~
+
+>  对于jdk8以上的，不必使用@Param注解。
+
+Mapper 查询有一个例外，如果第一个参数是一个JavaBean(即非java内置对象)，则默认为是_root对象，因此如下俩个接口定义是等价的
+
+~~~java
+public List query(User template);
+public List query2(@Param("_root") User template)
+
+~~~
+这俩个查询方法都将template视为一个\_root对象，sql语句可以直接使用引用其属性。同样第一参数类型是Map的，BeetlSql也视为\_root对象。
+
+如果需要查询指定范围内的结果集，可以使用@RowStart,@RowSize , 将指示Mapper发起一次范围查询(参考3.2.3)
+~~~java
+pulic List<User> selectRange(User data,Date maxTime,@RowStart int start，@RowSize int size)
+~~~
+如上查询语句，类似这样调用了SQLManager
+~~~java
+Map paras = new HashMap();
+paras.put("_root",data);
+paras.put("maxTime",maxTime);
+List<User> list = sqlManager.select("user.selectRanage",User.class,paras,start,size);
+~~~
+
+#### 6.2.3 PageQuery 查询
+
+PageQuery查询类似上一节的sqlId查询，不同的是，需要提供PageQuery参数以让Mapper理解为PageQuery查询，如下俩个是等价的
+
+~~~java
+public void queryByCondtion(PageQuery query);
+public PageQuery queryByCondtion(PageQuery query);
+~~~
+可以添加额外参数，如
+~~~java
+public void queryByCondtion(PageQuery query,Date maxTime);
+~~~
+这类似如下SQLManager调用
+~~~java
+query.setPara("maxTime",maxTime);
+sqlManager.pageQuery("user.queryByCondtion",User.class,query)
+~~~
+
+也可以在方法中提供翻页参数来实现翻页查询，这时候返回值必须是PageQuery，如下
+~~~java
+public PageQuery queryByCondtion(int pageNumber,int pageSize,String name);
+~~~
+这种情况下，前俩个参数必须是int或者long类型
+
+#### 6.2.4 更新语句
+更新语句返回的结果可以是void，或者int，如果是批量更新，则可以返回int[]
+
+~~~java
+public int updaetUser(int id,String name);
+public int updateUser(User user);
+public int[] updateAll(List<User> list);
+~~~
+
+#### 6.2.5 插入语句
+插入语句同更新语句，唯一不同的是插入语句有时候需要获取自增序列值，这时候使用KeyHolder作为返回参数
+~~~java
+public KeyHolder insertSql(User user);
+~~~
+
+####6.2.6 使用JDBC SQL
+可以通过@Sql注解直接在java中使用较为简单的sql语句，如下
+~~~java
 @Sql(value=" update user set age = ? where id = ? ")
 public void updateAge(int age,int id);
-@Sql("select * from user  ")
-public List<User> selectAll();
-```
-
-如果JDBC SQL返回了PageQuery，则对应到翻页查询，要求方法的头俩个参数是数字类型，分别是页码，和每页记录数。剩下的为JDBC参数
-
+@Sql(value="select id from user where create_time<?")
+public List<Long> selectIds(Date date)
+~~~
+此时方法参数与"?" 一一对应
+也可以使用@Sql翻页，这要求方法参数前俩个必须是int或者long,返回结果使用PageQuery定义
 ~~~java
-@Sql("select * from user ")
-PageQuery<User> getUser4(int pageNumber,String pageSize);
+@Sql(value="select * from user where create_time<?")
+public PageQuery selectUser(int pageNumber,int pageSize,Date date)
 ~~~
 
+####6.2.6 Mapper中的注解
+
+从上面我们已经了解了@Param注解，用于申明参数名字，如果使用jdk8，且打开了编译选项parameter，则可以去掉@Param注解
+@RowStart和 @RowSize，用于查询中的范围查询。
+@Sql 注解则用于在java中构造一个简短的jdbc sql语句。
+
+@SqlStatment 注解可以对接口参数进一步说明，他有如下属性
+* type,用于说明sqlId是何种类型的语句，默认为auto，BeetlSql将会根据sqlId对应的Sql语句判断是否是查询，还是修改语句等，通常是根据sql语句的第一个词来判断，如果是select，表示查询，如果是insert，表示新增，如果update，drop，则是更新。如果Sql模板语句第一个词不包含这些，则需要用type做说明。如下是一个需要用到type的情况
+~~~markdown
+selectUsers
+===
+use("otherSelect") and status=1;
+~~~
+因为beetlsql无法根据第一个单词确定操作类型，因此必须使用type=SqlStatementType.SELECT，来说明。
+
+* params ,可以不用在接口参数上使用@Param，而直接使用params 属性，如下是等价的
+
+~~~java
+@SqlStatement(params="name,age,_st,_sz")
+public List<User> queryUser( String name, Integer age,int start, int size);
+
+public List<User> queryUser( @Param(name) String name, @Param(age) @RowStart Integer age,int start, @RowSize int size);
+~~~
+
+\_st,_sz 同@RowStart和@RowSize 
 
 
-使用Mapper能增加Dao维护性，并能提高开发效率，建议在项目中使用。
 
-对于Mapper涉及的查询来说，会将查询结果映射到返回值上，有如下规则
 
-- Mapper方法得返回值应该查询结果对应，如查询结果是日期，方法返回值也应该是日期（Date或者Timestamp)
 
-```java
-// 不需要注解说明返回类型
-public Date getMaxDate(User query);
 
-@SqlStatement(returnType=Date.class)
-public List<Date> getTop10Date();
-```
 
-- 如果返回值是List，如实体本身集合，则不需要使用注解的returnType来说明，这是默认情况
 
-- 如果返回的值是List，但是其他类型集合，则需要使用returnType来说明返回类型
 
-- 翻页查询PageQuery 不需要做类型说明，默认返回就是实体本身，如果返回的是其他类型，也需要在returnType加以说明
-
-```java
-//翻页查询，默认返回实体对象
-public void queryUser(PageQuery query);
-```
 
 ### 7. BeetlSQL Annotation
 
-对于自动生成的sql，默认不需要任何annotaton，类名对应于表名（通过NameConverstion类），getter方法的属性名对应于列明（也是通过NameConverstion类），但有些情况还是需要anntation。
+对于自动生成的sql，默认不需要任何annotaton，类名对应于表名（通过NameConversion类），getter方法的属性名对应于列明（也是通过NameConversion类），但有些情况还是需要annotation。
 
 #### 7.1. @AutoID 和 @AssignID ，@SeqID
 
@@ -944,7 +1168,7 @@ public class QueryUser ..
 
 #### 7.7. Mapper相关注解
 
-Mapper 是将sql模板文件映射成一个具体的Dao方法类,这样方位代码开发和维护
+Mapper 是将sql模板文件映射成一个具体的Dao方法类,这样方便代码开发和维护
 
 Mapper中的注解，包括常用的	SqlStatement ，SqlStatementType ，Sql,Param 还有不常用的 RowSize ，RowStart，具体参考Mapper
 
@@ -979,7 +1203,7 @@ public class Credit   implements Serializable{
 ┗━━━━━ Debug [credit._gen_updateTemplateById] ━━━
 ~~~
 
-> BeetlSQL 也支持悲观锁实现，即采用select for update 方式，只要调用SQLManager.lock(Class cls,Object key)就可以对cls对应的的表的主键为key的记录使用行锁。只有事务结束后才，才释放此锁
+> BeetlSQL 也支持悲观锁实现，即采用select for update 方式，只要调用SQLManager.lock(Class cls,Object key)就可以对cls对应的的表的主键为key的记录使用行锁。只有事务结束后，才释放此锁
 
 
 
@@ -1003,7 +1227,7 @@ public interface SysDictDao extends BaseMapper<SysDict> {
 
 BeetlSQL是一个全功能DAO工具，支持的模型也很全面，包括
 
--   Pojo, 也就是面向对象Java Objec。Beetlsql操作将选取Pojoe属性和sql列的交集。额外属性和额外列将忽略.
+-   Pojo, 也就是面向对象Java Object。Beetlsql操作将选取Pojo的属性和sql列的交集。额外属性和额外列将忽略.
 -   Map/List, 对于一些敏捷开发，可以直接使用Map/List 作为输入输出参数
 
 ```java
@@ -1277,7 +1501,7 @@ where 1=1
 SQL语句可以动态生成，基于Beetl语言，这是因为
 
 -   beetl执行效率高效 ，因此对于基于模板的动态sql语句，采用beetl非常合适
--   beetl 语法简单易用，可以通过半猜半式的方式实现，杜绝myBatis这样难懂难记得语法。BeetlSql学习曲线几乎没有
+-   beetl 语法简单易用，可以通过半猜半试的方式实现，杜绝myBatis这样难懂难记得语法。BeetlSql学习曲线几乎没有
 -   利用beetl可以定制定界符号，完全可以将sql模板定界符好定义为数据库sql注释符号，这样容易在数据库中测试，如下也是sql模板（定义定界符为"--:" 和 null,null是回车意思);
 
 ```markdown
@@ -1303,7 +1527,7 @@ Beetl 语法类似js，java，如下做简要说明，使用可以参考 [http:
 
 #### 13.1. 定界符号
 
-默认的定界符号是@ 和 回车。 里面可以放控制语句，表达式等语，，站位符号是##,站位符号默认是输出？，并在执行sql的传入对应的值。如果想在占位符号输出变量值，则需要使用text函数
+默认的定界符号是@ 和 回车。 里面可以放控制语句，表达式等语，，占位符号是##,占位符号默认是输出？，并在执行sql的传入对应的值。如果想在占位符号输出变量值，则需要使用text函数
 
 ```javascript
 @if(!isEmpty(name)){
@@ -1631,7 +1855,7 @@ for(int i=0;i<2;i++){
 }
 ```
 
-如上例子，指定所有namespace为user查询都讲被缓存，如果此namepace有更新操作，则缓存清除，输出如下
+如上例子，指定所有namespace为user查询都将被缓存，如果此namespace有更新操作，则缓存清除，输出如下
 
 ```sql
 ┏━━━━━ Debug [user.queryUser] ━━━
@@ -1677,7 +1901,7 @@ BeetlSql可以在执行sql前后执行一系列的Intercetor，从而有机会�
 -   对每一条sql语句执行后输出其sql和参数，也可以根据条件只输出特定sql集合的sql。便于用户调试。DebugInterceptor完成
 -   对sql预计解析，汇总sql执行情况（未完成，需要集成第三方sql分析工具）
 
-你也可以自行扩展Interceptor类，来完成特定需求。 如下，在执行数据库操作前会执行befor，通过ctx可以获取执行的上下文参数，数据库成功执行后，会执行after方法
+你也可以自行扩展Interceptor类，来完成特定需求。 如下，在执行数据库操作前会执行before，通过ctx可以获取执行的上下文参数，数据库成功执行后，会执行after方法
 
 ```java
 public interface Interceptor {
@@ -1703,7 +1927,7 @@ public class InterceptorContext {
 
 ### 17. 内置支持主从数据库
 
-BeetlSql管理数据源，如果只提供一个数据源，则认为读写均操作此数据源，如果提供多个，则默认第一个为写库，其他为读库。用户在开发代码的时候，无需关心操作的是哪个数据库，因为调用sqlScrip 的 select相关api的时候，总是去读取从库，add/update/delete 的时候，总是读取主库。
+BeetlSql管理数据源，如果只提供一个数据源，则认为读写均操作此数据源，如果提供多个，则默认第一个为写库，其他为读库。用户在开发代码的时候，无需关心操作的是哪个数据库，因为调用sqlScript 的 select相关api的时候，总是去读取从库，add/update/delete 的时候，总是读取主库。
 
 ```java
 sqlManager.insert(User.class,user) // 操作主库，如果只配置了一个数据源，则无所谓主从
@@ -1728,7 +1952,7 @@ public Connection getConn(String sqlId,boolean isUpdate,String sql,List<?> paras
 
 -   forceStatus 可以强制SQLManager 使用主或者从数据库。参考api SQLManager.useMaster(DBRunner f) ，SQLManager.useSlave(DBRunner f)
 
-对于于不同的ConnectionSource 完成逻辑不一样，对于spring，jfinal这样的框架，如果sqlManager在事务环境里，总是操作主数据库，如果是只读事务环境 则操作从数据库。如果没有事务环境，则根据sql是查询还是更新来决定。
+对于不同的ConnectionSource 完成逻辑不一样，对于spring，jfinal这样的框架，如果sqlManager在事务环境里，总是操作主数据库，如果是只读事务环境 则操作从数据库。如果没有事务环境，则根据sql是查询还是更新来决定。
 
 如下是SpringConnectionSource 提供的主从逻辑
 
@@ -1806,7 +2030,7 @@ where name = #name#
 -   提供一些默认的函数扩展，代替各个数据库的函数，如时间和时间操作函数date等
 -   MySqlStyle mysql 数据库支持
 -   OracleStyle oralce支持
--   PostgresStyle postgres数据库支持
+-   PostgresStyle postgresql数据库支持
 -   其他还有SQLServer,H2,SQLLite ，DB2数据库支持
 
 
@@ -1831,7 +2055,7 @@ sqlManager.genPojoCode("UserRole","com.test",config);
 
 
 
-config 类用来配置生成喜爱,目前支持生成pojo是否继承某个基类, 是否用BigDecimal代替Double,是否采用Date而不是Timestamp来表示日期，是否是直接输出到控制台而不是文件等 生成的代码如下：
+config 类用来配置生成喜好,目前支持生成pojo是否继承某个基类, 是否用BigDecimal代替Double,是否采用Date而不是Timestamp来表示日期，是否是直接输出到控制台而不是文件等 生成的代码如下：
 
 ```java
 package com.test;
@@ -1973,7 +2197,7 @@ select * from user where id = #id#
 
   NAME_EXPRESSION：复杂表达式，比如函数调用，逻辑运算表达式
 
-对于开发者来说，只需呀关心sql对应的参数值即可，因此可以调用toObjectArray得到。
+对于开发者来说，只需要关心sql对应的参数值即可，因此可以调用toObjectArray得到。
 
 
 
@@ -2382,7 +2606,7 @@ jdbcJavaTypes.put(new Integer(Types.LONGVARCHAR), String.class); // -1
 ...... 
 ```
 
-有些框架，在使用Map的时候，添加了更多的灵活性，比如通过columnName 来片段是否该字段是字典字段，比如豆油后缀"_dict",如果是，则从缓存或者查询响应的字典数据，放到ThreadLocal里，以一次性将查询结果，相关字典数据返回
+有些框架，在使用Map的时候，添加了更多的灵活性，比如通过columnName 来片段是否该字段是字典字段，比如都有后缀"_dict",如果是，则从缓存或者查询响应的字典数据，放到ThreadLocal里，以一次性将查询结果，相关字典数据返回
 
 #### 25.3. PreparedStatment
 
@@ -2447,7 +2671,7 @@ select * from user where create_time>#createTime,typeofDate#
 
 #### 25.4. 自定义BeanProcessor
 
-你可以为Beeetsql指定一个默认的BeanProcessor，也可以为某些特定的sqlid指定BeanProcessor，SqlManager提供了俩个方法来完成
+你可以为Beeetsql指定一个默认的BeanProcessor，也可以为某些特定的sqlid指定BeanProcessor，SqlManager提供了两个方法来完成
 
 ```java
 public void setDefaultBeanProcessors(BeanProcessor defaultBeanProcessors) {
@@ -2524,7 +2748,7 @@ public interface MyMapper<T> {
 }
 ~~~
 
-通过bulder.addAmi可以为每个方法指定一个是新的实现，Beetlsql已经内置了一些列的实现内，你可以扩展，实现
+通过builder.addAmi可以为每个方法指定一个是新的实现，Beetlsql已经内置了一些列的实现类，你可以扩展，实现
 
 ~~~java
 
