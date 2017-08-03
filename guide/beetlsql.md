@@ -3,7 +3,7 @@
 >   -   作者: 闲大赋,Gavin.King,Sue,Zhoupan,woate,Darren
 >   -   社区 [http://ibeetl.com](http://ibeetl.com/)
 >   -   qq群 219324263
->   -   当前版本 2.9.1
+>   -   当前版本 2.9.2
 
 
 
@@ -37,7 +37,7 @@ maven 方式:
 <dependency>
 	<groupId>com.ibeetl</groupId>
 	<artifactId>beetlsql</artifactId>
-	<version>2.8.28</version>
+	<version>2.9.2</version>
 </dependency>
 ```
 
@@ -922,7 +922,7 @@ PageQuery查询类似上一节的sqlId查询，不同的是，需要提供PageQu
 public void queryByCondtion(PageQuery query);
 public PageQuery queryByCondtion(PageQuery query);
 ~~~
-可以添加额外参数，如
+可以添加额外参数，但PageQuery 必须是第一个参数，如
 ~~~java
 public void queryByCondtion(PageQuery query,Date maxTime);
 ~~~
@@ -2430,7 +2430,7 @@ public class MyServiceImpl implements MyService {
 <dependency>
 	<groupId>com.ibeetl</groupId>
 	<artifactId>beetl-framework-starter</artifactId>
-	<version>1.1.7.RELEASE</version>
+	<version>1.1.8.RELEASE</version>
 </dependency>
 ~~~
 beetl-framework-starter 会自动集成Spring Boot已经配置好的名为“dataSource”数据源，比如
