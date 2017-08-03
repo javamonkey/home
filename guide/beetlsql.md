@@ -718,7 +718,7 @@ select
 List<User> select(@Param("name") String name);
 ~~~
 
-BeetlSql的mapper方法总会根据调用方法名字，返回值，以及参数映射到SQLManager相应的查询接口，比如返回类型是List，意味着发起SQLManager.select 查询，如果返回是一个Map或者Pojo，则发起一次selectSingle查询，如果返回定义为List，则表示查询实体，如果定义为List<Long> ，则对应的查询结果映射为Long
+BeetlSql的mapper方法总会根据调用方法名字，返回值，以及参数映射到SQLManager相应的查询接口，比如返回类型是List，意味着发起SQLManager.select 查询，如果返回是一个Map或者Pojo，则发起一次selectSingle查询，如果返回定义为List，则表示查询实体，如果定义为List\<Long\> ，则对应的查询结果映射为Long
 
 #### 6.1 内置CRUD
 
@@ -869,7 +869,7 @@ public interface BaseMapper<T> {
 
 ~~~
 
-
+> 内置BaseMapper 可以定制，参考文档最后一节25.6，设置自己的BaseMapper
 
 #### 6.2 sqlId查询
 
@@ -885,7 +885,7 @@ public interface UserDao extends BaseMapper<User> {
   public List<User> findByName(@Param("name") String name);
   //使用user.findTop10OfIds语句, 查询结果映射为Long，比如“select id from user limit 10
   public List<Long> findTop10OfIds();
-  //返回一个Map，不建议这么做，最后返回一个实体，或者实体+Map的混合模型(参考BeetlSql模型)
+  //返回一个Map，不建议这么做，最好返回一个实体，或者实体+Map的混合模型(参考BeetlSql模型)
   public List<Map<String,Object> findUsers(@Param("name") String name,@Param("departmentId") departmentId)
   
 }
