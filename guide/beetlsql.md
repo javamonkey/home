@@ -2430,7 +2430,7 @@ public class MyServiceImpl implements MyService {
 <dependency>
 	<groupId>com.ibeetl</groupId>
 	<artifactId>beetl-framework-starter</artifactId>
-	<version>1.1.8.RELEASE</version>
+	<version>1.1.9.RELEASE</version>
 </dependency>
 ~~~
 beetl-framework-starter 会自动集成Spring Boot已经配置好的名为“dataSource”数据源，比如
@@ -2459,8 +2459,12 @@ beetl-framework-starter  会读取application.properites如下配置
 * beetlsql.nameConversion:  默认是org.beetl.sql.core.UnderlinedNameConversion,能将下划线分割的数据库命名风格转化为java驼峰命名风格，还有常用的DefaultNameConversion，数据库命名完全和Java命名一直，以及JPA2NameConversion，兼容JPA命名
 * beetl-beetlsql.dev：默认是true，即向控制台输出执行时候的sql，参数，执行时间，以及执行的位置，每次修改sql文件的时候，自动检测sql文件修改.
 * beetlsql.daoSuffix：默认为Dao。
-* beetlsql.basePackage：默认为com，此选项配置beetlsql.daoSuffix来自动扫描com包极其子包下的所有以Dao结尾的Mapper类。以本章例子而言，你可以配置“com.bee.sample.ch5.dao”
+* beetlsql.basePackage：默认为com，此选项配置beetlsql.daoSuffix来自动扫描com包极其子包下的所有以Dao结尾的Mapper类。以本章例子而言，你可以配置“com.bee.sample.ch5.dao”
 * beetlsql.dbStyle ：数据库风格，默认是org.beetl.sql.core.db.MySqlStyle.对应不同的数据库，其他还有OracleStyle，PostgresStyle,SqlServerStyle,DB2SqlStyle,SQLiteStyle,H2Style
+
+
+
+
 
 
 >  如果不满足你要求，你也可以采用java config方式自己配置，或者参考beetl-framework-starter源码，参考 demo ，[http://git.oschina.net/xiandafu/springboot_beetl_beetlsql](http://git.oschina.net/xiandafu/springboot_beetl_beetlsql)，自己完成 spring boot集成需要注意的是要添加spring-devtools.properties文件,并配置如下选项
