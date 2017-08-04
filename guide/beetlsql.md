@@ -689,9 +689,6 @@ SQLManager 提供了所有需要知道的API，但通过sqlid来访问sql有时�
 
 接口必须实现BaseMapper接口（后面可以自定义一个Base接口），它提供内置的CRUID方法，如insert,unique,template,templateOne ,updateById等
 
-~~~java
-
-~~~
 
 BaseMapper 具备数据库常见的操作，接口只需要定义额外的方法与sqlId同名即可。
 
@@ -718,7 +715,7 @@ select
 List<User> select(@Param("name") String name);
 ~~~
 
-BeetlSql的mapper方法总会根据调用方法名字，返回值，以及参数映射到SQLManager相应的查询接口，比如返回类型是List，意味着发起SQLManager.select 查询，如果返回是一个Map或者Pojo，则发起一次selectSingle查询，如果返回定义为List，则表示查询实体，如果定义为List\<Long\> ，则对应的查询结果映射为Long
+BeetlSql的mapper方法总会根据调用方法名字，返回值，以及参数映射到SQLManager相应的查询接口，比如返回类型是List，意味着发起SQLManager.select 查询，如果返回是一个Map或者Pojo，则发起一次selectSingle查询，如果返回定义为List，则表示查询实体，如果定义为List<Long> ，则对应的查询结果映射为Long
 
 #### 6.1 内置CRUD
 
