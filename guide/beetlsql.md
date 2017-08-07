@@ -3,7 +3,7 @@
 >   -   作者: 闲大赋,Gavin.King,Sue,Zhoupan,woate,Darren
 >   -   社区 [http://ibeetl.com](http://ibeetl.com/)
 >   -   qq群 219324263
->   -   当前版本 2.9.3
+>   -   当前版本 2.9.4
 
 
 
@@ -37,7 +37,7 @@ maven 方式:
 <dependency>
 	<groupId>com.ibeetl</groupId>
 	<artifactId>beetlsql</artifactId>
-	<version>2.9.3</version>
+	<version>2.9.4</version>
 </dependency>
 ```
 
@@ -130,6 +130,10 @@ List<User> list = sqlManager.template(query);
 User query2 = new User();
 query.setName("xiandafu");
 List<User> list2 = sqlManager.select("user.select",User.class,query2);
+
+// 这一部分需要参考mapper一章
+UserDao dao = sqlManager.getMapper(UserDao.class);
+List<User> list3 = dao.select(query2);
 ```
 
 
@@ -287,7 +291,7 @@ ConnectionSource source = ConnectionSourceHelper.getMasterSlave(master,slaves)
 
 #### 3.2. 查询API
 
-##### 3.2.1. 模板类查询（自动生成sql）
+##### 3.2.1. 简单查询（自动生成sql）
 
 * public <T> T unique(Class<T> clazz,Object pk) 根据主键查询，如果未找到，抛出异常.
 * public <T> T single(Class<T> clazz,Object pk) 根据主键查询，如果未找到，返回null.
@@ -295,10 +299,15 @@ ConnectionSource source = ConnectionSourceHelper.getMasterSlave(master,slaves)
 -   public <T> List<T> all(Class<T> clazz) 查询出所有结果集
 -   public <T> List<T> all(Class<T> clazz, int start, int size) 翻页
 -   public int allCount(Class<?> clazz) 总数
+
+##### 3.2.2  template查询
+
 -   public <T> List<T> template(T t) 根据模板查询，返回所有符合这个模板的数据库 同上，mapper可以提供额外的映射，如处理一对多，一对一
 -   public <T>  T templateOne(T t) 根据模板查询，返回一条结果，如果没有找到，返回null
 -   public <T> List<T> template(T t,int start,int size) 同上，可以翻页
 -   public <T> long templateCount(T t) 获取符合条件的个数
+-   public <T> List<T> template(Class<T> target,Object paras,long start, long size)  模板查询，参数是paras，可以是Map或者普通对象
+-   public <T> long templateCount(Class<T> target, Object paras) 获取符合条件个数
 
 翻页的start，系统默认位从1开始，为了兼容各个数据库系统，会自动翻译成数据库习俗，比如start为1，会认为mysql，postgres从0开始（从start－1开始），oralce，sqlserver，db2从1开始（start－0）开始。
 
@@ -327,7 +336,19 @@ public class User  {
 
 这样，模板查询将添加order by id desc ,以及date字段将按照日期范围来查询。 具体参考annotation一章
 
-##### 3.2.2. 通过sqlid查询,sql语句在md文件里
+模板查询一般时间较为简单的查询，如用户登录验证
+
+~~~java
+User template = new User();
+template.setName(...);
+template.setPassword(...);
+template.setStatus(1);
+User user = sqlManager.templateOne(template);
+~~~
+
+
+
+##### 3.2.3. 通过sqlid查询,sql语句在md文件里
 
 -   public <T> List<T> select(String sqlId, Class<T> clazz, Map<String, Object> paras) 根据sqlid来查询，参数是个map
 
@@ -353,7 +374,7 @@ public class User  {
 > ~~~
 
 
-##### 3.2.3 指定范围查询
+##### 3.2.4 指定范围查询
 
 - public <T> List<T> select(String sqlId, Class<T> clazz, Map<String, Object> paras, int start, int size)， 查询指定范围
 - public <T> List<T> select(String sqlId, Class<T> clazz, Object paras, int start, int size) ，查询指定范围
@@ -716,6 +737,29 @@ List<User> select(@Param("name") String name);
 ~~~
 
 BeetlSql的mapper方法总会根据调用方法名字，返回值，以及参数映射到SQLManager相应的查询接口，比如返回类型是List，意味着发起SQLManager.select 查询，如果返回是一个Map或者Pojo，则发起一次selectSingle查询，如果返回定义为List，则表示查询实体，如果定义为List<Long> ，则对应的查询结果映射为Long
+
+定义好接口后，可以通过SQLManager.getMapper 来获取一个Dao真正的实现
+
+~~~java
+UserDao dao = sqlManager.getMapper(UserDao.class);
+~~~
+
+如果你使用Spring或者SpringBoot，可以参考Spring集成一章，了解如何自动注入Mapper
+
+> Mapper 对应的sql文件默认根据实体来确定，如实体是User对象，则对应的sql文件是user.md(sql),可以通过@SqlResource 注解来指定Mapper对应的sql文件。比如
+
+~~~java
+@SqlResource("core.user")
+public interface UserCoreDao extends BaseMapper<User> {
+	List<User> select(String name);
+}
+@SqlResource("console.user")
+public interface UserConsoleDao extends BaseMapper<User> {
+	List<User> select(String name);
+}
+~~~
+
+> 这样，这俩个mapper分别访问sql/core/user.md 和 sql/console/user.md
 
 #### 6.1 内置CRUD
 
