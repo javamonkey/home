@@ -3,7 +3,7 @@
 >   -   作者: 闲大赋,Gavin.King,Sue,Zhoupan,woate,Darren
 >   -   社区 [http://ibeetl.com](http://ibeetl.com/)
 >   -   qq群 219324263
->   -   当前版本 2.9.2
+>   -   当前版本 2.9.3
 
 
 
@@ -37,7 +37,7 @@ maven 方式:
 <dependency>
 	<groupId>com.ibeetl</groupId>
 	<artifactId>beetlsql</artifactId>
-	<version>2.9.2</version>
+	<version>2.9.3</version>
 </dependency>
 ```
 
@@ -843,7 +843,12 @@ public interface BaseMapper<T> {
 	 */
 	long templateCount(T entity);
 	
-	
+    /**
+	 * 单表的基于模板查询的翻页
+	 * @param query
+	 * @return
+	 */
+	void templatePage(PageQuery<T> query);
 	
 	/**
 	 * 执行一个jdbc sql模板查询
@@ -862,7 +867,6 @@ public interface BaseMapper<T> {
 	SQLManager getSQLManager();
 
 }
-
 
 ~~~
 
@@ -1835,6 +1839,8 @@ SqlManager sqlManager = new SqlManager(source,mysql,loader,nc ,new Interceptor[]
 
 beetlsql会分别输出 执行前的sql和参数，以及执行后的结果和耗费的时间。你可以参考DebugInterceptor 实现自己的调试输出
 
+DebugInterceptor 还允许设置“位置”的实现，这是因为很多业务系统封装了Beetlsql，更希望"位置"打印的是业务系统，而非封装类的位置，具体可参考DebugInterceptor 源码
+
 
 
 ### 15. 缓存功能
@@ -1924,7 +1930,7 @@ public class InterceptorContext {
 
 ### 17. 内置支持主从数据库
 
-BeetlSql管理数据源，如果只提供一个数据源，则认为读写均操作此数据源，如果提供多个，则默认第一个为写库，其他为读库。用户在开发代码的时候，无需关心操作的是哪个数据库，因为调用sqlScript 的 select相关api的时候，总是去读取从库，add/update/delete 的时候，总是读取主库。
+BeetlSql管理数据源，如果只提供一个数据源，则认为读写均操作此数据源，如果提供多个，则默认第一个为写库，其他为读库。用户在开发代码的时候，无需关心操作的是哪个数据库，因为调用sqlScript 的 select相关api的时候，总是去读取从库，add/update/delete 的时候，总是读取主库（如下是主从实现原理，大部分情况下无需关心如何实现)
 
 ```java
 sqlManager.insert(User.class,user) // 操作主库，如果只配置了一个数据源，则无所谓主从
@@ -2427,7 +2433,7 @@ public class MyServiceImpl implements MyService {
 <dependency>
 	<groupId>com.ibeetl</groupId>
 	<artifactId>beetl-framework-starter</artifactId>
-	<version>1.1.9.RELEASE</version>
+	<version>1.1.10.RELEASE</version>
 </dependency>
 ~~~
 beetl-framework-starter 会自动集成Spring Boot已经配置好的名为“dataSource”数据源，比如
