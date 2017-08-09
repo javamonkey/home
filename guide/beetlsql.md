@@ -2766,7 +2766,7 @@ DSTransactionManager.commit();
 
 
 
-### 25.6. 设置自己的BaseMapper
+#### 25.6. 设置自己的BaseMapper
 
 Beetlsql提供了BaseMapper来内置了CRUD等方法，你可以自己定制属于你的“BaseMapper”
 
