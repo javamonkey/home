@@ -2504,7 +2504,20 @@ Beetl视图解析器属性同spring自带的视图解析器一样，支持conten
 
 #### 4.6. Spring Boot集成
 
-Spring Boot 通过java config来配置 beetl需要的BeetlGroupUtilConfiguration，和 BeetlSpringViewResolver，参考代码如下
+~~~xml
+<dependency>
+	<groupId>com.ibeetl</groupId>
+	<artifactId>beetl-framework-starter</artifactId>
+	<version>1.1.12.RELEASE</version>
+</dependency>
+~~~
+
+starter 自动处理以btl结尾的视图，模板根目录是Spring Boot默认的templates目录。如下配置可以修改beetl部分属性
+
+* beetl-beetlsql.dev,默认为true，即自动检查模板变化
+* beetl.suffix 默认为btl，以btl结尾的视图交给Beetl引擎渲染。
+
+如果你想自己配置模板引擎， 通过java config来配置 beetl需要的BeetlGroupUtilConfiguration，和 BeetlSpringViewResolver，参考代码如下
 
 ```java
 @Configuration
@@ -2536,11 +2549,11 @@ public class BeetlConf {
  }
 ```
 
-spring boot集成需要注意的是要添加spring-devtools.properties文件,并配置如下选项
+自己编写spring boot集成需要注意的是要添加spring-devtools.properties文件（starter方式不需要，已经添加),并配置如下选项
 
 ```properties
-restart.include.beetl=/beetl-xxx.jar
-restart.include.beetlsql=/beetlsql-xxx..jar
+restart.include.beetl=/beetl-[\\w]+\.jar
+restart.include.beetlsql=/beetlsql-[\\w]+\.jar
 ```
 
 spring-devtools.properties 为spring boot的配置文件,位于META-INF目录下

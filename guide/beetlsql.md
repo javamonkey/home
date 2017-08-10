@@ -3,7 +3,7 @@
 >   -   作者: 闲大赋,Gavin.King,Sue,Zhoupan,woate,Darren
 >   -   社区 [http://ibeetl.com](http://ibeetl.com/)
 >   -   qq群 219324263
->   -   当前版本 2.9.4
+>   -   当前版本 2.9.5
 
 
 
@@ -37,7 +37,7 @@ maven 方式:
 <dependency>
 	<groupId>com.ibeetl</groupId>
 	<artifactId>beetlsql</artifactId>
-	<version>2.9.4</version>
+	<version>2.9.5</version>
 </dependency>
 ```
 
@@ -2477,7 +2477,7 @@ public class MyServiceImpl implements MyService {
 <dependency>
 	<groupId>com.ibeetl</groupId>
 	<artifactId>beetl-framework-starter</artifactId>
-	<version>1.1.10.RELEASE</version>
+	<version>1.1.1.RELEASE</version>
 </dependency>
 ~~~
 beetl-framework-starter 会自动集成Spring Boot已经配置好的名为“dataSource”数据源，比如
@@ -2510,14 +2510,25 @@ beetl-framework-starter  会读取application.properites如下配置
 * beetlsql.dbStyle ：数据库风格，默认是org.beetl.sql.core.db.MySqlStyle.对应不同的数据库，其他还有OracleStyle，PostgresStyle,SqlServerStyle,DB2SqlStyle,SQLiteStyle,H2Style
 
 
+如果你想配置主从或者指定一个已经配置好的数据源，可以自己创建一个 BeetlSqlDataSource的Bean，比如，在你的配置代码里
 
+~~~java
+@Bean
+public BeetlSqlDataSource beetlSqlDataSource(@Qualifier("master")  DataSource dataSource,@Qualifier("slave")  DataSource slave){
+    BeetlSqlDataSource source = new BeetlSqlDataSource();
+    source.setMasterSource(dataSource);
+    source.setSlaves(new DataSource[]{slave});
+	return source;
+}
+	
+~~~
 
 
 
 >  如果不满足你要求，你也可以采用java config方式自己配置，或者参考beetl-framework-starter源码，参考 demo ，[http://git.oschina.net/xiandafu/springboot_beetl_beetlsql](http://git.oschina.net/xiandafu/springboot_beetl_beetlsql)，自己完成 spring boot集成需要注意的是要添加spring-devtools.properties文件,并配置如下选项
 ```properties
-restart.include.beetl=/beetl-xxx.jar
-restart.include.beetlsql=/beetlsql-xxx..jar
+restart.include.beetl=/beetl-[\\w]+\.jar
+restart.include.beetlsql=/beetlsql-[\\w]+\.ja
 ```
 spring-devtools.properties 为spring boot的配置文件,位于META-INF目录下
 
