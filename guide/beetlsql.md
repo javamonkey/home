@@ -992,7 +992,17 @@ public int updateUser(User user);
 public int[] updateAll(List<User> list);
 ~~~
 
+BeetlSql 通常根据返回值是int或者int[]  来判断是否是更新还是批量更新，如果没有返回值，会进一步判断第一个参数是否是集合或者数组，比如
+
+~~~java
+public void updateAllByUser(List<User> list);
+public void updateAllByIds(List<Integer> list);
+~~~
+
+Beetl会假设前者是批量更新，而后者只是普通更新。建议还是不要使用void，而使用int或者int[]来帮助区分
+
 #### 6.2.5 插入语句
+
 插入语句同更新语句，唯一不同的是插入语句有时候需要获取自增序列值，这时候使用KeyHolder作为返回参数
 ~~~java
 public KeyHolder insertSql(User user);
