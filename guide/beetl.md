@@ -1,4 +1,4 @@
-## Beetl2.7.18中文文档
+## Beetl2.7 中文文档
 
 Beetl作者：李家智 <[xiandafu@126.com](mailto:xiandafu@126.com)>
 
@@ -12,6 +12,7 @@ Beetl目前版本是2.7.21,相对于其他java模板引擎，具有功能齐全�
 -   易于整合：Beetl能很容易的与各种web框架整合，如Spring MVC，JFinal，Struts，Nutz，Jodd，Servlet等。
 -   支持模板单独开发和测试，即在MVC架构中，即使没有M和C部分，也能开发和测试模板。
 -   扩展和个性化：Beetl支持自定义方法，格式化函数，虚拟属性，标签，和HTML标签. 同时Beetl也支持自定义占位符和控制语句起始符号也支持使用者完全可以打造适合自己的工具包。
+-   可以扩展为脚本引擎，规则引擎，能定制引擎从而实现高级功能。
 
 >   #### 关于性能
 >
@@ -69,7 +70,7 @@ Beetl目前版本是2.7.21,相对于其他java模板引擎，具有功能齐全�
 <dependency>
         <groupId>com.ibeetl</groupId>
         <artifactId>beetl</artifactId>
-        <version>2.7.21</version>
+        <version>2.7.22</version>
 </dependency>
 ```
 
@@ -2076,11 +2077,42 @@ class RestrictLoopNodeListener implements Listener{
 完成这些代码后，在配置文件中申明使用新的引擎
 
 ```properties
-ENGINE=org.bee.tl.online.OnlineTemplateEngine
+ENGINE=org.bee.tl.online.VarRefTemplateEngine
 ```
 
 这样就完成了模板引擎定制。
 
+另外一种定制模板引擎方法（2.7.22)
+
+在2.7.21 版本后，提供了另外一种定制模板引擎的方法，可以在Beetl语法树生成的时候提供定制（上面那种是在生成后)，这种方法更灵活。但需要对语法树有所了解。
+
+首先需要创建一个引擎
+
+
+
+~~~java
+ENGINE=org.bee.tl.online.VarRefTemplateEngine
+~~~
+OnlineTemplateEngine 代码如下，
+
+~~~java
+public class VarRefTemplateEngine extends DefaultTemplateEngine {
+	protected AntlrProgramBuilder getAntlrBuilder(GroupTemplate gt){
+		AntlrProgramBuilder pb = new AntlrProgramBuilder(gt);
+		return pb;
+	}
+	
+	class VarRefAntlrProgramBuilder extends AntlrProgramBuilder{
+		public VarRefAntlrProgramBuilder(GroupTemplate gt) {
+			super(gt);
+
+		}
+		
+	}
+}
+
+~~~
+AntlrProgramBuilder 方法用于构造语法树，有多个Protected方法可以重载，以实现新的实现。
 
 
 #### 3.17. 直接运行Beetl脚本
@@ -2552,8 +2584,8 @@ public class BeetlConf {
 自己编写spring boot集成需要注意的是要添加spring-devtools.properties文件（starter方式不需要，已经添加),并配置如下选项
 
 ```properties
-restart.include.beetl=/beetl-[\\w]+\.jar
-restart.include.beetlsql=/beetlsql-[\\w]+\.jar
+restart.include.beetl=/beetl-(\d+\.)+jar
+restart.include.beetlsql=/beetlsql-(\d+\.)+jar
 ```
 
 spring-devtools.properties 为spring boot的配置文件,位于META-INF目录下
