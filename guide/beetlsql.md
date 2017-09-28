@@ -2537,8 +2537,8 @@ public BeetlSqlDataSource beetlSqlDataSource(@Qualifier("master")  DataSource da
 
 >  如果不满足你要求，你也可以采用java config方式自己配置，或者参考beetl-framework-starter源码，参考 demo ，[http://git.oschina.net/xiandafu/springboot_beetl_beetlsql](http://git.oschina.net/xiandafu/springboot_beetl_beetlsql)，自己完成 spring boot集成需要注意的是要添加spring-devtools.properties文件,并配置如下选项
 ```properties
-restart.include.beetl=/beetl-[\\w]+\.jar
-restart.include.beetlsql=/beetlsql-[\\w]+\.ja
+restart.include.beetl=/beetl-(\d+\.)+jar
+restart.include.beetlsql=/beetlsql-(\d+\.)+ja
 ```
 spring-devtools.properties 为spring boot的配置文件,位于META-INF目录下
 
