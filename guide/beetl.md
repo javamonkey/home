@@ -3592,9 +3592,9 @@ Beetl2.0目前只完成了解释引擎，使用解释引擎好处是可以适用
 -   Daemons
 -   Darren
 
-### 5.8 Beetl常用错误解决
+#### 5.8 Beetl常用错误解决
 
-#### 5.8.1 模板加载错误
+##### 5.8.1 模板加载错误
 
 MVC框架如果加载不到模板，请先确认是否指定了正确的ResourceLoader。对于Spring Boot，使用的是ClassPathResourceLoaer，加载位于templates目录下的模板
 
@@ -3642,7 +3642,7 @@ beetlGroupUtilConfiguration.setResourceLoader(cploder);
 
 
 
-#### 5.8.2  开发模式下需改模板未刷新。
+##### 5.8.2  开发模式下需改模板未刷新。
 
 这种现象主要出现在idea +maven的工程里，因为idea默认情况下不会同步模板文件到target某，因此即使你修改了模板，beetl也看不到变化。解决办法可以参考 渔泯小镇
 
@@ -3650,7 +3650,7 @@ http://bbs.ibeetl.com/bbs/bbs/topic/612-1.html
 
 如果是其他环境出现这个问题，请确认修改的模板是否同步到目标环境里
 
-#### 5.8.3 错误提示里有“directive dynamic "
+##### 5.8.3 错误提示里有“directive dynamic "
 Beetl默认使用了了如下引擎
 ~~~properties
 ENGINE=org.beetl.core.engine.FastRuntimeEngine
@@ -3666,7 +3666,7 @@ ENGINE=org.beetl.core.engine.FastRuntimeEngine
 ENGINE=org.beetl.core.engine.DefaultTemplateEngine
 ~~~
 
-#### 5.8.4 Spring Boot 出现 ClassCastException
+##### 5.8.4 Spring Boot 出现 ClassCastException
 Spring Boot 需要配置 spring-devtools.properties,请参考Spring Boot集成
 
 
