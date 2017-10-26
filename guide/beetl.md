@@ -2339,7 +2339,7 @@ ServletGroupTemplate同其他web集成一样，将读取配置文件来配置，
 需要做如下配置即可
 
 ```xml
-<bean id="beetlConfig" class="org.beetl.ext.spring.BeetlGroupUtilConfiguration" init-method="init"/>
+<bean id="beetlConfig" class="org.beetl.ext.spring." init-method="init"/>
 <bean id="viewResolver" class="org.beetl.ext.spring.BeetlSpringViewResolver">
         <property name="contentType" value="text/html;charset=UTF-8"/>
 </bean>
@@ -2367,6 +2367,15 @@ public ModelAndView index(HttpServletRequest req) {
 ```
 
 [http://git.oschina.net/xiandafu/springbeetlsql](http://git.oschina.net/xiandafu/springbeetlsql) 有完整例子
+
+
+通常可以把模板放到WEB-INF目录下，除了可以配置beetl.propertis 外，还可以使用Spring配置
+
+```xml
+<bean id="beetlConfig" class="org.beetl.ext.spring." init-method="init">
+        <property name="root" value="/WEB-INF/templates"/>
+</bean>
+```
 
 
 

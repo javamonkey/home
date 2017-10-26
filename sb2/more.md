@@ -23,6 +23,36 @@ Spring Boot **并未要求掌握Spring技术**，这恰恰是Spring Boot 目的�
 
 Spring Boot 学习唯一麻烦是现在缺少正正全面的中文书籍介绍给国内用户，本书《Spring Boot 2 精髓》正是这样一本书。
 
+## 1.3 如果以Debug模式启动本书例子会出怪事？
+
+如果你以Debug模式运行本书的Spring Boot，Spring Boot在完全启动前会停留在SilentExitExceptionHandler，出了什么鬼？
+
+~~~
+SilentExitExceptionHandler{
+	.....
+	public static void exitCurrentThread() {
+		throw new SilentExitException(); //即使没有打断点，IDE也会自动在这里停留
+	}
+  
+}
+~~~
+
+
+
+这并不是Spring Boot特有现象，这是因为这里Spring Boot 抛出了一个捕获不了的异常(uncaught exceptions)
+
+这种异常一般发生在线程的run方法里，导致线程异常退出，JDB（也就是Java Debug ，可以通过https://www.tutorialspoint.com/jdb/jdb_quick_guide.htm） 学习，默认情况下会对这情况进行断点。
+
+如果要避免这种情况，可以配置JDB忽略这种uncaught exceptions，以Eclipse为例子，进入Java|Debug
+
+勾选Suspend execution on uncaught exceptions 即可。
+
+
+
+至于为什么Spring Boot会出现这种情况，这应该是与Spring Boot 热加载机制有关，具体可以参考：
+
+https://github.com/spring-projects/spring-boot/issues/3100
+
 
 
 # 4 视图技术

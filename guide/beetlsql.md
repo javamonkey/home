@@ -686,7 +686,9 @@ Party代码如下
 
 ```java
 public class Party  {
+    @AssignID
 	private Integer id1 ;
+	@AssignID
 	private Integer id2 ;
 	private String name ;
 	//忽略其他 getter setter方法
