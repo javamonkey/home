@@ -2565,16 +2565,21 @@ starter 自动处理以btl结尾的视图，模板根目录是Spring Boot默认�
 public class BeetlConf {
 
         @Value("${beetl.templatesPath}") String templatesPath;//模板跟目录 ，比如 "templates"
-        @Bean(initMethod = "init", name = "beetlConfig")
+        @Bean(name = "beetlConfig")
         public BeetlGroupUtilConfiguration getBeetlGroupUtilConfiguration() {
                 BeetlGroupUtilConfiguration beetlGroupUtilConfiguration = new BeetlGroupUtilConfiguration();
-                try {
-                        ClasspathResourceLoader cploder = new ClasspathResourceLoader(BeetlConf.class.getClassLoader(),templatesPath);
-                        beetlGroupUtilConfiguration.setResourceLoader(cploder);
-                        return beetlGroupUtilConfiguration;
-                } catch (Exception e) {
-                        throw new RuntimeException(e);
-                }
+               //获取Spring Boot 的ClassLoader
+	            ClassLoader loader = Thread.currentThread().getContextClassLoader();
+				if(loader==null){
+					loader = BeetlTemplateConfig.class.getClassLoader();
+				}
+				beetlGroupUtilConfiguration.setConfigProperties(extProperties);
+				ClasspathResourceLoader cploder = new ClasspathResourceLoader(loader,
+						templatesPath);
+				beetlGroupUtilConfiguration.setResourceLoader(cploder);
+				beetlGroupUtilConfiguration.init();
+				//如果使用了优化编译器，涉及到字节码操作，需要添加ClassLoader
+				beetlGroupUtilConfiguration.getGroupTemplate().setClassLoader(loader);
 
         }
 
