@@ -1,4 +1,4 @@
-var lang={"zh-cn":{guide:{title:"文档",standard:"在线文档",faster:"极速文档",md:"Markdown下载"},trial:"在线体验",forum:"论坛",download:"下载",donate:"捐助作者",language:"English"},en:{guide:{title:"Guide",standard:"Online Guide",faster:"Faster Ed.",md:"Markdown"},trial:"Trial",forum:"Forum",download:"Download",donate:"Donate",language:"中文"}};
+var lang={"zh-cn":{guide:{title:"在线文档",beetl:"Beetl文档",beetlsql:"BeetlSQL文档"},trial:"在线体验",forum:"论坛",download:"下载",dl:[{n:"Beetl模板引擎",u:"http://git.oschina.net/xiandafu/beetl2.0/attach_files"},{n:"BeetlSQL数据库Dao",u:"http://git.oschina.net/xiandafu/beetlsql/attach_files"},{n:"XLSUnit单元测试工具",u:"https://git.oschina.net/xiandafu/xlsunit"}],donate:"捐助作者",sb2:{name:"《Spring Boot2精髓》",fix:"内容勘正",more:"内容补充"},language:"English"},en:{guide:{title:"Guide",beetl:"Beetl Doc",beetlsql:"BeetlSQL Doc"},trial:"Trial",forum:"Forum",download:"Download",dl:[{n:"Beetl Template",u:"http://mvnrepository.com/artifact/com.ibeetl/beetl"},{n:"BeetlSQL Database Dao",u:"http://mvnrepository.com/artifact/com.ibeetl/beetlsql"},{n:"XLSUnit Unit Testing Tool",u:"http://mvnrepository.com/artifact/com.ibeetl/xlsunit"}],donate:"Donate",sb2:{name:"《Spring Boot2揭秘》",fix:"内容勘正",more:"内容补充"},language:"中文"}};
 var localize = (localStorage.localize||navigator.language||navigator.browserLanguage).toLowerCase();
 if(localize!='zh-cn')localize='en';
 var beetl = new Vue({
@@ -32,24 +32,27 @@ render.heading = function(text,level){
 	var reg = /^(\d+(_\d+)*).*/.exec(text.replace(/\./g,'_')),tag = '<h'+level;
 	if(reg){
 		tag += ' id="beetl_'+reg[1]+'" class="_anchor">';
-		var current = {href:'#beetl_'+reg[1],text:text,child:[]}
-		if(level == 3){
-			toc.push(current)
-		}else if(level == 4){
-			toc[toc.length -1].child.push(current)
-		}else if(level ==5){
-			toc[toc.length -1].child[toc[toc.length -1].child.length-1].child.push(current)
-		}
+		var current = {href:'#beetl_'+reg[1],level:level,text:text,child:[]}
+		addtoc(toc,current,level);
 	}else{
 		tag += '>';
 	}
 	tag += text+'</h'+level+'>'
 	return tag
 }
+
+function addtoc(current,content,level){
+	if(level==1||current.length==0||current[current.length-1].level==content.level){
+		current.push(content);
+	}else{
+		addtoc(current[current.length-1].child,content,level-1)
+	}
+}
+
 function loadDoc(){
 	var docs = ['beetl','beetlsql'],doc = location.hash.substr(1)
 	if(docs.indexOf(doc)<0) doc = 'beetl';//所有非法的参数都归为beetl
-	document.title = doc+'中文文档';
+	document.title = beetl.i18n.guide[doc];
 	toc=[];
 	$(window).scrollTop(0)
 	NProgress.start();

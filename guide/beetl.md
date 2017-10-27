@@ -4,7 +4,7 @@ Beetl作者：李家智 <[xiandafu@126.com](mailto:xiandafu@126.com)>
 
 ### 1. 什么是Beetl
 
-Beetl目前版本是2.7.21,相对于其他java模板引擎，具有功能齐全，语法直观,性能超高，以及编写的模板容易维护等特点。使得开发和维护模板有很好的体验。是新一代的模板引擎。总得来说，它的特性如下：
+Beetl目前版本是2.7.23,相对于其他java模板引擎，具有功能齐全，语法直观,性能超高，以及编写的模板容易维护等特点。使得开发和维护模板有很好的体验。是新一代的模板引擎。总得来说，它的特性如下：
 
 -   功能完备：作为主流模板引擎，Beetl具有相当多的功能和其他模板引擎不具备的功能。适用于*各种应用场景*，从对响应速度有很高要求的大网站到功能繁多的CMS管理系统都适合。Beetl本身还具有很多独特功能来完成模板编写和维护，这是其他模板引擎所不具有的。
 -   非常简单：类似Javascript语法和习俗，只要半小时就能通过半学半猜完全掌握用法。拒绝其他模板引擎那种非人性化的语法和习俗。同时也能支持html 标签，使得开发CMS系统比较容易
@@ -70,7 +70,7 @@ Beetl目前版本是2.7.21,相对于其他java模板引擎，具有功能齐全�
 <dependency>
         <groupId>com.ibeetl</groupId>
         <artifactId>beetl</artifactId>
-        <version>2.7.22</version>
+        <version>2.7.23</version>
 </dependency>
 ```
 
@@ -2339,7 +2339,7 @@ ServletGroupTemplate同其他web集成一样，将读取配置文件来配置，
 需要做如下配置即可
 
 ```xml
-<bean id="beetlConfig" class="org.beetl.ext.spring.BeetlGroupUtilConfiguration" init-method="init"/>
+<bean id="beetlConfig" class="org.beetl.ext.spring." init-method="init"/>
 <bean id="viewResolver" class="org.beetl.ext.spring.BeetlSpringViewResolver">
         <property name="contentType" value="text/html;charset=UTF-8"/>
 </bean>
@@ -2367,6 +2367,15 @@ public ModelAndView index(HttpServletRequest req) {
 ```
 
 [http://git.oschina.net/xiandafu/springbeetlsql](http://git.oschina.net/xiandafu/springbeetlsql) 有完整例子
+
+
+通常可以把模板放到WEB-INF目录下，除了可以配置beetl.propertis 外，还可以使用Spring配置
+
+```xml
+<bean id="beetlConfig" class="org.beetl.ext.spring." init-method="init">
+        <property name="root" value="/WEB-INF/templates"/>
+</bean>
+```
 
 
 
@@ -2540,7 +2549,7 @@ Beetl视图解析器属性同spring自带的视图解析器一样，支持conten
 <dependency>
 	<groupId>com.ibeetl</groupId>
 	<artifactId>beetl-framework-starter</artifactId>
-	<version>1.1.12.RELEASE</version>
+	<version>1.1.16.RELEASE</version>
 </dependency>
 ~~~
 
@@ -2580,15 +2589,6 @@ public class BeetlConf {
 
  }
 ```
-
-自己编写spring boot集成需要注意的是要添加spring-devtools.properties文件（starter方式不需要，已经添加),并配置如下选项
-
-```properties
-restart.include.beetl=/beetl-(\d+\.)+jar
-restart.include.beetlsql=/beetlsql-(\d+\.)+jar
-```
-
-spring-devtools.properties 为spring boot的配置文件,位于META-INF目录下
 
 
 

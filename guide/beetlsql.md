@@ -3,7 +3,7 @@
 >   -   作者: 闲大赋,Gavin.King,Sue,Zhoupan,woate,Darren
 >   -   社区 [http://ibeetl.com](http://ibeetl.com/)
 >   -   qq群 219324263
->   -   当前版本 2.9.5
+>   -   当前版本 2.9.11
 
 
 
@@ -37,7 +37,7 @@ maven 方式:
 <dependency>
 	<groupId>com.ibeetl</groupId>
 	<artifactId>beetlsql</artifactId>
-	<version>2.9.5</version>
+	<version>2.9.11</version>
 </dependency>
 ```
 
@@ -583,7 +583,7 @@ sql.genAll("com.test", new GenConfig(), new GenFilter(){
 >
 >   必须当心覆盖你掉你原来写好的类和方法，不要轻易使用genAll，如果你用了，最好立刻将其注释掉，或者在genFilter写一些逻辑保证不会生成所有的代码好sql模板文件
 
-#### 3.6.3 悲观锁 lock
+##### 3.6.3. 悲观锁 lock
 SQLManager 提供如下API实现悲观锁，clazz对应的数据库表，主键为pk的记录实现悲观锁
 ~~~java
 public <T> T lock(Class<T> clazz, Object pk)
@@ -686,7 +686,9 @@ Party代码如下
 
 ```java
 public class Party  {
+    @AssignID
 	private Integer id1 ;
+	@AssignID
 	private Integer id2 ;
 	private String name ;
 	//忽略其他 getter setter方法
@@ -761,7 +763,7 @@ public interface UserConsoleDao extends BaseMapper<User> {
 
 > 这样，这俩个mapper分别访问sql/core/user.md 和 sql/console/user.md
 
-#### 6.1 内置CRUD
+#### 6.1. 内置CRUD
 
 BaseMapper包含了内置的常用查询，如下
 
@@ -916,7 +918,7 @@ public interface BaseMapper<T> {
 
 > 内置BaseMapper 可以定制，参考文档最后一节25.6，设置自己的BaseMapper
 
-#### 6.2 sqlId查询
+#### 6.2. sqlId查询
 
 对于sqlId 是查询语句，返回值可以是任何类型，Mapper将视图将查询结果映射到定义的类型上，如下是一些常见例子
 
@@ -959,7 +961,7 @@ paras.put("maxTime",maxTime);
 List<User> list = sqlManager.select("user.selectRanage",User.class,paras,start,size);
 ~~~
 
-#### 6.2.3 PageQuery 查询
+#### 6.3. PageQuery 查询
 
 PageQuery查询类似上一节的sqlId查询，不同的是，需要提供PageQuery参数以让Mapper理解为PageQuery查询，如下俩个是等价的
 
@@ -983,7 +985,7 @@ public PageQuery queryByCondtion(int pageNumber,int pageSize,String name);
 ~~~
 这种情况下，前俩个参数必须是int或者long类型
 
-#### 6.2.4 更新语句
+#### 6.4. 更新语句
 更新语句返回的结果可以是void，或者int，如果是批量更新，则可以返回int[]
 
 ~~~java
@@ -1001,14 +1003,14 @@ public void updateAllByIds(List<Integer> list);
 
 Beetl会假设前者是批量更新，而后者只是普通更新。建议还是不要使用void，而使用int或者int[]来帮助区分
 
-#### 6.2.5 插入语句
+#### 6.5. 插入语句
 
 插入语句同更新语句，唯一不同的是插入语句有时候需要获取自增序列值，这时候使用KeyHolder作为返回参数
 ~~~java
 public KeyHolder insertSql(User user);
 ~~~
 
-####6.2.6 使用JDBC SQL
+####6.6. 使用JDBC SQL
 可以通过@Sql注解直接在java中使用较为简单的sql语句，如下
 ~~~java
 @Sql(value=" update user set age = ? where id = ? ")
@@ -1023,7 +1025,7 @@ public List<Long> selectIds(Date date)
 public PageQuery selectUser(int pageNumber,int pageSize,Date date)
 ~~~
 
-####6.2.6 Mapper中的注解
+#### 6.7. Mapper中的注解
 
 从上面我们已经了解了@Param注解，用于申明参数名字，如果使用jdk8，且打开了编译选项parameter，则可以去掉@Param注解
 @RowStart和 @RowSize，用于查询中的范围查询。
@@ -2487,7 +2489,7 @@ public class MyServiceImpl implements MyService {
 <dependency>
 	<groupId>com.ibeetl</groupId>
 	<artifactId>beetl-framework-starter</artifactId>
-	<version>1.1.1.RELEASE</version>
+	<version>1.1.16.RELEASE</version>
 </dependency>
 ~~~
 beetl-framework-starter 会自动集成Spring Boot已经配置好的名为“dataSource”数据源，比如
@@ -2535,13 +2537,7 @@ public BeetlSqlDataSource beetlSqlDataSource(@Qualifier("master")  DataSource da
 
 
 
->  如果不满足你要求，你也可以采用java config方式自己配置，或者参考beetl-framework-starter源码，参考 demo ，[http://git.oschina.net/xiandafu/springboot_beetl_beetlsql](http://git.oschina.net/xiandafu/springboot_beetl_beetlsql)，自己完成 spring boot集成需要注意的是要添加spring-devtools.properties文件,并配置如下选项
-```properties
-restart.include.beetl=/beetl-(\d+\.)+jar
-restart.include.beetlsql=/beetlsql-(\d+\.)+ja
-```
-spring-devtools.properties 为spring boot的配置文件,位于META-INF目录下
-
+>  如果不满足你要求，你也可以采用java config方式自己配置，或者参考beetl-framework-starter源码，参考 demo ，[http://git.oschina.net/xiandafu/springboot_beetl_beetlsql](http://git.oschina.net/xiandafu/springboot_beetl_beetlsql)，自己完成 
 
 
 #### 24.3. JFinal集成和Demo
