@@ -2580,6 +2580,7 @@ public class BeetlConf {
 				beetlGroupUtilConfiguration.init();
 				//如果使用了优化编译器，涉及到字节码操作，需要添加ClassLoader
 				beetlGroupUtilConfiguration.getGroupTemplate().setClassLoader(loader);
+				return beetlGroupUtilConfiguration
 
         }
 
