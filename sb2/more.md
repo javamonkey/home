@@ -135,9 +135,10 @@ https://github.com/spring-projects/spring-boot/issues/3100
     </servlet-mapping>
 
 </web-app>
+
 ~~~
 
-com.xxx.YourApplication 代表了你的程序入口，即用@SpringBootApplication 标注的Spring Boot类
+类名com.xxx.YourApplication 代表了你的程序入口，即用@SpringBootApplication 标注的Spring Boot类
 
 * org.springframework.boot.legacy.context.web.SpringBootContextLoaderListener 是属于独立维护的工程，因此，你还需显示的导入
 
