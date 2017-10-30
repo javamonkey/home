@@ -1,6 +1,32 @@
+# 最新版本
+
+由于写作本书的时候，Spring Boot 和 第三方集成工具版本一直在变化，因此这里列出验证过后的最新版本
+
+* Spring Boot: 2.0.0.M5
+
+~~~xml
+<parent>
+	<groupId>org.springframework.boot</groupId>
+	<artifactId>spring-boot-starter-parent</artifactId>
+	<version>2.0.0.M5</version>
+</parent>
+~~~
+
+* beetl
+
+~~~xml
+
+<dependency>
+    <groupId>com.ibeetl</groupId>
+    <artifactId>beetl-framework-starter</artifactId>
+    <version>1.1.16.RELEASE</version>
+</dependency>
+~~~
+
 # 说明
 
-在写作的时候，考虑到篇幅，有些内容并未加进来，或者加进来也脱离了主线。还有些是在写作后才发现还有不同的技术点可以进一步介绍。因此本页面是对原书内容的补充和漫谈
+在写作的时候，考虑到篇幅，有些内容并未加进来，或者加进来也脱离了主线。还有些是在写作后才发现还有不同的技术点可以进一步介绍。因此本页面是对原书内容的补充和漫谈,
+漫谈部分可能**不像书中那么客观，会有些主观部分，如果引起你的不适，见谅**。
 
 # 1 前言
 
