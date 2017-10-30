@@ -73,7 +73,7 @@ https://github.com/spring-projects/spring-boot/issues/3100
 
 # 8 部署Spring Boot 应用
 
-## 8.2 部署到老旧的应用服务器上？
+## 8.2 如果非要部署到老旧的应用服务器上？
 书中写明了以war方式部署，针对的是servlet3.0 标准，也就是tomcat8，或者weblogic 12.如果你手里的服务器并不支持servlet3.0标准，还需要使用web.xml 方式，按照如下部署
 
 * 在Spring Boot工程的main/src 目录下新建一个叫webapp的目录，再创建一个WEB-INF目录，创建web.xml ，内容如下：
