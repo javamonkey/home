@@ -67,3 +67,61 @@ https://github.com/spring-projects/spring-boot/issues/3100
   * Thymeleaf并非所见所得，它一直宣称的观点是有误的。
   * Thymeleaf性能瓶颈
   * Thymeleaf的语法较为难学习，学习曲线很大。
+
+
+
+
+# 8 部署Spring Boot 应用
+
+## 8.2 部署到老旧的应用服务器上？
+书中写明了以war方式部署，针对的是servlet3.0 标准，也就是tomcat8，或者weblogic 12.如果你手里的服务器并不支持servlet3.0标准，还需要使用web.xml 方式，按照如下部署
+
+* 在Spring Boot工程的main/src 目录下新建一个叫webapp的目录，再创建一个WEB-INF目录，创建web.xml ，内容如下：
+~~~xml
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
+
+
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>com.xxx.YourApplication</param-value>
+	</context-param>
+
+	<listener>
+		<listener-class>org.springframework.boot.legacy.context.web.SpringBootContextLoaderListener</listener-class>
+	</listener>
+    <servlet>
+        <servlet-name>appServlet</servlet-name>
+        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+        <init-param>
+            <param-name>contextAttribute</param-name>
+            <param-value>org.springframework.web.context.WebApplicationContext.ROOT</param-value>
+        </init-param>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>appServlet</servlet-name>
+        <url-pattern>/</url-pattern>
+    </servlet-mapping>
+
+</web-app>
+
+~~~
+
+com.xxx.YourApplication 代表了你的程序入口，即用@SpringBootApplication 标注的Spring Boot类
+
+* org.springframework.boot.legacy.context.web.SpringBootContextLoaderListener 是属于独立维护的工程，因此，你还需显示的导入
+~~~xml
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-legacy</artifactId>
+    <version>1.1.0.RELEASE</version>
+</dependency>
+~~~
+
+
+
+
