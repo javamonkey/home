@@ -3,7 +3,7 @@
 >   -   作者: 闲大赋,Gavin.King,Sue,Zhoupan,woate,Darren
 >   -   社区 [http://ibeetl.com](http://ibeetl.com/)
 >   -   qq群 219324263
->   -   当前版本 2.9.11
+>   -   当前版本 2.9.12
 
 
 
@@ -37,7 +37,7 @@ maven 方式:
 <dependency>
 	<groupId>com.ibeetl</groupId>
 	<artifactId>beetlsql</artifactId>
-	<version>2.9.11</version>
+	<version>2.9.12</version>
 </dependency>
 ```
 
@@ -2489,7 +2489,7 @@ public class MyServiceImpl implements MyService {
 <dependency>
 	<groupId>com.ibeetl</groupId>
 	<artifactId>beetl-framework-starter</artifactId>
-	<version>1.1.16.RELEASE</version>
+	<version>1.1.17.RELEASE</version>
 </dependency>
 ~~~
 beetl-framework-starter 会自动集成Spring Boot已经配置好的名为“dataSource”数据源，比如
@@ -2534,6 +2534,13 @@ public BeetlSqlDataSource beetlSqlDataSource(@Qualifier("master")  DataSource da
 }
 	
 ~~~
+
+注意，可以通过Application.properties 配置如下属性禁用BeetlSQL或者禁用Beetl
+
+~~~~
+beetlsql.enabled=false
+beetl.enabled=false
+~~~~
 
 
 

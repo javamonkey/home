@@ -2549,7 +2549,7 @@ Beetl视图解析器属性同spring自带的视图解析器一样，支持conten
 <dependency>
 	<groupId>com.ibeetl</groupId>
 	<artifactId>beetl-framework-starter</artifactId>
-	<version>1.1.16.RELEASE</version>
+	<version>1.1.17.RELEASE</version>
 </dependency>
 ~~~
 
@@ -2595,6 +2595,26 @@ public class BeetlConf {
 
  }
 ```
+
+注意：这里并没有配置后缀，因此controller代码里必须显式的加上后缀
+
+~~~java
+
+	//return "/hello" 错误用法
+	return "hello.html" 
+~~~
+
+
+注意，可以通过Application.properties 配置如下属性禁用BeetlSQL或者禁用Beetl
+
+~~~~
+beetlsql.enabled=false
+beetl.enabled=false
+~~~~
+
+
+
+
 
 
 
