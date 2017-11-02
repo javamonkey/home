@@ -2556,7 +2556,7 @@ Beetl视图解析器属性同spring自带的视图解析器一样，支持conten
 starter 自动处理以btl结尾的视图，模板根目录是Spring Boot默认的templates目录。如下配置可以修改beetl部分属性
 
 * beetl-beetlsql.dev,默认为true，即自动检查模板变化
-* beetl.suffix 默认为btl，以btl结尾的视图交给Beetl引擎渲染。
+* beetl.enabled 默认为true，集成beetl。
 
 如果你想自己配置模板引擎， 通过java config来配置 beetl需要的BeetlGroupUtilConfiguration，和 BeetlSpringViewResolver，参考代码如下
 
