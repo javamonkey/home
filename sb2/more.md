@@ -19,7 +19,7 @@
 <dependency>
     <groupId>com.ibeetl</groupId>
     <artifactId>beetl-framework-starter</artifactId>
-    <version>1.1.16.RELEASE</version>
+    <version>1.1.19.RELEASE</version>
 </dependency>
 ~~~
 
@@ -95,7 +95,23 @@ https://github.com/spring-projects/spring-boot/issues/3100
   * Thymeleaf的语法较为难学习，学习曲线很大。
 
 
+# 7 Spring Boot 配置
 
+## 7.1.1 新版旧版配置Context Path方式不同
+
+Spring Boot 2  和 Spring Boot 1在配置Context Path的时候，目前看来不兼容，旧版本配置是
+
+~~~properties
+server.context-path=/config
+~~~
+
+2.0新版本是
+
+~~~properties
+server.servlet.context-path=/config
+~~~
+
+写作过程中，及时发现了这个变化，但这一节改动不一致，请以server.servlet.context-path为准
 
 # 8 部署Spring Boot 应用
 
