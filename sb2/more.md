@@ -38,6 +38,10 @@
 
 Spring 适时推出了集成度更高，更容易使用的Spring Boot框架，迅速流行起来，而Spring Boot 2，绝对是一个里程碑
 
+
+
+
+
 ## 1.2 学习Spring Boot 很难吗？
 
 作为一个Java新手，学习Spring Boot 需要一些必备技能，否则就掌握不了
@@ -79,7 +83,35 @@ SilentExitExceptionHandler{
 
 https://github.com/spring-projects/spring-boot/issues/3100
 
+## 1.4 SpringBoot1 和Spring Boot 2差别大吗？
 
+有差别，但差别不大。基本上基于SpringBoot的代码不需要改动，但有些配置属性和配置类，可能要改动，改动原因是
+
+* 配置已经不存在或者改名
+* 类已经不存在改名
+
+听着挺吓人，但我实际切换过程中改动的地方很少。一般正常的MVC，数据库访问这些都不需要改动
+
+
+
+# 3 MVC框架
+
+## 3.7  Spring内部是如何判断ModeAndView交给哪个模板引擎渲染的
+
+对于Controller返回ModelAndView，Spring如何知道是交给Freemaker处理，还是Beetl处理呢？或者是其他模板引擎处理呢，实际上，Spring也不知道，但他会根据注册的AbstractTemplateViewResolver子类挨个询问“你是否能处理这种视图”
+
+* Beetl的是org.beetl.ext.spring.BeetlSpringViewResolver
+* Freemarker  org.springframework.web.servlet.view.FreeMarkerViewResolver
+
+默认情况下，Beetl根据配置，认为能处理以btl结尾的视图（当然，也可以配置成处理html结尾的视图），
+
+Freemaker 默认情况下 则会自动加上ftl后缀，检测项目是否存在这个文件（Beetl的也会检测是否存在这个文件）
+
+如果存在，则回答Spring，说能处理，Spring则会交给这个视图处理器处理视图，从而渲染模板。
+
+实际情况可能还更为复杂点，比如Spring会根据请求头信息来进一步筛选哪个视图处理器更合适，具体代码需要参考
+
+org.springframework.web.servlet.view.ContentNegotiatingViewResolver.resolveViewName 方法
 
 # 4 视图技术
 
@@ -95,7 +127,23 @@ https://github.com/spring-projects/spring-boot/issues/3100
   * Thymeleaf的语法较为难学习，学习曲线很大。
 
 
+# 7 Spring Boot 配置
 
+## 7.1.1 新版旧版配置Context Path方式不同
+
+Spring Boot 2  和 Spring Boot 1在配置Context Path的时候，目前看来不兼容，旧版本配置是
+
+~~~properties
+server.context-path=/config
+~~~
+
+2.0新版本是
+
+~~~properties
+server.servlet.context-path=/config
+~~~
+
+写作过程中，及时发现了这个变化，但这一节改动不一致，请以server.servlet.context-path为准
 
 # 8 部署Spring Boot 应用
 
