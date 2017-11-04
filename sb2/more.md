@@ -129,6 +129,7 @@ org.springframework.web.servlet.view.ContentNegotiatingViewResolver.resolveViewN
   * Thymeleaf并非所见所得，它一直宣称的观点是有误的。
   * Thymeleaf性能瓶颈
   * Thymeleaf的语法较为难学习，学习曲线很大。
+* 模板语法一般有三种风格，xml方式，类似freemaker，比如“<if></if>”,指令方式，类似velocity，Thymeleaf。还有一种是Beetl这种方式，脚本方式。我个人更喜欢脚本方式，能处理较为复杂的逻辑渲染，而且，模板脚本和静态文本能区分开。每个人都有自己的审美，喜欢何种风格都没有问题。
 
 
 # 7 Spring Boot 配置
