@@ -2,6 +2,20 @@
 
 由于作者水平有限，写作和编辑也有点仓促，难免书里有问题，这里会列出书中出现的问题，并会在新版中改正这些错误
 
+本书所有代码在 https://gitee.com/xiandafu/Spring-Boot-2.0-Samples
+
+# 3 MVC 框架
+
+## 3.1.3 Java 包名结构
+
+java推荐包名是小写开头,这一小节“Controller”，“Service” 应该是小写“controller”，“service”。与图片一致
+
+> 这应该是我编写完后转为Word文档，Word自己改成大写导致的。
+
+##3.3.1 @RequestMapping
+
+produces: 响应的媒体类型（原文是”相应“）
+
 # 7 Spring Boot 配置
 
 ## 7.1.1 新版旧版配置Context Path方式不同

@@ -2559,6 +2559,7 @@ starter 自动处理以btl结尾的视图，模板根目录是Spring Boot默认�
 
 * beetl-beetlsql.dev,默认为true，即自动检查模板变化
 * beetl.enabled 默认为true，集成beetl。
+* beetl.suffix 默认为btl，表示只处理视图后缀为btl的模板，比如controller里代码是“return /common/index.btl”,则能被Beetl处理，你写成"return /common/index",或者"/common/index.html",都会出现404错误。
 
 如果你想自己配置模板引擎， 通过java config来配置 beetl需要的BeetlGroupUtilConfiguration，和 BeetlSpringViewResolver，参考代码如下
 
@@ -3694,7 +3695,10 @@ ENGINE=org.beetl.core.engine.FastRuntimeEngine
 ENGINE=org.beetl.core.engine.DefaultTemplateEngine
 ~~~
 
+还有种情况是在Spring Boot 下出现，参考下一节
+
 ##### 5.8.4 Spring Boot 出现 ClassCastException
-Spring Boot 需要配置 spring-devtools.properties,请参考Spring Boot集成
+
+请使用最新的Beetl版本或者Starter。
 
 
