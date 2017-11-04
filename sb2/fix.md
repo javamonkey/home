@@ -12,7 +12,7 @@ java推荐包名是小写开头,这一小节“Controller”，“Service” 应
 
 > 这应该是我编写完后转为Word文档，Word自己改成大写导致的。
 
-##3.3.1 @RequestMapping
+## 3.3.1 @RequestMapping
 
 produces: 响应的媒体类型（原文是”相应“）
 
