@@ -3,7 +3,7 @@
 >   -   作者: 闲大赋,Gavin.King,Sue,Zhoupan,woate,Darren
 >   -   社区 [http://ibeetl.com](http://ibeetl.com/)
 >   -   qq群 219324263
->   -   当前版本 2.9.12
+>   -   当前版本 2.9.13
 
 
 
@@ -2489,15 +2489,15 @@ public class MyServiceImpl implements MyService {
 <dependency>
 	<groupId>com.ibeetl</groupId>
 	<artifactId>beetl-framework-starter</artifactId>
-	<version>1.1.17.RELEASE</version>
+	<version>1.1.19.RELEASE</version>
 </dependency>
 ~~~
-beetl-framework-starter 会自动集成Spring Boot已经配置好的名为“dataSource”数据源，比如
+
 
 ~~~java
 @Configuration
 public class DataSourceConfig {	
-  @Bean(name = "dataSource")
+ 
   public DataSource datasource(Environment env) {
     HikariDataSource ds = new HikariDataSource();
     ds.setJdbcUrl(env.getProperty("spring.datasource.url"));
@@ -2507,7 +2507,6 @@ public class DataSourceConfig {
     return ds;
   }
 }
-
 ~~~
 
 提供如下配置

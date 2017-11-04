@@ -111,7 +111,7 @@ Beetl的核心是GroupTemplate，创建GroupTemplate需要俩个参数，一个�
 
 #### 2.3. 模板基础配置
 
-Beetl提供不但功能齐全，而且还有很多独特功能，通过简单的配置文件，就可以定义众多的功能，默认情况下，Configuration类总是会先加载默认的配置文件（位于/org/beetl/core/beetl-default.properties，作为新手，**通常只需要关注3,4,5,6行定界符的配置，以及12行模板字符集的配置就可以了**，其他配置会在后面章节陆续提到）下，其内容片断如下：
+Beetl提供不但功能齐全，而且还有很多独特功能，通过简单的配置文件，就可以定义众多的功能，默认情况下，Configuration类总是会先加载默认的配置文件（位于/org/beetl/core/beetl-default.properties，作为新手，**通常只需要关注3,4,5,6行定界符的配置，以及12行模板字符集的配置就可以了**，其他配置会在后面章节陆续提到,同时，对于Spring等框架，有些配置将会被这些框架的配置覆盖，需要参考后面章节）下，其内容片断如下：
 
 ```properties
 #默认配置
@@ -155,6 +155,8 @@ FTC.java.util.Date = org.beetl.ext.format.DateFormat
 ## 标签类
 TAG.include= org.beetl.ext.tag.IncludeTag
 ```
+
+这配置文件整体说明了Beetl提供的功能
 
 第2行配置引擎实现类，默认即可.
 
@@ -2549,7 +2551,7 @@ Beetl视图解析器属性同spring自带的视图解析器一样，支持conten
 <dependency>
 	<groupId>com.ibeetl</groupId>
 	<artifactId>beetl-framework-starter</artifactId>
-	<version>1.1.17.RELEASE</version>
+	<version>1.1.19.RELEASE</version>
 </dependency>
 ~~~
 
