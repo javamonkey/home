@@ -30,6 +30,15 @@ P120书中例子是：department_ud 应该是department_id
 ## 5.4.3 内置插入API
 P132 关于insert方法，参数 parask 应该是paras
 
+## 5.5.7 其他API
+P141 使用JDBC 翻页，实例代码少了一个变量
+
+~~~java
+PageQuery query = new PageQuery(1,10)
+PageQuery page = sqlManager.execute(new SQLReady(..),User.class,query)
+~~~
+少印刷了`query`
+
 # 7 Spring Boot 配置
 
 ## 7.1.1 新版旧版配置Context Path方式不同
