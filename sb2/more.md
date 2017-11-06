@@ -2,6 +2,8 @@
 
 所有代码在 https://gitee.com/xiandafu/Spring-Boot-2.0-Samples
 
+![](all.png)
+
 # 最新版本
 
 由于写作本书的时候，Spring Boot 和 第三方集成工具版本一直在变化，因此这里列出验证过后的最新版本
@@ -102,7 +104,7 @@ https://github.com/spring-projects/spring-boot/issues/3100
 * 第4章：关于Beetl，无改动，请使用新版本即可
 * 第5章，无改动，JDBCTemplate和BeetlSQL均可以使用
 * 第6章，JPA中，findById 返回了一个Optional对象，**改动较大，会直接影响所有业务代码**
-* 第7章，SpringBoot配置，web应用的ContextPath 配置属性已经改动，额可以参考本文章的7.1.1 说明
+* 第7章，SpringBoot配置，web应用的ContextPath 配置属性已经改动，可以参考本文章的7.1.1 说明。另外配置文件的中文可以直接读取，而不需要转码。
 * 第8章，部署SpringBoot无改动
 * 第9章，测试SpringBoot无改动
 * 第10章，无改动，但Sagger UI变化较大。除了参考本书外，还需要密切注意Sawgger的最新特性
