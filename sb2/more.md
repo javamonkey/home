@@ -125,7 +125,6 @@ https://github.com/spring-projects/spring-boot/issues/3100
 * 第13章，ElasticSearch，无改动，应该说SpringBoot2做的更好了。需要密切注意Elastic Search本身版本变化，它也是版本帝，Spring Boot略有点根本上。因此不能担保在因为Elastci Search的RESTAPI变化导致Spring Boot不兼容，所以一定要使用Spring Boot指定的版本
 * 第14章,基本无改动，但内部CacheManager和Cache的接口改动，因此缓存机制内部变化交大，书里提到的一二级分布式缓存实现方式变化就比较大
 
-
 * 第15章，SpringSession 无变化
 
 * 第16章，由于本书将的是用Curator集成Spring Boot，所以无变化
@@ -242,3 +241,23 @@ server.servlet.context-path=/config
 
 
 
+# 9 单元测试
+
+# 9.3 Mockito 测试出现了UnnecessaryStubbingException是什么鬼？
+
+这个出现并不会影响单元测试结果，它提示了你使用Mockito，对测试对象返回值进行了模拟，但你实际并没有做这个测试，因此他建议你不必要模拟，比如
+
+~~~java
+
+@Test
+public void test3() {
+	
+	// 创建mock对象
+	List list = mock(List.class);
+	doThrow(new UnsupportedOperationException("不支持clear方法调用")).when(list).clear();;
+	//list.clear();
+}
+
+~~~
+
+如上代码注释了要测试list.clear(),将会导致UnnecessaryStubbingException警告。因为你只模拟了clear方法抛出异常，但你并未测试。
