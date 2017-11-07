@@ -16,6 +16,12 @@ java推荐包名是小写开头,这一小节“Controller”，“Service” 应
 
 produces: 响应的媒体类型（原文是”相应“）
 
+# 5 数据库访问
+
+## 5.4.1 内置插入API
+
+insert方法说明，paras 参数多拼写了一个k（原文是parask）
+
 # 7 Spring Boot 配置
 
 ## 7.1.1 新版旧版配置Context Path方式不同
