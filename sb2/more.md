@@ -2,17 +2,19 @@
 
 所有代码在 https://gitee.com/xiandafu/Spring-Boot-2.0-Samples
 
+![](all.png)
+
 # 最新版本
 
 由于写作本书的时候，Spring Boot 和 第三方集成工具版本一直在变化，因此这里列出验证过后的最新版本
 
-* Spring Boot: 2.0.0.M5
+* Spring Boot: 2.0.0.M6
 
 ~~~xml
 <parent>
 	<groupId>org.springframework.boot</groupId>
 	<artifactId>spring-boot-starter-parent</artifactId>
-	<version>2.0.0.M5</version>
+	<version>2.0.0.M6</version>
 </parent>
 ~~~
 
@@ -26,6 +28,18 @@
     <version>1.1.19.RELEASE</version>
 </dependency>
 ~~~
+
+* HikariCP
+
+~~~xml
+
+ <dependency>
+	<groupId>com.zaxxer</groupId>
+	<artifactId>HikariCP</artifactId>
+	<version>2.7.2</version>
+</dependency>
+~~~
+
 
 # 说明
 
@@ -94,9 +108,30 @@ https://github.com/spring-projects/spring-boot/issues/3100
 * 配置已经不存在或者改名
 * 类已经不存在改名
 
-听着挺吓人，但我实际切换过程中改动的地方很少。一般正常的MVC，数据库访问这些都不需要改动
+听着挺吓人，但我实际切换过程中改动的地方很少。一般正常的MVC，数据库访问这些都不需要改动,下面按照本书章节说明我曾碰到的区别
 
+* 第1章，SpringBoot 2基于Spring5和JDK8，而Spring 1x则用的是降低版本，带来的为可能是你的应用服务必须支持JDK8
+* 第2章，无区别，使用SpringBoo2，建议使用较新的Maven版本，以及较新的JDK,尤其是IDE工具，以免Maven在IDE里的视图报出警告信息
+* 第3章：MVC部分，有些定制类改动了，比如WebMvcConfiguer,由抽象类改为接口，这是因为JDK8对接口有新的支持形式，3.8章提到的统一错误处理，基类AbstarctErrorController也改动非常大，请参考书中描述的知识点。MVC里的视图渲染Freemaker视图解析器也有改动，默认情况下，它会自动加上ftl来来寻找模板
+* 第4章：关于Beetl，无改动，请使用新版本即可
+* 第5章，无改动，JDBCTemplate和BeetlSQL均可以使用
+* 第6章，JPA中，findById 返回了一个Optional对象，**改动较大，会直接影响所有业务代码**
+* 第7章，SpringBoot配置，web应用的ContextPath 配置属性已经改动，可以参考本文章的7.1.1 说明。另外配置文件的中文可以直接读取，而不需要转码。另外，自动装配里Boot提供的JavaVersion类报名改动了。根据jdk版本自动装配的需要调整代码
+* 第8章，部署SpringBoot无改动
+* 第9章，测试SpringBoot无改动
+* 第10章，无改动，但Sagger UI变化较大。除了参考本书外，还需要密切注意Sawgger的最新特性
+* 第11章， MongDB，无变化
+* 第12章，Redis 无变化
+* 第13章，ElasticSearch，无改动，应该说SpringBoot2做的更好了。需要密切注意Elastic Search本身版本变化，它也是版本帝，Spring Boot略有点根本上。因此不能担保在因为Elastci Search的RESTAPI变化导致Spring Boot不兼容，所以一定要使用Spring Boot指定的版本
+* 第14章,基本无改动，但内部CacheManager和Cache的接口改动，因此缓存机制内部变化交大，书里提到的一二级分布式缓存实现方式变化就比较大
 
+* 第15章，SpringSession 无变化
+
+* 第16章，由于本书将的是用Curator集成Spring Boot，所以无变化
+
+* 第17章，Acutator，本章SpringBoot1.x和2变化较大，默认情况，不再启用所有监控，另外编写自己监控信息，完全需要重写，HealthIndicator,EndPoint 变化很大
+
+  ​
 
 # 3 MVC框架
 
@@ -210,3 +245,23 @@ server.servlet.context-path=/config
 
 
 
+# 9 单元测试
+
+# 9.3 Mockito 测试出现了UnnecessaryStubbingException是什么鬼？
+
+这个出现并不会影响单元测试结果，它提示了你使用Mockito，对测试对象返回值进行了模拟，但你实际并没有做这个测试，因此他建议你不必要模拟，比如
+
+~~~java
+
+@Test
+public void test3() {
+	
+	// 创建mock对象
+	List list = mock(List.class);
+	doThrow(new UnsupportedOperationException("不支持clear方法调用")).when(list).clear();;
+	//list.clear();
+}
+
+~~~
+
+如上代码注释了要测试list.clear(),将会导致UnnecessaryStubbingException警告。因为你只模拟了clear方法抛出异常，但你并未测试。

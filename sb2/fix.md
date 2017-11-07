@@ -1,6 +1,6 @@
 # 说明
 
-由于作者水平有限，写作和编辑也有点仓促，难免书里有问题，这里会列出书中出现的问题，并会在新版中改正这些错误
+由于作者水平有限，写作和编辑也有点仓促，难免书里有问题，这里会列出书中出现的问题，并会在新版中改正这些错误。大部分错误都是编辑错误，如果有验证错误，会标示为** 重要 **
 
 本书所有代码在 https://gitee.com/xiandafu/Spring-Boot-2.0-Samples
 
@@ -16,11 +16,29 @@ java推荐包名是小写开头,这一小节“Controller”，“Service” 应
 
 produces: 响应的媒体类型（原文是”相应“）
 
-# 5 数据库访问
+# 4 视图技术
+## 4.1.3 JSON技术
+P102 第一阶段介绍，JackSon应该为jackson。
 
-## 5.4.1 内置插入API
 
-insert方法说明，paras 参数多拼写了一个k（原文是parask）
+# 5  数据库访问技术
+
+## 5.2.1 查询
+p119 @Reponsitory通常都用在**同**存储相关类上，多写了一个同字
+P120书中例子是：department_ud 应该是department_id
+
+## 5.4.3 内置插入API
+P132 关于insert方法，参数 parask 应该是paras
+
+## 5.5.7 其他API
+P141 使用JDBC 翻页，实例代码少了一个变量
+
+~~~java
+PageQuery query = new PageQuery(1,10)
+PageQuery page = sqlManager.execute(new SQLReady(..),User.class,query)
+~~~
+少印刷了`query`
+
 
 # 7 Spring Boot 配置
 
