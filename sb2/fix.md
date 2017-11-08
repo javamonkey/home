@@ -57,3 +57,11 @@ server.servlet.context-path=/config
 ```
 
 写作过程中，及时发现了这个变化，但这一节改动不一致，先后出现了这俩个配置属性。请以server.servlet.context-path为准
+
+
+
+# 9 单元测试
+
+## 9.2.3 测试Service(重要错误)
+
+P119最后一行，应该是“如果不希望事物回滚，可以在方法上使用@Rollback(false)” ,原文是true
