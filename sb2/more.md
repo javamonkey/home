@@ -176,7 +176,38 @@ org.springframework.web.servlet.view.ContentNegotiatingViewResolver.resolveViewN
 * 模板语法一般有三种风格，xml方式，类似freemaker，比如“<if></if>”,指令方式，类似velocity，Thymeleaf。还有一种是Beetl这种方式，脚本方式。我个人更喜欢脚本方式，能处理较为复杂的逻辑渲染，而且，模板脚本和静态文本能区分开。每个人都有自己的审美，喜欢何种风格都没有问题。
 
 
+# 5 数据库访问
 
+## 5.1 如何使用JNDI 数据源
+
+对于大部分传统企业应用，都是部署在应用服务器，应用服务器提供了一些服务，如提供了数据源，SpringBoot可以在部署的时候时候JNDI数据源，只需要在配置文件指名数据源的名字即可
+
+~~~properties
+spring.datasource.jndi-name=java:xxx/datasources/xxpool
+~~~
+
+这段代码在JndiDataSourceAutoConfiguration，如果你已经看过第7章，那下面代码你应该能看懂
+
+~~~java
+@ConditionalOnClass({ DataSource.class, EmbeddedDatabaseType.class })
+@ConditionalOnProperty(prefix = "spring.datasource", name = "jndi-name")
+@EnableConfigurationProperties(DataSourceProperties.class)
+public class JndiDataSourceAutoConfiguration {
+public class JndiDataSourceAutoConfiguration {
+	@Bean(destroyMethod = "")
+	@ConditionalOnMissingBean
+	public DataSource dataSource(DataSourceProperties properties) {
+		JndiDataSourceLookup dataSourceLookup = new JndiDataSourceLookup();
+		DataSource dataSource = dataSourceLookup.getDataSource(properties.getJndiName());
+		excludeMBeanIfNecessary(dataSource, "dataSource");
+		return dataSource;
+	}
+}
+~~~
+
+如果你的应用是多个JNDI的数据源，你可以参考这个源码构造使用JNDI 构造多个Datasource
+
+至于开发时候使用自己配置的，不熟使用应用服务器数据源，拿你需要掌握书里的关于第8章的知识了
 
 # 7 Spring Boot 配置
 
