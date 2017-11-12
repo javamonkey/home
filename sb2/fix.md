@@ -66,6 +66,14 @@ server.servlet.context-path=/config
 
 P119最后一行，应该是“如果不希望事物回滚，可以在方法上使用@Rollback(false)” ,原文是true
 
-## 11 MongDB
+# 11 MongDB
 
-P242 :使用密码登录，控制台输出1，表示"登录成功"（原文是表示操作成功，）
+P242 :使用密码登录，控制台输出1，表示"登录成功"（原文是表示操作成功）
+
+# 12 Redis
+
+## 12.2.6 Set (重要)
+关于 sinterstore 取集合交集和sunionstore 集合并集，书里描述有错，应该为如下
+
+* sinterstore key1,key2,key3, 将key2,key3的交集放到key1里
+* sunionstore key1,key2,key3 将key2,key3的并集放到key1里
