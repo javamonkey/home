@@ -240,7 +240,7 @@ public class JndiDataSourceAutoConfiguration {
 
 https://my.oschina.net/xiandafu/blog/617542
 
-简单的来讲，我更认可BeetlSQL和Mybatis这总风格的ORM工具。
+简单的来讲，我更认可BeetlSQL和Mybatis这总风格的ORM工具。关于结合SpringBoot，我们知道，BeetlSQL结合Spring Boot，应该是启动最快的了。比较适合Spring Boot快速启动和热启动
 
 
 
