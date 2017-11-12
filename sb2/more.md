@@ -234,6 +234,16 @@ public class JndiDataSourceAutoConfiguration {
 
 至于开发时候使用自己配置的，不熟使用应用服务器数据源，拿你需要掌握书里的关于第8章的知识了
 
+## 5.2 BeetlSQL 和Hibernte ，还有MyBatis 的差别
+
+我曾写了一个博客，介绍了一下我认为的这三个的差别，博客地址在:
+
+https://my.oschina.net/xiandafu/blog/617542
+
+简单的来讲，我更认可BeetlSQL和Mybatis这总风格的ORM工具。
+
+
+
 # 7 Spring Boot 配置
 
 ## 7.1.1 新版旧版配置Context Path方式不同
