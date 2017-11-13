@@ -43,7 +43,11 @@
 * XLSUnit
 
 ~~~xml
-
+<dependency>
+    <groupId>com.ibeetl</groupId>
+	<artifactId>xlsunit</artifactId>
+	<version>1.0.8</version>
+</dependency>
 ~~~
 
 
