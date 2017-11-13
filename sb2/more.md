@@ -130,7 +130,7 @@ https://github.com/spring-projects/spring-boot/issues/3100
 * 第11章， MongDB，无变化
 * 第12章，Redis 无变化
 * 第13章，ElasticSearch，无改动，应该说SpringBoot2做的更好了。需要密切注意Elastic Search本身版本变化，它也是版本帝，Spring Boot略有点根本上。因此不能担保在因为Elastci Search的RESTAPI变化导致Spring Boot不兼容，所以一定要使用Spring Boot指定的版本
-* 第14章,基本无改动，但内部CacheManager和Cache的接口改动，因此缓存机制内部变化交大，书里提到的一二级分布式缓存实现方式变化就比较大
+* 第14章,基本无改动，但内部CacheManager和Cache的接口改动，因此缓存机制内部变化较大，书里提到的一二级分布式缓存实现方式变化就比较大
 
 * 第15章，SpringSession 无变化
 
@@ -158,6 +158,12 @@ Freemaker 默认情况下 则会自动加上ftl后缀，检测项目是否存在
 实际情况可能还更为复杂点，比如Spring会根据请求头信息来进一步筛选哪个视图处理器更合适，具体代码需要参考
 
 org.springframework.web.servlet.view.ContentNegotiatingViewResolver.resolveViewName 方法
+
+## 3.10 Curl和Postman
+
+Curl是命令行工具，更适合写书的时候用 :)
+
+在Window下使用curl，需要考虑转义，还有换行问题，很麻烦，建议在linux下用curl吧。或者用Postman
 
 
 
@@ -218,7 +224,6 @@ spring.datasource.jndi-name=java:xxx/datasources/xxpool
 @ConditionalOnProperty(prefix = "spring.datasource", name = "jndi-name")
 @EnableConfigurationProperties(DataSourceProperties.class)
 public class JndiDataSourceAutoConfiguration {
-public class JndiDataSourceAutoConfiguration {
 	@Bean(destroyMethod = "")
 	@ConditionalOnMissingBean
 	public DataSource dataSource(DataSourceProperties properties) {
@@ -240,7 +245,7 @@ public class JndiDataSourceAutoConfiguration {
 
 https://my.oschina.net/xiandafu/blog/617542
 
-简单的来讲，我更认可BeetlSQL和Mybatis这总风格的ORM工具。关于结合SpringBoot，我们知道，BeetlSQL结合Spring Boot，应该是启动最快的了。比较适合Spring Boot快速启动和热启动
+简单的来讲，我更认可BeetlSQL和Mybatis这种风格的ORM工具。关于结合SpringBoot，我们知道，BeetlSQL结合Spring Boot，应该是启动最快的了。比较适合Spring Boot快速启动和热启动
 
 
 
