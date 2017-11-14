@@ -2576,7 +2576,7 @@ public class BeetlConf {
 				if(loader==null){
 					loader = BeetlConf.class.getClassLoader();
 				}
-				beetlGroupUtilConfiguration.setConfigProperties(extProperties);
+				beetlGroupUtilConfiguration.setConfigProperties(extProperties);//额外的配置，可以覆盖默认配置，一般不需要
 				ClasspathResourceLoader cploder = new ClasspathResourceLoader(loader,
 						templatesPath);
 				beetlGroupUtilConfiguration.setResourceLoader(cploder);
