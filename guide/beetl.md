@@ -2551,7 +2551,7 @@ Beetl视图解析器属性同spring自带的视图解析器一样，支持conten
 <dependency>
 	<groupId>com.ibeetl</groupId>
 	<artifactId>beetl-framework-starter</artifactId>
-	<version>1.1.20.RELEASE</version>
+	<version>1.1.21.RELEASE</version>
 </dependency>
 ~~~
 

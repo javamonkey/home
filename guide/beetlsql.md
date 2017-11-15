@@ -2489,7 +2489,7 @@ public class MyServiceImpl implements MyService {
 <dependency>
 	<groupId>com.ibeetl</groupId>
 	<artifactId>beetl-framework-starter</artifactId>
-	<version>1.1.20.RELEASE</version>
+	<version>1.1.21.RELEASE</version>
 </dependency>
 ~~~
 
