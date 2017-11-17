@@ -27,7 +27,7 @@
 <dependency>
     <groupId>com.ibeetl</groupId>
     <artifactId>beetl-framework-starter</artifactId>
-    <version>1.1.21.RELEASE</version>
+    <version>1.1.22.RELEASE</version>
 </dependency>
 ~~~
 
@@ -349,3 +349,21 @@ public void test3() {
 ~~~
 
 如上代码注释了要测试list.clear(),将会导致UnnecessaryStubbingException警告。因为你只模拟了clear方法抛出异常，但你并未测试。
+
+
+
+
+
+# 17 监控Spring Boot 应用
+
+
+
+## 17.5  内存信息新版有Bug
+
+根据新升级的版本，heapdump 存在bug，当改变Acutator端口与web端口不一样的时候，heapdump功能失效。这个bug报告是我发起的
+
+https://github.com/spring-projects/spring-boot/issues/11046
+
+据说将在2.0.0.M7 修复。
+
+为了体验这个功能，请不要配置Acutator端口

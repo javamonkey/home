@@ -77,3 +77,27 @@ P242 :使用密码登录，控制台输出1，表示"登录成功"（原文是�
 
 * sinterstore key1,key2,key3, 将key2,key3的交集放到key1里
 * sunionstore key1,key2,key3 将key2,key3的并集放到key1里
+
+
+
+# 17 监控Spring Boot 应用
+
+##17.1 安装Acutator
+
+在SpringBoot2.0 最新版本，改变Acutator端口的的配置已经改变，如下是正确配置
+
+~~~properties
+management.server.port=8081
+management.endpoints.web.base-path=manage
+~~~
+
+原来的配置方法因为版本升级已经改变。
+
+## 17.5  内存信息
+根据新升级的版本，heapdump 存在bug，当改变Acutator端口与web端口不一样的时候，heapdump功能失效。这个bug报告是我发起的
+
+https://github.com/spring-projects/spring-boot/issues/11046
+
+据说将在2.0.0.M7 修复。
+
+为了体验这个功能，请不要配置Acutator端口
