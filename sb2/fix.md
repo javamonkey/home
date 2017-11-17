@@ -93,6 +93,8 @@ management.endpoints.web.base-path=manage
 
 原来的配置方法因为版本升级已经改变。
 
+
+
 ## 17.5  内存信息
 根据新升级的版本，heapdump 存在bug，当改变Acutator端口与web端口不一样的时候，heapdump功能失效。这个bug报告是我发起的
 

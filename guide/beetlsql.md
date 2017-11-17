@@ -731,7 +731,7 @@ select
 	
 ~~~
 
-如果你使用JDK8，不必为参数提供名称，自动对应。如果使用JDK8一下版本，则可以使用@Param注解
+如果你使用JDK8，不必为参数提供名称，自动对应。但必须保证java编译的时候开启-parameter选项。如果使用JDK8以下的版本，则可以使用@Param注解()
 
 ~~~java
 
@@ -938,7 +938,7 @@ public interface UserDao extends BaseMapper<User> {
 }
 ~~~
 
->  对于jdk8以上的，不必使用@Param注解。
+>  对于jdk8以上的，不必使用@Param注解。但必须保证java编译代码的时候开启-parameter选项
 
 Mapper 查询有一个例外，如果第一个参数是一个JavaBean(即非java内置对象)，则默认为是_root对象，因此如下俩个接口定义是等价的
 
