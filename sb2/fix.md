@@ -16,6 +16,10 @@ java推荐包名是小写开头,这一小节“Controller”，“Service” 应
 
 produces: 响应的媒体类型（原文是”相应“）
 
+## 3.6.3 格式化
+
+里面提到的java.util.Data ，应该是java.util.Date.  
+
 # 4 视图技术
 ## 4.1.3 JSON技术
 P102 第一阶段介绍，JackSon应该为jackson。
@@ -64,7 +68,7 @@ server.servlet.context-path=/config
 
 ## 9.2.3 测试Service(重要)
 
-P119最后一行，应该是“如果不希望事物回滚，可以在方法上使用@Rollback(false)” ,原文是true
+P199最后一行，应该是“如果不希望事物回滚，可以在方法上使用@Rollback(false)” ,原文是true
 
 # 11 MongDB
 
