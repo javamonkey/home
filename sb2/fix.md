@@ -28,8 +28,12 @@ P102 第一阶段介绍，JackSon应该为jackson。
 # 5  数据库访问技术
 
 ## 5.2.1 查询
+
+开头的一个带参数绑定的查询例子：应该是String，而写成了Strign
 p119 @Reponsitory通常都用在**同**存储相关类上，多写了一个同字
 P120书中例子是：department_ud 应该是department_id
+
+
 
 ## 5.4.3 内置插入API
 P132 关于insert方法，参数 parask 应该是paras
