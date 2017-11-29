@@ -132,7 +132,7 @@ https://github.com/spring-projects/spring-boot/issues/3100
 * 第4章：关于Beetl，无改动，请使用新版本即可
 * 第5章，无改动，JDBCTemplate和BeetlSQL均可以使用
 * 第6章，JPA中，findById 返回了一个Optional对象，**改动较大，会直接影响所有业务代码**，Page代码接口也有调整。
-* 第7章，SpringBoot配置，web应用的ContextPath 配置属性已经改动，可以参考本文章的7.1.1 说明。另外配置文件的中文可以直接读取，而不需要转码。另外，自动装配里Boot提供的JavaVersion类报名改动了。根据jdk版本自动装配的需要调整代码
+* 第7章，SpringBoot配置，web应用的ContextPath 配置属性已经改动，可以参考本文章的7.1.1 说明。另外配置文件的中文可以直接读取，而不需要转码。另外，自动装配里Boot提供的JavaVersion类报名改动了。根据jdk版本自动装配的需要调整代码。在配置文件中出现中文，到了Spring Boot 2 ，不需要转码
 * 第8章，部署SpringBoot无改动
 * 第9章，测试SpringBoot无改动
 * 第10章，无改动，但Swagger UI变化较大。除了参考本书外，还需要密切注意Sawgger的最新特性
