@@ -6,6 +6,8 @@
 
 本书的出版社地址是：http://item.jd.com/12214143.html
 
+谁是年度最受欢迎国产开源软件，你说了算:http://bbs.ibeetl.com/bbs/bbs/index/1.html Beetl&BeetlSQL 需要你的一票
+
 # 最新版本
 
 由于写作本书的时候，Spring Boot 和 第三方集成工具版本一直在变化，因此这里列出验证过后的最新版本
