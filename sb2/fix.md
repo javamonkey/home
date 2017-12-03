@@ -142,6 +142,3 @@ public class AcutatorExtConfig {
 
 ```
 
-貌似M7版本对HikariCP监控有Bug，具体原因还等待答复
-
-错误可以参考：https://github.com/spring-projects/spring-boot/issues/11046

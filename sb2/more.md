@@ -401,28 +401,3 @@ https://github.com/spring-projects/spring-boot/issues/11046
 
 为了体验这个功能，请不要配置Acutator端口
 
-## 17.9.2 自定义数据库连接池监控
-
-在最新版本2.0.0.M7 ,本书的这一章的例子启动功能失败，必须更改代码
-
-~~~java
-@Configuration
-public class AcutatorExtConfig {
-	
-	/* spring boot 2.0.0.M6 可以用，2.0.0M7会有异常
-	@Bean
-	@ConditionalOnMissingBean
-	@ConditionalOnEnabledEndpoint
-	public HikariCPEndpoint testDataEndpoint(DataSource ds) {
-		return new HikariCPEndpoint((HikariDataSource)ds);
-	}
-	*/
-	
-	
-}
-
-~~~
-
-貌似M7版本对HikariCP监控有Bug
-
-错误可以参考：https://github.com/spring-projects/spring-boot/issues/11046
