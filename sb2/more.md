@@ -6,19 +6,19 @@
 
 本书的出版社地址是：http://item.jd.com/12214143.html
 
-谁是年度最受欢迎国产开源软件，你说了算:http://bbs.ibeetl.com/bbs/bbs/index/1.html Beetl&BeetlSQL 需要你的一票
+谁是年度最受欢迎国产开源软件，你说了算:http://www.oschina.net/project/top_cn_2017 Beetl&BeetlSQL 需要你的一票
 
 # 最新版本
 
 由于写作本书的时候，Spring Boot 和 第三方集成工具版本一直在变化，因此这里列出验证过后的最新版本
 
-* Spring Boot: 2.0.0.M6
+* Spring Boot: 2.0.0.M7（Actuator内容变化较大）
 
 ~~~xml
 <parent>
 	<groupId>org.springframework.boot</groupId>
 	<artifactId>spring-boot-starter-parent</artifactId>
-	<version>2.0.0.M6</version>
+	<version>2.0.0.M7</version>
 </parent>
 ~~~
 
@@ -29,7 +29,7 @@
 <dependency>
     <groupId>com.ibeetl</groupId>
     <artifactId>beetl-framework-starter</artifactId>
-    <version>1.1.22.RELEASE</version>
+    <version>1.1.23.RELEASE</version>
 </dependency>
 ~~~
 
@@ -40,7 +40,17 @@
  <dependency>
 	<groupId>com.zaxxer</groupId>
 	<artifactId>HikariCP</artifactId>
-	<version>2.7.2</version>
+	<version>2.7.4</version>
+</dependency>
+~~~
+
+* OkHttp
+
+~~~xml
+<dependency>
+    <groupId>com.squareup.okhttp3</groupId>
+    <artifactId>okhttp</artifactId>
+    <version>3.9.1</version>
 </dependency>
 ~~~
 
@@ -361,14 +371,58 @@ public void test3() {
 
 # 17 监控Spring Boot 应用
 
+## 17.1
+
+在Spring Boot 2.0.0.M7种，默认情况下，大部分监控处于安全考虑并不会暴露出来，除非配置
+
+~~~properties
+management.endpoints.web.expose=*
+~~~
+
+另外，上下文从application 更改成 actuator，启动信息如下
+
+~~~
+Mapped "{[/actuator/threaddump],methods=[GET]
+Mapped "{[/actuator/metrics/{requiredMetricName}]
+Mapped "{[/actuator/trace],methods=[GET]
+~~~
 
 
-## 17.5  内存信息新版有Bug
 
-根据新升级的版本，heapdump 存在bug，当改变Acutator端口与web端口不一样的时候，heapdump功能失效。这个bug报告是我发起的
+
+
+## 17.5  内存信息新版有Bug(2.0.0.M6)
+
+在SpringBoot 2.0.0.M6，heapdump 存在bug，当改变Acutator端口与web端口不一样的时候，heapdump功能失效。这个bug报告是我发起的
 
 https://github.com/spring-projects/spring-boot/issues/11046
 
 据说将在2.0.0.M7 修复。
 
 为了体验这个功能，请不要配置Acutator端口
+
+## 17.9.2 自定义数据库连接池监控
+
+在最新版本2.0.0.M7 ,本书的这一章的例子启动功能失败，必须更改代码
+
+~~~java
+@Configuration
+public class AcutatorExtConfig {
+	
+	/* spring boot 2.0.0.M6 可以用，2.0.0M7会有异常
+	@Bean
+	@ConditionalOnMissingBean
+	@ConditionalOnEnabledEndpoint
+	public HikariCPEndpoint testDataEndpoint(DataSource ds) {
+		return new HikariCPEndpoint((HikariDataSource)ds);
+	}
+	*/
+	
+	
+}
+
+~~~
+
+貌似M7版本对HikariCP监控有Bug
+
+错误可以参考：https://github.com/spring-projects/spring-boot/issues/11046
