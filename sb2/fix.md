@@ -122,23 +122,12 @@ https://github.com/spring-projects/spring-boot/issues/11046
 
 ## 17.9.2 自定义数据库连接池监控
 
-在最新版本2.0.0.M7 ,本书的这一章的例子启动功能失败，必须更改代码
+在最新版本2.0.0.M7 ,本书的这一章的例子启动功能失败，必须更改EndPoint的ID为 hikari（原来是hikariCP，CP会导致M7的属性解析出问题就，貌似这是一个bug）
 
 ```java
-@Configuration
-public class AcutatorExtConfig {
-	
-	/* spring boot 2.0.0.M6 可以用，2.0.0M7会有异常
-	@Bean
-	@ConditionalOnMissingBean
-	@ConditionalOnEnabledEndpoint
-	public HikariCPEndpoint testDataEndpoint(DataSource ds) {
-		return new HikariCPEndpoint((HikariDataSource)ds);
-	}
-	*/
-	
-	
+@Endpoint(id = "hikari")
+public class HikariCPEndpoint {
+.....
 }
-
 ```
 
