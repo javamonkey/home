@@ -414,5 +414,4 @@ public class HikariCPEndpoint {
 }
 ```
 
-
-
+https://github.com/spring-projects/spring-boot/issues/11247  这是一个bug，已经在 https://github.com/spring-projects/spring-boot/issues/11107 得到确认
