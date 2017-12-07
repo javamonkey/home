@@ -95,6 +95,24 @@ P242 :使用密码登录，控制台输出1，表示"登录成功"（原文是�
 
 
 
+# 15 Spring Session（重要）
+
+书中演示Spring Session，需要添加如下依赖
+
+~~~xml
+<dependency>
+  <groupId>org.springframework.boot</groupId>
+  <artifactId>spring-boot-starter-data-redis</artifactId>
+</dependency>
+<dependency>
+  <groupId>org.springframework.session</groupId>
+  <artifactId>spring-session-data-redis</artifactId>
+</dependency>
+
+~~~
+
+书里漏写了spring-session-data-redis
+
 # 17 监控Spring Boot 应用
 
 ##17.1 安装Acutator

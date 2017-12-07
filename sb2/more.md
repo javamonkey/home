@@ -29,7 +29,7 @@
 <dependency>
     <groupId>com.ibeetl</groupId>
     <artifactId>beetl-framework-starter</artifactId>
-    <version>1.1.23.RELEASE</version>
+    <version>1.1.25.RELEASE</version>
 </dependency>
 ~~~
 
@@ -403,7 +403,7 @@ https://github.com/spring-projects/spring-boot/issues/11046
 
 
 
-## 17.9.2 自定义数据库连接池监控
+## 17.9.2 自定义数据库连接池监控(2.0.0.M7)
 
 在最新版本2.0.0.M7 ,本书的这一章的例子启动功能失败，必须更改EndPoint的ID为 hikari（原来是hikariCP，CP会导致M7的属性解析出问题就，貌似这是一个bug）
 
