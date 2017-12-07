@@ -29,7 +29,7 @@
 <dependency>
     <groupId>com.ibeetl</groupId>
     <artifactId>beetl-framework-starter</artifactId>
-    <version>1.1.25.RELEASE</version>
+    <version>1.1.26.RELEASE</version>
 </dependency>
 ~~~
 
