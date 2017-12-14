@@ -2,6 +2,8 @@
 
 所有代码在 https://gitee.com/xiandafu/Spring-Boot-2.0-Samples
 
+Spring Boot 所有历史版本官方文档地址： https://docs.spring.io/spring-boot/docs/
+
 ![](all.png)
 
 本书的出版社地址是：http://item.jd.com/12214143.html
@@ -29,7 +31,7 @@
 <dependency>
     <groupId>com.ibeetl</groupId>
     <artifactId>beetl-framework-starter</artifactId>
-    <version>1.1.25.RELEASE</version>
+    <version>1.1.27.RELEASE</version>
 </dependency>
 ~~~
 
@@ -162,6 +164,31 @@ https://github.com/spring-projects/spring-boot/issues/3100
   ​
 
 # 3 MVC框架
+
+## 3.1 静态资源的位置
+
+Spring Boot 默认静态资源位置是在/static,/public,/resources,或者/META-INF/resources，是默认通过如下配置完成
+
+~~~properties
+spring.resources.static-locations=classpath:/META-INF/resources/,classpath:/resources/,classpath:/static/,classpath:/public/ 
+~~~
+
+
+
+本书静态资源都放到static目录下。传统的maven还是eclipse工程，总有个webapp，用来放置静态资源和模板，你可以配置springboot来完成，比如:
+
+~~~properties
+spring.resources.static-locations=classpath:/webapp/
+
+~~~
+
+  配置静态资源位于classpath的webapp下，也就是java/resources/webapp
+
+ 静态资源在SpringBoot以classpath方式加载，这类似于加载class一样，非常这有助于springboot应用的模块化。除非你的项目的静态资源通过文件方式加载，否则，不要改变spring.resources.static-locations的配置。以我的项目为例子，core包包含了核心的系统基本功能和页面，基础js。其他应用只需要通过maven依赖core包，便具备一切基础前后端功能，只需要完成自己的业务开发就可以了
+
+
+
+
 
 ## 3.7  Spring内部是如何判断ModeAndView交给哪个模板引擎渲染的
 
