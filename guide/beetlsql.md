@@ -1,9 +1,9 @@
-## BeetlSQL 2.9中文文档
+## BeetlSQL 2.10中文文档
 
 >   -   作者: 闲大赋,Gavin.King,Sue,Zhoupan,woate,Darren
 >   -   社区 [http://ibeetl.com](http://ibeetl.com/)
 >   -   qq群 219324263
->   -   当前版本 2.10.1
+>   -   当前版本 2.10.2
 
 
 
@@ -341,6 +341,7 @@ Query接口分为俩类：
 
 * select 触发查询，返回指定的对象列表
 * single 触发查询，返回一个对象，如果没有，返回null
+* unique 触发查询，返回一个对象，如果没有，或者有多个，抛出异常
 * count 对查询结果集求总数
 * delete 删除符合条件的结果集
 * update 更新选中的结果集
@@ -978,6 +979,11 @@ public interface BaseMapper<T> {
 	 */
 	int executeUpdate(String sql,Object... args );
 	SQLManager getSQLManager();
+	/**
+	 * 返回一个Query对象
+	 * @return
+	 */
+	Query<T> createQuery();
 
 }
 
@@ -2556,7 +2562,7 @@ public class MyServiceImpl implements MyService {
 <dependency>
 	<groupId>com.ibeetl</groupId>
 	<artifactId>beetl-framework-starter</artifactId>
-	<version>1.1.25.RELEASE</version>
+	<version>1.1.27.RELEASE</version>
 </dependency>
 ~~~
 
