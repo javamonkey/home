@@ -31,7 +31,7 @@ Spring Boot 所有历史版本官方文档地址： https://docs.spring.io/sprin
 <dependency>
     <groupId>com.ibeetl</groupId>
     <artifactId>beetl-framework-starter</artifactId>
-    <version>1.1.27.RELEASE</version>
+    <version>1.1.29.RELEASE</version>
 </dependency>
 ~~~
 
@@ -288,6 +288,9 @@ public class JndiDataSourceAutoConfiguration {
 至于开发时候使用自己配置的，不熟使用应用服务器数据源，拿你需要掌握书里的关于第8章的知识了
 
 ## 5.2 BeetlSQL 和Hibernte ，还有MyBatis 的差别
+
+
+<img src="https://gitee.com/xiandafu/beetlsql/raw/master/pk.png" </img>
 
 我曾写了一个博客，介绍了一下我认为的这三个的差别，博客地址在:
 

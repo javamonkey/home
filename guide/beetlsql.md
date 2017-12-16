@@ -3,7 +3,7 @@
 >   -   作者: 闲大赋,Gavin.King,Sue,Zhoupan,woate,Darren
 >   -   社区 [http://ibeetl.com](http://ibeetl.com/)
 >   -   qq群 219324263
->   -   当前版本 2.10.2
+>   -   当前版本 2.10.3
 
 
 
@@ -2337,7 +2337,7 @@ select * from user where id = #id#
 
 [https://my.oschina.net/xiandafu/blog/617542](https://my.oschina.net/xiandafu/blog/617542) 提供了12项对比并给与评分。在犹豫使用BeetlSQL，可以参考这个全面的对比文章
 
-![beetlsql1](static/beetlsql1.png)
+![](https://gitee.com/xiandafu/beetlsql/raw/master/pk.png)
 
 
 
@@ -2562,7 +2562,7 @@ public class MyServiceImpl implements MyService {
 <dependency>
 	<groupId>com.ibeetl</groupId>
 	<artifactId>beetl-framework-starter</artifactId>
-	<version>1.1.27.RELEASE</version>
+	<version>1.1.29.RELEASE</version>
 </dependency>
 ~~~
 
@@ -2587,11 +2587,18 @@ public class DataSourceConfig {
 beetl-framework-starter  会读取application.properites如下配置
 
 * beetlsql.sqlPath，默认为/sql, 作为存放sql文件的根目录，位于/resources/sql目录下
+
 * beetlsql.nameConversion:  默认是org.beetl.sql.core.UnderlinedNameConversion,能将下划线分割的数据库命名风格转化为java驼峰命名风格，还有常用的DefaultNameConversion，数据库命名完全和Java命名一直，以及JPA2NameConversion，兼容JPA命名
+
 * beetl-beetlsql.dev：默认是true，即向控制台输出执行时候的sql，参数，执行时间，以及执行的位置，每次修改sql文件的时候，自动检测sql文件修改.
+
 * beetlsql.daoSuffix：默认为Dao。
+
 * beetlsql.basePackage：默认为com，此选项配置beetlsql.daoSuffix来自动扫描com包极其子包下的所有以Dao结尾的Mapper类。以本章例子而言，你可以配置“com.bee.sample.ch5.dao”
+
 * beetlsql.dbStyle ：数据库风格，默认是org.beetl.sql.core.db.MySqlStyle.对应不同的数据库，其他还有OracleStyle，PostgresStyle,SqlServerStyle,DB2SqlStyle,SQLiteStyle,H2Style
+
+  ​
 
 
 如果你想配置主从或者指定一个已经配置好的数据源，可以自己创建一个 BeetlSqlDataSource的Bean，比如，在你的配置代码里
