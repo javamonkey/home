@@ -75,6 +75,30 @@ Spring Boot 所有历史版本官方文档地址： https://docs.spring.io/sprin
 
 本书以作者在公司的开发平台经验为基础写作而成，对于没有涉及到的Spring Boot技术，敬请见谅
 
+## 阅读本书的误区
+
+* 这本书讲SpringBoot的内容偏少
+
+就像我1.1说的那样，SPring Boot 2更类似一个集成框架，集成了Spring 5，Spring Data系列，其他第三方技术等，因此实际上Spring Boot本身并没有那么多的技术点可挖掘（除了如何集成第三方技术外）。
+如果你查看Spring Boot 官网文档，你也会发现我的书风格跟他的官网文档风格还是一脉相承的。
+
+
+* 这本书是用来推销作者的Beetl和BeetlSQL
+
+关于本书为什么说到Beetl和BeetlSQL，后面都有详细的说明。出版社和我个人都不会冒风险来毁掉一本好书的。尤其这本书算是较早和较为全面介绍Spring Boot 2的书。
+
+关于DAO，本书介绍了Spring JDBC Tempalte，Spring Data和BeetlSQL，三种不同风格的DAO工具，读者可以看完自己决定用什么样的DAO
+关于后台模板这块，我相信没有比Beetl更好的了。国内一个开源产品如果能写到书里，我感到自豪。
+
+
+* 这本书在Spring Boot 2没有正式版之前就发布了
+
+写作本书的时候先后经历了Spring Boot 1.4，Spring Boot 1.5 以及SpringBoot m2,m4,m6,m7 各个时期，我一直在根据Spring Boot的最新进展对本书校订，并且更新本书的例子，
+我也像Spring Boot开发者提交了俩个Bug报告。这也是我觉得写书特别费劲，特别累的原因。
+
+如今到M7阶段，Spring Boot功能基本定型了，唯一改变较多的就是Acuator功能（本书第17章），其他都没有大的变化
+
+补充吐槽我出书太早的人：国外有个Spring Boot2 比我出书更早，他是基于snapshot版本出的，非常不靠谱，要吐槽我之前请先吐槽他
 
 # 1 前言
 
