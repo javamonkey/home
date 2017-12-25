@@ -335,36 +335,7 @@ List<User> list1  = sql.query(User.class).lamdba().andEq(User::getName, "hi").or
 
  lamdba()方法返回了一个LamdbaQuery 类，列名支持采用lambda。
 
-Query接口分为俩类：
-
-一部分是触发查询和更新操作，api分别是
-
-* select 触发查询，返回指定的对象列表
-* single 触发查询，返回一个对象，如果没有，返回null
-* unique 触发查询，返回一个对象，如果没有，或者有多个，抛出异常
-* count 对查询结果集求总数
-* delete 删除符合条件的结果集
-* update 更新选中的结果集
-
-另外一部分是各种条件：
-
-
-
-| 方法                       | 等价sql                  |
-| ------------------------ | ---------------------- |
-| andEq,andNotEq           | ==,!=                  |
-| andGreat,andGreatEq      | >,>=                   |
-| andLess,andLessEq        | <,<=                   |
-| andLike,andNotLike       | LIKE,NOT LIKE          |
-| andIsNull,andIsNotNull   | IS NULL,IS NOT NULL    |
-| andIn ,andNotIn          | IN (...) , NOT IN(...) |
-| andBetween,andNotBetween | BETWEEN ,NOT BETWEEN   |
-| and                      | and ( .....)           |
-| or系列方法                   | 同and方法                 |
-| limit                    | 限制结果结范围，依赖于不同数据库翻页     |
-| orderBY                  | ORDER BY               |
-| groupBy                  | GROUP BY               |
-
+关于Query操作的具体用法，请参考25.1节
 
 
 
@@ -986,7 +957,6 @@ public interface BaseMapper<T> {
 	Query<T> createQuery();
 
 }
-
 ~~~
 
 > 内置BaseMapper 可以定制，参考文档最后一节25.6，设置自己的BaseMapper
@@ -2690,10 +2660,392 @@ Trans.rollback()
 
 ### 25. 高级部分
 
-这章补充一下结果集和java类型的映射，以及事务管理
+#### 25.1 Query对象
+在实际应用场景中大部分时候是在针对单表进行操作，单独的写一条单表操作的SQL较为繁琐，为了能进行高效、快捷、优雅的进行单表操作，Query查询器诞生了。
+
+##### Query使用方式和风格介绍
+我们以一个 User表为例，查询模糊查询用户名包含 "t" ，并且delete_time 不为空的数据库，按照id 倒序。
+
+```
+Query<User> query = sqlManager.query(User.class);
+List<User> list = query.andLike("name", "%t%")
+	.andIsNotNull("delete_time")
+	.orderBy("id desc").select();
+```
+从上面的例子可以看出，Query是使用链式调用，看起来就像一个完整的sql一般，使用方式遵从用户平时SQL编写习惯，所以用户在使用过程中需遵循SQL格式。
+所有的条件列完之后，再调用select（要执行的方法：select，insert，update，count 等等）；
+
+这里有的同学可以看出来，直接使用数据库字段，这样不妥啊！要是重构怎么办。虽然大部分时候建立的数据库字段不会重命名，BeetlSql 还是支持列名重构，代码如下：
+
+```
+List<User> list1  = sql.query(User.class).lamdba()
+	.andEq(User::getName, "hi")
+	.orderBy(User::getCreateDate)
+	.select();
+```
+
+使用LamdbaQuery 必须使用Java8，且引入了对jaque库依赖，maven引入下面的包
+
+```
+<dependency>
+  <groupId>com.trigersoft</groupId>
+  <artifactId>jaque</artifactId>
+  <version>2.1.2</version>
+  <scope>provided</scope>
+</dependency>
+```
+
+为了方便，下面的例子都采用数据库字段的形式进行，示例数据库为MySql；
+
+#####  Query主要操作简介
+Query接口分为俩类：
+
+一部分是触发查询和更新操作，api分别是
+
+ - select 触发查询，返回指定的对象列表
+ - single 触发查询，返回一个对象，如果没有，返回null
+ - unique 触发查询，返回一个对象，如果没有，或者有多个，抛出异常
+ - count 对查询结果集求总数
+ - delete 删除符合条件的结果集
+ - update 全部字段更新，包括更新null值
+ - updateSelective 更新选中的结果集（null不更新）
+ - insert 全部字段插入，包括插入null值
+ - insertSelective 有选择的插入，null不插入
+
+另外一部分是各种条件：
+
+| 标准sql操作符             | and操作                    | or操作                   |
+| -------------------- | ------------------------ | ---------------------- |
+| ==,!=                | andEq,andNotEq           | orEq,orNotEq           |
+| **>**,>=             | andGreat,andGreatEq      | orGreat,orGreatEq      |
+| <,<=                 | andLess,andLessEq        | orLess,orLessEq        |
+| LIKE,NOT LIKE        | andLike,andNotLike       | orLike,orNotLike       |
+| IS NULL,IS NOT NULL  | andIsNull,andIsNotNull   | orIsNull,orIsNotNull   |
+|                      | andIn ,andNotIn          | orIn ,orNotIn          |
+| BETWEEN ,NOT BETWEEN | andBetween,andNotBetween | orBetween,orNotBetween |
+| and ( .....)         | and                      | or                     |
+
+| 标准sql              | Query方法 |
+| ------------------ | ------- |
+| 限制结果结范围，依赖于不同数据库翻页 | limit   |
+| ORDER BY           | orderBY |
+| GROUP BY           | groupBy |
+| HAVING             | having  |
+
+---
+
+#####  查询器获取
+查询器直接通过 sqlManager 获取，多个sqlManager 可以获取各自 的Query。
+获取查询器时，我们泛型一下我们是针对哪个对象（对应的哪张表）进行的操作。
+
+```
+Query<User> query = sqlManager.query(User.class);
+```
+
+Mapper接口也提供了获取Query的方法，比如
+
+~~~java
+UserDao dao = sqlManager.getMapper(UserDao.class);
+Query<User> query = dao.createQuery();
+~~~
 
 
-#### 25.1. ResultSet结果集到Bean的转化
+
+#####  SELECT简单的条件查询
+
+我们还是以User为例，我们需要查询这条SQL
+
+```
+SELECT * FROM `user` WHERE `id` BETWEEN 1 AND 1640 AND `name` LIKE '%t%' AND `create_time` IS NOT NULL ORDER BY id desc 
+```
+直接上代码：
+```
+Query<User> query = sqlManager.query(User.class);
+List<User> list = query.andBetween("id", 1, 1640)
+	.andLike("name", "%t%")
+	.andIsNotNull("create_time")
+	.orderBy("id desc").select();
+```
+是不是感觉和写SQL一样爽。
+
+如果我们只要查询其中的几个字段怎么办？比如我只要name和id字段，SQL如下：
+
+```
+SELECT name,id FROM `user` 
+```
+
+Query也提供了定制字段的方法，只要传入你需要的字段名即可：
+
+```
+Query<User> query = sqlManager.query(User.class);
+List<User> list = query.select("name", "id");
+```
+比如时间比较大小：
+
+```
+SELECT name,id FROM `user` WHERE `id` = 1637 AND `create_time` < now() AND `name` = 'test' 
+```
+
+```
+Query<User> query = sqlManager.query(User.class);
+List<User> list = query.andEq("id", 1637)
+	.andLess("create_time", new Date())
+	.andEq("name", "test")
+	.select("name", "id");
+```
+
+有的同学会说，OR子句怎么用，和AND一样简单：
+
+```
+SELECT * FROM `user` WHERE `name` = 'new name' OR `id` = 1637 limit 0 , 10
+```
+
+```
+query.andEq("name", "new name")
+	.orEq("id", 1637)
+	.limit(1, 10)
+	.select();
+```
+为了兼容其他数据库，这里limit都是统一从1开始哦，后面也会提到。
+
+#####  复杂的条件查询
+下面就开始进阶了，要进行一条复杂的条件查询SQL，就要用到  query.condition() 方法，产生一个新的条件，比如我们要查询下面这条SQL
+
+```
+SQL：SELECT * FROM `user` WHERE ( `id` IN( ? , ? , ? ) AND `name` LIKE ? )OR ( `id` = ? )
+参数：[1637, 1639, 1640, %t%, 1640]
+```
+
+```
+Query<User> query = sqlManager.query(User.class);
+List<User> list = query
+	.or(query.condition()
+		.andIn("id", Arrays.asList(1637, 1639, 1640))
+    	.andLike("name", "%t%"))
+	.or(query.condition().andEq("id", 1640))
+	.select();
+```
+复杂的条件查询，只需要调用 or() 方法 和 and()方法 ，然后使用 query.condition()生成一个新的条件传入就行；
+比如下面这条SQL
+
+```
+SQL：SELECT * FROM `user` WHERE ( `id` IN( ? , ? , ? ) AND `name` LIKE ? )AND `id` = ? OR ( `name` = ? )
+参数：[1637, 1639, 1640, %t%, 1640, new name2]
+```
+
+```
+Query<User> query = sqlManager.query(User.class);
+List<User> list = query
+	.and(query.condition()
+	.andIn("id", Arrays.asList(1637, 1639, 1640))
+	.andLike("name", "%t%"))
+	.andEq("id", 1640)
+	.or(query.condition().andEq("name","new name2"))
+    .select();
+```
+
+#####  INSERT操作
+学会条件查询之后，其他操作就简单了，我们看下insert。
+
+###### 全量插入insert 方法
+
+```
+SQL：insert into `user` (`name`,`department_id`,`create_time`) VALUES (?,?,?)
+参数：[new name, null, null]
+```
+
+```
+	User record = new User();
+	record.setName("new name");
+	Query<User> query = sqlManager.query(User.class);
+	int count = query.insert(record);
+```
+全量插入，会对所有的值进行插入，即使这个值是NULL；返回影响的行数；
+
+###### 选择插入insertSelective方法
+
+```
+SQL： insert into `user` ( `name`,`create_time` ) VALUES ( ?,? )
+参数：[new name2, now()]
+```
+```
+User record = new User();
+record.setName("new name2");
+record.setCreateTime(new Date());
+Query<User> query = sqlManager.query(User.class);
+int count = query.insertSelective(record);
+```
+insertSelective方法，对user进行了一次有选择性的插入。NULL值的字段不插入；返回影响的行数；
+
+
+#####  UPDATE操作
+update和insert类似,有全量更新和选择更新的方法；
+
+###### 全量更新 update 方法
+
+```
+SQL：update `user` set `name`=?,`department_id`=?,`create_time`=? WHERE `id` = ? AND `create_time` < ? AND `name` = ? 
+参数：[new name, null, null, 1637, now(), test]
+```
+
+```
+User record = new User();
+record.setName("new name");
+Query<User> query = sqlManager.query(User.class);
+int count = query.andEq("id", 1637)
+	.andLess("create_time", new Date())
+	.andEq("name", "test")
+	.update(record);
+```
+
+全量更新，会对所有的值进行更新，即使这个值是NULL；返回影响的行数；
+
+###### 选择更新 updateSelective 方法
+```
+SQL：update `user` set `name`=? WHERE `id` = ? AND `create_time` < ? AND `name` = ? 
+参数：[new name, 1637, now(), test]
+```
+
+```
+User record = new User();
+record.setName("new name");
+Query<User> query = sqlManager.query(User.class);
+int count = query.andEq("id", 1637)
+	.andLess("create_time", new Date())
+	.andEq("name", "test")
+	.updateSelective(record);
+```
+updateSelective方法，对user进行了一次有选择性的更新。不是null的值都更新，NULL值不更新；返回影响的行数；
+
+######  DELETE操作
+delete操作非常简单，拼接好条件，调用delete方法即可；返回影响的行数。
+
+```
+DELETE FROM `user` WHERE `id` = ? 
+```
+
+```
+Query<User> query = sqlManager.query(User.class);
+int count = query.andEq("id", 1642).delete();
+```
+##### single查询和unique
+在beetlSql中还提供了两个用来查询单条数据的方法，single和unique；
+
+##### single单条查询
+single查询，查询出一条，如果没有，返回null；
+
+```
+SELECT * FROM `user` WHERE `id` = 1642 limit 0 , 1
+```
+
+```
+Query<User> query = sqlManager.query(User.class);
+User user = query.andEq("id", 1642).single();
+```
+
+##### unique单条查询
+unique查询和single稍微不同，他是查询一条，如果没有或者有多条，抛异常；
+
+```
+SELECT * FROM `user` WHERE `id` = 1642 limit 0 , 2
+```
+
+```
+Query<User> query = sqlManager.query(User.class);
+User user = query.andEq("id", 1642).unique();
+```
+如果存在多条，或者没有则抛出异常：
+
+```
+org.beetl.sql.core.BeetlSQLException: unique查询，但数据库未找到结果集
+
+```
+
+#####  COUNT查询
+count查询主要用于统计行数，如下面的SQL：
+
+```
+SQL：	 SELECT COUNT(1) FROM `user` WHERE `name` = ? OR `id` = ? limit 0 , 10
+参数：	 [new name, 1637]
+```
+
+```
+Query<User> query = sqlManager.query(User.class);
+long count = query.andEq("name", "new name")
+             .orEq("id", 1637).limit(1, 10)
+             .count();
+```
+拼接条件，调用count方法，返回总行数。
+
+#####  GROUP分组查询和Having子句
+有时候我们要进行分组查询，如以下SQL：
+
+```
+SELECT * FROM `user` WHERE `id` IN(1637, 1639, 1640 ) GROUP BY name 
+```
+在BeetlSql中直接拼条件调用group方法，传入字段即可：
+
+```
+Query<User> query = sqlManager.query(User.class);
+List<User> list = query
+	.andIn("id", Arrays.asList(1637, 1639, 1640))
+ 	.groupBy("name")
+	.select();
+```
+在分组查询之后，我们可能还要进行having筛选，只需要在后面调用having方法，传入条件即可。
+
+```
+SELECT * FROM `user` WHERE `id` IN( 1637, 1639, 1640 ) GROUP BY name HAVING `create_time` IS NOT NULL 
+```
+
+```
+Query<User> query = sqlManager.query(User.class);
+List<User> list = query
+	.andIn("id", Arrays.asList(1637, 1639, 1640))
+	.groupBy("name")
+	.having(query.condition().andIsNotNull("create_time"))
+	.select();
+```
+
+#####  分页查询
+分页查询是我们经常要使用的功能，beetlSql支持多数据，会自动适配当前数据库生成分页语句，在beeltSql中调用limit方法进行分页。如下面的SQL：
+
+```
+SQL： SELECT * FROM `user` WHERE `name` = ? OR `id` = ? limit 0 , 10
+参数： [new name, 1637]
+```
+
+```
+User record = new User();
+record.setName("new name");
+Query<User> query = sqlManager.query(User.class);
+long count = query.andEq("name", "new name")
+	.orEq("id", 1637)
+	.limit(1, 10)
+	.select();
+```
+**这里需要注意，limit方法传入的参数是开始行，和查询的行数。（开始行从1开始计数），beetlSql会根据不同的数据生成相应的SQL语句。**
+
+######  ORDER BY 排序
+进行排序查询时，只要调用orderBy方法，传入要排序的字段以及排序方式即可。
+
+```
+SQL： SELECT * FROM `user` WHERE `id` BETWEEN ? AND ? AND `name` LIKE ? AND `create_time` IS NOT NULL ORDER BY id desc 
+参数： [1, 1640, %t%]
+```
+
+```
+Query<User> query = sqlManager.query(User.class);
+List<User> list = query.andBetween("id", 1, 1640)
+	.andLike("name", "%t%")
+	.andIsNotNull("create_time")
+	.orderBy("id desc").select();
+```
+
+
+
+
+#### 25.2. ResultSet结果集到Bean的转化
 数据库返回的ResultSet将根据Pojo对象的属性来做适当的转化，比如对于数据库如果定义了一个浮点类型，而Java端属性如果是double，则转成double，如果是BigDecimal，则转成BigDecial,如果定义为int类型，则转为int类型。BeanProcessor 类负责处理这种转化，开发者也可以实现自己的BeanProcessor来为特定的sql做转化，比如将数据库日期类型转为Java的Long类型。
 如在BeanProcessor.createBean代码里
 
@@ -2711,7 +3063,7 @@ this.callSetter(bean, prop, value,propType);
 
 BeanProcessor 会根据属性类型取出对应的处理类，然后处理ResultSet，如果你先自定义处理类，你可以重新添加一个JavaSqlTypeHandler到handlers
 
-#### 25.2. ResultSet结果集到Map的转化
+#### 25.3. ResultSet结果集到Map的转化
 
 ResultSet转为Map的时候，有不一样则，根据数据库返回的列类型来做转化，数据库如果定义了一个浮点类型，则使用默认的BigDecimal类型
 
@@ -2762,7 +3114,7 @@ jdbcJavaTypes.put(new Integer(Types.LONGVARCHAR), String.class); // -1
 
 有些框架，在使用Map的时候，添加了更多的灵活性，比如通过columnName 来片段是否该字段是字典字段，比如都有后缀"_dict",如果是，则从缓存或者查询响应的字典数据，放到ThreadLocal里，以一次性将查询结果，相关字典数据返回
 
-#### 25.3. PreparedStatment
+#### 25.4. PreparedStatment
 
 BeanProcessor.setPreparedStatementPara用于JDBC设置参数，内容如下:
 
@@ -2823,7 +3175,7 @@ select * from user where create_time>#createTime,typeofDate#
 
 
 
-#### 25.4. 自定义BeanProcessor
+#### 25.5. 自定义BeanProcessor
 
 你可以为Beeetsql指定一个默认的BeanProcessor，也可以为某些特定的sqlid指定BeanProcessor，SqlManager提供了两个方法来完成
 
@@ -2842,7 +3194,7 @@ public void setProcessors(Map<String, BeanProcessor> processors) {
 
 
 
-#### 25.5. 事务管理
+#### 25.6. 事务管理
 
 BeetlSql 是一个简单的Dao工具，不含有事务管理，完全依赖web框架的事务管理机制，监听开始事务，结束事务等事件，如果你使用Spring，JFinal框架，无需担心事务，已经集成好了，如果你没有这些框架，也可以用Beetlsq
 
@@ -2869,7 +3221,7 @@ DSTransactionManager.commit();
 
 
 
-#### 25.6. 设置自己的BaseMapper
+#### 25.7. 设置自己的BaseMapper
 
 Beetlsql提供了BaseMapper来内置了CRUD等方法，你可以自己定制属于你的“BaseMapper”
 
