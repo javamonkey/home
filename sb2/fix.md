@@ -66,6 +66,14 @@ server.servlet.context-path=/config
 
 写作过程中，及时发现了这个变化，但这一节改动不一致，先后出现了这俩个配置属性。请以server.servlet.context-path为准
 
+## 7.1.2 使用其他Web服务器（第二次印刷）
+
+打开tomcat访问日志(原文是false)
+
+~~~properties
+server.tomcat.accesslog.enabled=true
+~~~
+
 
 
 # 9 单元测试
