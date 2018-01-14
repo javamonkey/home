@@ -2341,7 +2341,7 @@ ServletGroupTemplate同其他web集成一样，将读取配置文件来配置，
 需要做如下配置即可
 
 ```xml
-<bean id="beetlConfig" class="org.beetl.ext.spring." init-method="init"/>
+<bean id="beetlConfig" class="org.beetl.ext.spring.BeetlGroupUtilConfiguration" init-method="init"/>
 <bean id="viewResolver" class="org.beetl.ext.spring.BeetlSpringViewResolver">
         <property name="contentType" value="text/html;charset=UTF-8"/>
 </bean>
