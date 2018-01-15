@@ -4,7 +4,7 @@ Beetl作者：李家智 <[xiandafu@126.com](mailto:xiandafu@126.com)>
 
 ### 1. 什么是Beetl
 
-Beetl目前版本是2.7.23,相对于其他java模板引擎，具有功能齐全，语法直观,性能超高，以及编写的模板容易维护等特点。使得开发和维护模板有很好的体验。是新一代的模板引擎。总得来说，它的特性如下：
+Beetl目前版本是2.7.26,相对于其他java模板引擎，具有功能齐全，语法直观,性能超高，以及编写的模板容易维护等特点。使得开发和维护模板有很好的体验。是新一代的模板引擎。总得来说，它的特性如下：
 
 -   功能完备：作为主流模板引擎，Beetl具有相当多的功能和其他模板引擎不具备的功能。适用于*各种应用场景*，从对响应速度有很高要求的大网站到功能繁多的CMS管理系统都适合。Beetl本身还具有很多独特功能来完成模板编写和维护，这是其他模板引擎所不具有的。
 -   非常简单：类似Javascript语法和习俗，只要半小时就能通过半学半猜完全掌握用法。拒绝其他模板引擎那种非人性化的语法和习俗。同时也能支持html 标签，使得开发CMS系统比较容易
@@ -59,7 +59,6 @@ Beetl目前版本是2.7.23,相对于其他java模板引擎，具有功能齐全�
 >   在线体验和代码分享 [http://ibeetl.com/beetlonline/](http://ibeetl.com/beetlonline/)
 
 
-
 ### 2. 基本用法
 
 #### 2.1. 安装
@@ -70,7 +69,7 @@ Beetl目前版本是2.7.23,相对于其他java模板引擎，具有功能齐全�
 <dependency>
         <groupId>com.ibeetl</groupId>
         <artifactId>beetl</artifactId>
-        <version>2.7.23</version>
+        <version>2.7.26</version>
 </dependency>
 ```
 
@@ -2551,7 +2550,7 @@ Beetl视图解析器属性同spring自带的视图解析器一样，支持conten
 <dependency>
 	<groupId>com.ibeetl</groupId>
 	<artifactId>beetl-framework-starter</artifactId>
-	<version>1.1.22.RELEASE</version>
+	<version>1.1.31.RELEASE</version>
 </dependency>
 ~~~
 
@@ -2561,7 +2560,7 @@ starter 自动处理以btl结尾的视图，模板根目录是Spring Boot默认�
 * beetl.enabled 默认为true，集成beetl。
 * beetl.suffix 默认为btl，表示只处理视图后缀为btl的模板，比如controller里代码是“return /common/index.btl”,则能被Beetl处理，你写成"return /common/index",或者"/common/index.html",都会出现404错误。
 
-如果你想自己配置模板引擎， 通过java config来配置 beetl需要的BeetlGroupUtilConfiguration，和 BeetlSpringViewResolver，参考代码如下
+使用Starter来配置已经够用，如果你想自己配置模板引擎， 通过java config来配置 beetl需要的BeetlGroupUtilConfiguration，和 BeetlSpringViewResolver，参考代码如下
 
 ```java
 @Configuration
@@ -2572,18 +2571,18 @@ public class BeetlConf {
         public BeetlGroupUtilConfiguration getBeetlGroupUtilConfiguration() {
                 BeetlGroupUtilConfiguration beetlGroupUtilConfiguration = new BeetlGroupUtilConfiguration();
                //获取Spring Boot 的ClassLoader
-	            ClassLoader loader = Thread.currentThread().getContextClassLoader();
-				if(loader==null){
-					loader = BeetlConf.class.getClassLoader();
-				}
-				beetlGroupUtilConfiguration.setConfigProperties(extProperties);//额外的配置，可以覆盖默认配置，一般不需要
-				ClasspathResourceLoader cploder = new ClasspathResourceLoader(loader,
-						templatesPath);
-				beetlGroupUtilConfiguration.setResourceLoader(cploder);
-				beetlGroupUtilConfiguration.init();
-				//如果使用了优化编译器，涉及到字节码操作，需要添加ClassLoader
-				beetlGroupUtilConfiguration.getGroupTemplate().setClassLoader(loader);
-				return beetlGroupUtilConfiguration
+	       ClassLoader loader = Thread.currentThread().getContextClassLoader();
+		if(loader==null){
+			loader = BeetlConf.class.getClassLoader();
+		}
+		beetlGroupUtilConfiguration.setConfigProperties(extProperties);//额外的配置，可以覆盖默认配置，一般不需要
+		ClasspathResourceLoader cploder = new ClasspathResourceLoader(loader,
+				templatesPath);
+		beetlGroupUtilConfiguration.setResourceLoader(cploder);
+		beetlGroupUtilConfiguration.init();
+		//如果使用了优化编译器，涉及到字节码操作，需要添加ClassLoader
+		beetlGroupUtilConfiguration.getGroupTemplate().setClassLoader(loader);
+		return beetlGroupUtilConfiguration
 
         }
 
@@ -3699,6 +3698,6 @@ ENGINE=org.beetl.core.engine.DefaultTemplateEngine
 
 ##### 5.8.4 Spring Boot 出现 ClassCastException
 
-请使用最新的Beetl版本或者Starter。
+请使用最新的Beetl版本，使用Starter或者参考Spring Boot集成一章集成Spring Boot。这是Spring Boot dev模式引起的问题
 
 
