@@ -420,7 +420,9 @@ public void test3() {
 如上代码注释了要测试list.clear(),将会导致UnnecessaryStubbingException警告。因为你只模拟了clear方法抛出异常，但你并未测试。
 
 
+# 13 Elastic Search
 
+在运行本章例子，请严格按照书里的例子，使用Elastic Search 5.4版本，因为Elastic 版本发展过快，Spring Boot到目前为止还不支持最新版本，5.4以上版本包括6.x运行都会有一定问题
 
 
 # 17 监控Spring Boot 应用
