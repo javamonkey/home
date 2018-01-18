@@ -2540,7 +2540,8 @@ public class MyServiceImpl implements MyService {
 ~~~java
 @Configuration
 public class DataSourceConfig {	
- 
+
+ @Bean(name="datasource")
   public DataSource datasource(Environment env) {
     HikariDataSource ds = new HikariDataSource();
     ds.setJdbcUrl(env.getProperty("spring.datasource.url"));
