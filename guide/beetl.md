@@ -2550,7 +2550,7 @@ Beetl视图解析器属性同spring自带的视图解析器一样，支持conten
 <dependency>
 	<groupId>com.ibeetl</groupId>
 	<artifactId>beetl-framework-starter</artifactId>
-	<version>1.1.31.RELEASE</version>
+	<version>1.1.32.RELEASE</version>
 </dependency>
 ~~~
 
@@ -2559,6 +2559,23 @@ starter 自动处理以btl结尾的视图，模板根目录是Spring Boot默认�
 * beetl-beetlsql.dev,默认为true，即自动检查模板变化
 * beetl.enabled 默认为true，集成beetl。
 * beetl.suffix 默认为btl，表示只处理视图后缀为btl的模板，比如controller里代码是“return /common/index.btl”,则能被Beetl处理，你写成"return /common/index",或者"/common/index.html",都会出现404错误。
+
+
+
+Starter可以实现BeetlTemplateCustomize来定制Beetl
+~~~java
+@Configuration
+public MyConfig{
+  @Bean
+  public BeetlTemplateCustomize beetlTemplateCustomize(){
+    return new BeetlTemplateCustomize(){
+      public void customize(GroupTemplate groupTemplate){
+        
+      }
+    };
+  }
+}
+~~~
 
 使用Starter来配置已经够用，如果你想自己配置模板引擎， 通过java config来配置 beetl需要的BeetlGroupUtilConfiguration，和 BeetlSpringViewResolver，参考代码如下
 
@@ -2613,10 +2630,6 @@ public class BeetlConf {
 beetlsql.enabled=false
 beetl.enabled=false
 ~~~~
-
-
-
-
 
 
 

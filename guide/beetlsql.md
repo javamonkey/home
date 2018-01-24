@@ -3,7 +3,7 @@
 >   -   作者: 闲大赋,Gavin.King,Sue,Zhoupan,woate,Darren
 >   -   社区 [http://ibeetl.com](http://ibeetl.com/)
 >   -   qq群 219324263
->   -   当前版本 2.10.3
+>   -   当前版本 2.10.5
 
 
 
@@ -37,7 +37,7 @@ maven 方式:
 <dependency>
 	<groupId>com.ibeetl</groupId>
 	<artifactId>beetlsql</artifactId>
-	<version>2.10.2</version>
+	<version>2.10.5</version>
 </dependency>
 <dependency>
   <groupId>com.ibeetl</groupId>
@@ -130,6 +130,9 @@ User query = new User();
 query.setName("xiandafu");
 List<User> list = sqlManager.template(query);
 
+//Query查询
+Query userQuery = sqlManager.getQuery(User.class);
+List<User> users = userQuery.lambda().andEq(User::getName,"xiandafy").select();
 
 //使用user.md 文件里的select语句，参考下一节。
 User query2 = new User();
@@ -2315,7 +2318,7 @@ select * from user where id = #id#
 
 >   #### 注意
 >
->   -   BeetlSql的Pojo类与数据库表对应，没有关系映射相关特性，除非Pojo实现@Tail 或者继承TailBean（或者实现Tail接口），额外的关系映射才会放到tail属性里供查询的时候调用。
+>   -   BeetlSql的Pojo类与数据库表对应，如果Pojo有对应的属性，可以直接映射到属性上，这个同其他ORM工具一样，如果没有关系映射相关特性，实现@Tail 或者继承TailBean（或者实现Tail接口），额外的关系映射才会放到tail属性里供查询的时候调用。
 >   -   要注意的是，beetlsql的orm 仅仅限于查询结果集，而不包括新增，更新，删除。这些需要调用sqlManager的api直接操作就行了而不像JPA那样还需要成为容器管理对象才能更新
 >   -   无论是sql语句里配置orm查询,还是通过注解来配置orm查询,都不强求数据库一定有此映射关系,只要当运行调用的时候才会触发orm查询.对于eager查询,当调用beetlsql的时候,会触发ORM查询,对于lazy查询,并不会触发,只会在获取关系属性的时候的,再触发.
 
@@ -2328,12 +2331,17 @@ orm.single,orm.many ,orm.lazySingle,orm.lazyMany函数名字本身说明了是�
 -   使用模板方式查询关系对象，orm.single({"departmentId","id"},"Department") 第一个参数申明了关系映射，即sql查询结果里属性（非字段名)，对应到关系表的查询属性， 如User对象里，departmentId应到Department对象的id，beetlsql会根据此关系发起一次template查询。映射的结果集放在第二个参数Department类里，如果Department与User类在同一个包下，可以省略包名，否则需要加上类包名
 -   使用sqlId来查询关系对象，orm.single({"departmentId","id"},"user.selectDepatment","Department") 第一个参数还是映射关系，第二个参数是一sql查询id，beetlsql将查询此sql语句，将结果集放到第三个参数Deparmtent类里
 -   lazy 意味着当调用的时候再加载。如果在事务外调用，并不会像hibernate，JPA那样报错，beetlsql会再用一个数据库连接去查询。一般来讲，如果业务代码确定要用，建议不用lazy方式。因为lazy不会有查询优化，性能可能慢一些
+-   映射关系可以用别名，如User对象有myDepartment属性，则映射可以写成orm.single({"departmentId","id"},"Department",{"alias":"myDepartment"}) 
 
-如上查询关系对象，均放到tail属性里，名称就是类名小写开头，如
+如上查询关系对象，结果放到对应的属性上，或者放到tail属性里，名称就是类名小写开头，如
 
 ```java
-User user = sqlManager.select("user.selectUserAndDepartment",User.class,paras); Department dept = user.get("department");
+User user = sqlManager.select("user.selectUserAndDepartment",User.class,paras); Department 
+//dept = user.getDepartment();
+dept = user.get("department");
 ```
+
+
 
 如下是个例子，假设user表与department表示一对一关系，user.departmentId对应于deparment.id,因此关系映射是{"departmentId":"id"} user与 role表示多对多关系，通过user_role做关联
 
@@ -2532,7 +2540,7 @@ public class MyServiceImpl implements MyService {
 <dependency>
 	<groupId>com.ibeetl</groupId>
 	<artifactId>beetl-framework-starter</artifactId>
-	<version>1.1.29.RELEASE</version>
+	<version>1.1.32.RELEASE</version>
 </dependency>
 ~~~
 
@@ -2595,6 +2603,25 @@ beetl.enabled=false
 
 
 >  如果不满足你要求，你也可以采用java config方式自己配置，或者参考beetl-framework-starter源码，参考 demo ，[http://git.oschina.net/xiandafu/springboot_beetl_beetlsql](http://git.oschina.net/xiandafu/springboot_beetl_beetlsql)，自己完成 
+
+
+
+可以实现BeetlSqlCustomize接口来定制BeetlSQL，比如
+
+~~~java
+@Configuration
+public MyConfig{
+  @Bean
+  public BeetlSqlCustomize beetlSqlCustomize(){
+    return  new BeetlSqlCustomize(){
+      public void customize(SqlManagerFactoryBean sqlManagerFactoryBean){
+        ....
+      } 
+    };
+  }
+}
+~~~
+可以掉用SqlManagerFactoryBean来配置，或者获得SQLManager 进一步配置
 
 
 #### 24.3. JFinal集成和Demo
@@ -3043,7 +3070,7 @@ List<User> list = query.andBetween("id", 1, 1640)
 	.orderBy("id desc").select();
 ```
 
-
+也可以使用asc(),desc()
 
 
 #### 25.2. ResultSet结果集到Bean的转化
