@@ -31,7 +31,7 @@ Spring Boot 所有历史版本官方文档地址： https://docs.spring.io/sprin
 <dependency>
     <groupId>com.ibeetl</groupId>
     <artifactId>beetl-framework-starter</artifactId>
-    <version>1.1.31.RELEASE</version>
+    <version>1.1.33.RELEASE</version>
 </dependency>
 ~~~
 
