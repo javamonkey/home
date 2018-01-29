@@ -1,6 +1,10 @@
 # 本书代码
 
-所有代码在 https://gitee.com/xiandafu/Spring-Boot-2.0-Samples
+* 所有代码在 https://gitee.com/xiandafu/Spring-Boot-2.0-Samples
+* 一个利用Spring Boot2 完成的完整例子Beetl-BBS：https://gitee.com/xiandafu/beetl-bbs
+* “马丁的早晨”根据本书对Spring Boot2的深度定制所做的DEMO https://gitee.com/yangkb/springboot-beetl-beetlsql
+
+
 
 Spring Boot 所有历史版本官方文档地址： https://docs.spring.io/spring-boot/docs/
 
@@ -8,7 +12,7 @@ Spring Boot 所有历史版本官方文档地址： https://docs.spring.io/sprin
 
 本书的出版社地址是：http://item.jd.com/12214143.html
 
-谁是年度最受欢迎国产开源软件，你说了算:http://www.oschina.net/project/top_cn_2017 Beetl&BeetlSQL 需要你的一票
+
 
 # 最新版本
 
