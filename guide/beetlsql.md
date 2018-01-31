@@ -510,7 +510,7 @@ PageQuery 对象也提供了 orderBy属性，用于数据库排序，如 "id des
 ##### 3.4.1. 自动生成sql
 
 -   public void insert(Object paras) 插入paras到paras关联的表
--   public void insert(Object paras,boolean autoAssignKey) 插入paras到paras对象关联的表,并且指定是否自动将数据库主键赋值到paras里
+-   public void insert(Object paras,boolean autoAssignKey) 插入paras到paras对象关联的表,并且指定是否自动将数据库主键赋值到paras里,适用于对于自增或者序列类数据库产生的主健
 -   public void insertTemplate(Object paras) 插入paras到paras关联的表,忽略为null值或者为空值的属性
 -   public void insertTemplate(Object paras,boolean autoAssignKey) 插入paras到paras对象关联的表,并且指定是否自动将数据库主键赋值到paras里,忽略为null值或者为空值的属性，调用此方法，对应的数据库必须主键自增。
 -   public void insert(Class<?> clazz,Object paras) 插入paras到clazz关联的表
