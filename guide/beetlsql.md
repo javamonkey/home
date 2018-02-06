@@ -3,7 +3,7 @@
 >   -   作者: 闲大赋,Gavin.King,Sue,Zhoupan,woate,Darren
 >   -   社区 [http://ibeetl.com](http://ibeetl.com/)
 >   -   qq群 219324263
->   -   当前版本 2.10.6
+>   -   当前版本 2.10.8
 
 
 
@@ -37,7 +37,7 @@ maven 方式:
 <dependency>
 	<groupId>com.ibeetl</groupId>
 	<artifactId>beetlsql</artifactId>
-	<version>2.10.6</version>
+	<version>2.10.8</version>
 </dependency>
 <dependency>
   <groupId>com.ibeetl</groupId>
@@ -294,7 +294,7 @@ ConnectionSource source = ConnectionSourceHelper.single(datasource);
 ```java
 ConnectionSource source = ConnectionSourceHelper.getMasterSlave(master,slaves)
 ```
-
+关于使用Sharding-JDBC实现分库分表，参考主从一章
 
 
 #### 3.2. 查询API
@@ -2090,15 +2090,34 @@ public Connection getConn(String sqlId,boolean isUpdate,String sql,List paras){
 
 
 
-### 18. 可以支持更复杂的分库分表逻辑
 
-开发者也可以通过在Sql 模板里完成分表逻辑而对使用者透明，如下sql语句
+### 18. Sharding-JDBC支持
 
-```sql
-insert into
-#text("log_"+ getMonth(date())#
-values () ...
+开发者可以使用Sharding-JDBC来支持数据库分库分表，Sharding-JDBC 对外提供了一个封装好的数据源。只要将此DataSource当成普通数据源配置给BeetlSQL即可，唯一的问题是因为
+Sharding-JDBC的数据源提供的MetaData功能较弱，因此构造BeetlSQL的ConnectionSource的时候还需要额外指定一个真正的数据源
+
+```java
+
+final DataSource one =  ....
+finbal DataSource two = ....
+final Map<String, DataSource> result = new HashMap<>(3, 1);
+result.put("one",one);
+result.put("two",two);
+
+DataSource shardingDataSource = MasterSlaveDataSourceFactory.createDataSource(result,....)
+
+BeetlSqlDataSource connectionSource = new BeetlSqlDataSource(){
+	@Override
+	public Connection getMetaData() {
+		return one.getConnection();
+	}
+}
+connectionSource.setMaster(shardingDataSource);
+
 ```
+
+connectionSource 唯一不同地方是重载了getMetaData，从而从一个真实的DataSource上获取数据库元信息
+
 
 注：text函数直接输出表达式到sql语句，而不是输出？。
 
@@ -2540,7 +2559,7 @@ public class MyServiceImpl implements MyService {
 <dependency>
 	<groupId>com.ibeetl</groupId>
 	<artifactId>beetl-framework-starter</artifactId>
-	<version>1.1.33.RELEASE</version>
+	<version>1.1.35.RELEASE</version>
 </dependency>
 ~~~
 

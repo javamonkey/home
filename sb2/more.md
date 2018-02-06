@@ -24,7 +24,7 @@ Spring Boot 所有历史版本官方文档地址： https://docs.spring.io/sprin
 <parent>
 	<groupId>org.springframework.boot</groupId>
 	<artifactId>spring-boot-starter-parent</artifactId>
-	<version>2.0.0.M7</version>
+	<version>2.0.0.RC1</version>
 </parent>
 ~~~
 
@@ -35,7 +35,7 @@ Spring Boot 所有历史版本官方文档地址： https://docs.spring.io/sprin
 <dependency>
     <groupId>com.ibeetl</groupId>
     <artifactId>beetl-framework-starter</artifactId>
-    <version>1.1.33.RELEASE</version>
+    <version>1.1.35.RELEASE</version>
 </dependency>
 ~~~
 
@@ -448,6 +448,10 @@ public void test3() {
 		return cacheManager;
 	}
 ~~~
+
+如果你恰好在2.0.0.M7版本，并且使用了spring-boot-devtools，则会抛出Cast异常，这个版本需要求掉spring-boot-devtools才能工作正常，或者使用如上例子，指定ClassLoader。
+
+参考 https://github.com/spring-projects/spring-boot/issues/11822 了解我提交的M7版本的bug
 
 # 17 监控Spring Boot 应用
 
