@@ -2119,30 +2119,6 @@ connectionSource.setMaster(shardingDataSource);
 connectionSource 唯一不同地方是重载了getMetaData，从而从一个真实的DataSource上获取数据库元信息
 
 
-注：text函数直接输出表达式到sql语句，而不是输出？。
-
-log表示按照一定规则分表，table可以根据输入的时间去确定是哪个表
-
-```sql
-select * from
-#text("log"+log.date)#
-where
-```
-
->   #### 注意
->
->   text函数直接输出表达式到sql语句，而不是输出？。
-
-同样，根据输入条件决定去哪个表，或者查询所有表
-
-```javascript
-@ var tables = getLogTables();
-@ for(table in tables){
-select * from #text(table)#
-@		if(!tableLP.isLast) print("union");
-@}
-where name = #name#
-```
 
 
 
