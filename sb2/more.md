@@ -18,59 +18,18 @@ Spring Boot 所有历史版本官方文档地址： https://docs.spring.io/sprin
 
 由于写作本书的时候，Spring Boot 和 第三方集成工具版本一直在变化，因此这里列出验证过后的最新版本
 
-* Spring Boot: 2.0.0.M7（Actuator内容变化较大）
-
-~~~xml
-<parent>
-	<groupId>org.springframework.boot</groupId>
-	<artifactId>spring-boot-starter-parent</artifactId>
-	<version>2.0.0.RC1</version>
-</parent>
-~~~
-
-* beetl
-
-~~~xml
-
-<dependency>
-    <groupId>com.ibeetl</groupId>
-    <artifactId>beetl-framework-starter</artifactId>
-    <version>1.1.35.RELEASE</version>
-</dependency>
-~~~
-
-* HikariCP
-
-~~~xml
-
- <dependency>
-	<groupId>com.zaxxer</groupId>
-	<artifactId>HikariCP</artifactId>
-	<version>2.7.4</version>
-</dependency>
-~~~
-
-* OkHttp
-
-~~~xml
-<dependency>
-    <groupId>com.squareup.okhttp3</groupId>
-    <artifactId>okhttp</artifactId>
-    <version>3.9.1</version>
-</dependency>
-~~~
-
-* XLSUnit
-
-~~~xml
-<dependency>
-    <groupId>com.ibeetl</groupId>
-	<artifactId>xlsunit</artifactId>
-	<version>1.0.8</version>
-</dependency>
-~~~
 
 
+* Spring Boot: 2.0.0.RC2（Actuator内容变化较大）
+* beetl-framework-starter:1.1.38.RELEASE
+* HikariCP:2.7.4
+
+
+* OkHttp:3.9.1
+* Elastic Search Server：5.6
+* XLSUnit:1.0.8
+* Zookeeper Server:3.4.11
+* MongDB Server:3.6.3
 
 # 说明
 
@@ -457,22 +416,17 @@ public void test3() {
 
 ## 17.1
 
-在Spring Boot 2.0.0.M7种，默认情况下，大部分监控处于安全考虑并不会暴露出来，除非配置
+
+
+由于Spring Boot 2.0正式版本在监控变化较大，请统一参考如下配置启用监控
 
 ~~~properties
-management.endpoints.web.expose=*
+management.server.port=8081
+management.endpoints.web.exposure.include=*
+#management.endpoints.web.exposure.exclude=env,beans
+management.endpoints.web.base-path=/application
+logging.file = my.log
 ~~~
-
-另外，上下文从application 更改成 actuator，启动信息如下
-
-~~~
-Mapped "{[/actuator/threaddump],methods=[GET]
-Mapped "{[/actuator/metrics/{requiredMetricName}]
-Mapped "{[/actuator/trace],methods=[GET]
-~~~
-
-
-
 
 
 ## 17.5  内存信息新版有Bug(2.0.0.M6)
@@ -482,10 +436,6 @@ Mapped "{[/actuator/trace],methods=[GET]
 https://github.com/spring-projects/spring-boot/issues/11046
 
 2.0.0.M7 已经·修复。
-
-为了体验这个功能，请不要配置Acutator端口
-
-
 
 ## 17.9.2 自定义数据库连接池监控(2.0.0.M7)
 

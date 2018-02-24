@@ -29,7 +29,28 @@ public class RedisCacheManagerCustomizer {
 }
 ~~~
 
+## 17 监控Spring Boot应用
+
+  由于Spring Boot 2.0正式版本在监控变化较大，请统一参考如下配置启用监控
+
+  ~~~properties
+  management.server.port=8081
+  management.endpoints.web.exposure.include=*
+  #management.endpoints.web.exposure.exclude=env,beans
+  management.endpoints.web.base-path=/application
+  logging.file = my.log
+  ~~~
+
+
+
+### 17.2 HTTP跟踪
+Spring Boot 2.0正式版本已经将endpoint的Id为的trace调整为httptrace
+### 17.5 内存信息
+Spring Boot 2.0正式版本下载heap文件，文件名称不再采用gz格式
+
+
 # 第1次印刷
+
 ## 3 MVC 框架
 
 ### 3.1.3 Java 包名结构
