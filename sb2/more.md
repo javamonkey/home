@@ -1,8 +1,9 @@
 # 本书代码
 
-* 所有代码在 https://gitee.com/xiandafu/Spring-Boot-2.0-Samples
+* 本书所有代码在 https://gitee.com/xiandafu/Spring-Boot-2.0-Samples
 * 一个利用Spring Boot2 完成的完整例子Beetl-BBS：https://gitee.com/xiandafu/beetl-bbs
 * “马丁的早晨”根据本书对Spring Boot2的深度定制所做的DEMO https://gitee.com/yangkb/springboot-beetl-beetlsql
+* 一个完整的Spring Boot2 开发平台 https://gitee.com/xiandafu/springboot-plus
 
 
 
@@ -11,6 +12,8 @@ Spring Boot 所有历史版本官方文档地址： https://docs.spring.io/sprin
 ![](all.png)
 
 本书的出版社地址是：http://item.jd.com/12214143.html
+
+> 截至到2月，本书销量已经到5000册
 
 
 
@@ -26,10 +29,12 @@ Spring Boot 所有历史版本官方文档地址： https://docs.spring.io/sprin
 
 
 * OkHttp:3.9.1
-* Elastic Search Server：5.6
+* Elastic Search Server：5.6.7
 * XLSUnit:1.0.8
 * Zookeeper Server:3.4.11
 * MongDB Server:3.6.3
+* Jackson 2.9.4
+* Redis Server:4.0.8
 
 # 说明
 
@@ -56,10 +61,10 @@ Spring Boot 所有历史版本官方文档地址： https://docs.spring.io/sprin
 
 * 这本书在Spring Boot 2没有正式版之前就发布了
 
-写作本书的时候先后经历了Spring Boot 1.4，Spring Boot 1.5 以及SpringBoot m2,m4,m6,m7 各个时期，我一直在根据Spring Boot的最新进展对本书校订，并且更新本书的例子，
+写作本书的时候先后经历了Spring Boot 1.4，Spring Boot 1.5 以及SpringBoot m2,m4,m6,m7,RC1,RC2 各个时期，我一直在根据Spring Boot的最新进展对本书校订，并且更新本书的例子，
 我也像Spring Boot开发者提交了俩个Bug报告。这也是我觉得写书特别费劲，特别累的原因。
 
-如今到M7阶段，Spring Boot功能基本定型了，唯一改变较多的就是Acuator功能（本书第17章），其他都没有大的变化
+如今到RC2阶段，Spring Boot功能基本定型了，唯一改变较多的就是Acuator功能（本书第17章），其他都没有大的变化
 
 补充吐槽我出书太早的人：国外有个Spring Boot2 比我出书更早，他是基于snapshot版本出的，非常不靠谱，要吐槽我之前请先吐槽他
 
