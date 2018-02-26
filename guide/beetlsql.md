@@ -3,7 +3,7 @@
 >   -   作者: 闲大赋,Gavin.King,Sue,Zhoupan,woate,Darren
 >   -   社区 [http://ibeetl.com](http://ibeetl.com/)
 >   -   qq群 219324263
->   -   当前版本 2.10.8
+>   -   当前版本 2.1012
 
 
 
@@ -37,7 +37,7 @@ maven 方式:
 <dependency>
 	<groupId>com.ibeetl</groupId>
 	<artifactId>beetlsql</artifactId>
-	<version>2.10.8</version>
+	<version>2.10.12</version>
 </dependency>
 <dependency>
   <groupId>com.ibeetl</groupId>
@@ -2325,10 +2325,10 @@ orm.single,orm.many ,orm.lazySingle,orm.lazyMany函数名字本身说明了是�
 
 -   使用模板方式查询关系对象，orm.single({"departmentId","id"},"Department") 第一个参数申明了关系映射，即sql查询结果里属性（非字段名)，对应到关系表的查询属性， 如User对象里，departmentId应到Department对象的id，beetlsql会根据此关系发起一次template查询。映射的结果集放在第二个参数Department类里，如果Department与User类在同一个包下，可以省略包名，否则需要加上类包名
 -   使用sqlId来查询关系对象，orm.single({"departmentId","id"},"user.selectDepatment","Department") 第一个参数还是映射关系，第二个参数是一sql查询id，beetlsql将查询此sql语句，将结果集放到第三个参数Deparmtent类里
--   lazy 意味着当调用的时候再加载。如果在事务外调用，并不会像hibernate，JPA那样报错，beetlsql会再用一个数据库连接去查询。一般来讲，如果业务代码确定要用，建议不用lazy方式。因为lazy不会有查询优化，性能可能慢一些
+-   lazy 意味着当调用的时候再加载。如果在事务外调用，并不会像hibernate，JPA那样报错，beetlsql会再用一个数据库连接去查询。一般来讲，如果业务代码确定要用，建议不用lazy方式。因为lazy不会有查询优化，性能可能慢一些.需要注意的是，Beetlsql并非通过proxy技术来实现lazy加载，因此对于lazy加载，你需要继承TailBean
 -   映射关系可以用别名，如User对象有myDepartment属性，则映射可以写成orm.single({"departmentId","id"},"Department",{"alias":"myDepartment"}) 
 
-如上查询关系对象，结果放到对应的属性上，或者放到tail属性里，名称就是类名小写开头，如
+如上查询关系对象，结果放到对应的属性上（lazy加载不能放到属性上），或者放到tail属性里，名称就是类名小写开头，如
 
 ```java
 User user = sqlManager.select("user.selectUserAndDepartment",User.class,paras); Department 
@@ -2414,7 +2414,7 @@ public class TailBean implements Tail {
 ```java
 @OrmQuery(
 value={
-	@OrmCondition(target=Department.class,attr="departmentId",targetAttr="id",type=OrmQuery.Type.ONE),
+	@OrmCondition(target=Department.class,attr="departmentId",targetAttr="id",type=OrmQuery.Type.ONE,lazy=false),
 	@OrmCondition(target=ProductOrder.class,attr="id",targetAttr="userId" ,type=OrmQuery.Type.MANY),
 	@OrmCondition(target=Role.class,attr="id",targetAttr="userId" ,sqlId="user.selectRole",type=OrmQuery.Type.MANY)
 
@@ -2535,7 +2535,7 @@ public class MyServiceImpl implements MyService {
 <dependency>
 	<groupId>com.ibeetl</groupId>
 	<artifactId>beetl-framework-starter</artifactId>
-	<version>1.1.35.RELEASE</version>
+	<version>1.1.39.RELEASE</version>
 </dependency>
 ~~~
 
