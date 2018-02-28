@@ -37,7 +37,7 @@ maven 方式:
 <dependency>
 	<groupId>com.ibeetl</groupId>
 	<artifactId>beetlsql</artifactId>
-	<version>2.10.12</version>
+	<version>2.10.13</version>
 </dependency>
 <dependency>
   <groupId>com.ibeetl</groupId>
@@ -2535,7 +2535,7 @@ public class MyServiceImpl implements MyService {
 <dependency>
 	<groupId>com.ibeetl</groupId>
 	<artifactId>beetl-framework-starter</artifactId>
-	<version>1.1.39.RELEASE</version>
+	<version>1.1.40.RELEASE</version>
 </dependency>
 ~~~
 
