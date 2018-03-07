@@ -98,7 +98,7 @@ Beetl的核心是GroupTemplate，创建GroupTemplate需要俩个参数，一个�
 
 代码第5行将变量name传入模板里，其值是“Beetl”。 代码第6行是渲染模板，得到输出，template提供了多种获得渲染输出的方法，如下
 
--   tempalte.render() 返回渲染结果，如本例所示
+-   template.render() 返回渲染结果，如本例所示
 -   template.renderTo(Writer) 渲染结果输出到Writer里
 -   template.renderTo(OutputStream ) 渲染结果输出到OutputStream里
 
@@ -2550,7 +2550,7 @@ Beetl视图解析器属性同spring自带的视图解析器一样，支持conten
 <dependency>
 	<groupId>com.ibeetl</groupId>
 	<artifactId>beetl-framework-starter</artifactId>
-	<version>1.1.40.RELEASE</version>
+	<version>1.1.41.RELEASE</version>
 </dependency>
 ~~~
 
@@ -2599,7 +2599,7 @@ public class BeetlConf {
 		beetlGroupUtilConfiguration.init();
 		//如果使用了优化编译器，涉及到字节码操作，需要添加ClassLoader
 		beetlGroupUtilConfiguration.getGroupTemplate().setClassLoader(loader);
-		return beetlGroupUtilConfiguration
+		return beetlGroupUtilConfiguration;
 
         }
 
