@@ -3,7 +3,7 @@
 >   -   作者: 闲大赋,Gavin.King,Sue,Zhoupan,woate,Darren
 >   -   社区 [http://ibeetl.com](http://ibeetl.com/)
 >   -   qq群 219324263
->   -   当前版本 2.10.15
+>   -   当前版本 2.10.16
 
 
 
@@ -2535,7 +2535,7 @@ public class MyServiceImpl implements MyService {
 <dependency>
 	<groupId>com.ibeetl</groupId>
 	<artifactId>beetl-framework-starter</artifactId>
-	<version>1.1.42.RELEASE</version>
+	<version>1.1.43.RELEASE</version>
 </dependency>
 ~~~
 
