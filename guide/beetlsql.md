@@ -3,7 +3,7 @@
 >   -   作者: 闲大赋,Gavin.King,Sue,Zhoupan,woate,Darren
 >   -   社区 [http://ibeetl.com](http://ibeetl.com/)
 >   -   qq群 219324263
->   -   当前版本 2.10.16
+>   -   当前版本 2.10.18
 
 
 
@@ -338,7 +338,9 @@ List<User> list1  = sql.query(User.class).lamdba().andEq(User::getName, "hi").or
 
  lamdba()方法返回了一个LamdbaQuery 类，列名支持采用lambda。
 
-关于Query操作的具体用法，请参考25.1节
+>  关于Query操作的具体用法，请参考25.1节
+>
+> Query 对象不能复用，使用完毕后，如果有新查询，需要重新获取一个新的Query，否则会报Query不能复用的错误
 
 
 
@@ -2535,7 +2537,7 @@ public class MyServiceImpl implements MyService {
 <dependency>
 	<groupId>com.ibeetl</groupId>
 	<artifactId>beetl-framework-starter</artifactId>
-	<version>1.1.43.RELEASE</version>
+	<version>1.1.44.RELEASE</version>
 </dependency>
 ~~~
 
