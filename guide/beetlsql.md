@@ -3,7 +3,7 @@
 >   -   作者: 闲大赋,Gavin.King,Sue,Zhoupan,woate,Darren
 >   -   社区 [http://ibeetl.com](http://ibeetl.com/)
 >   -   qq群 219324263
->   -   当前版本 2.10.16
+>   -   当前版本 2.10.19
 
 
 
@@ -37,7 +37,7 @@ maven 方式:
 <dependency>
 	<groupId>com.ibeetl</groupId>
 	<artifactId>beetlsql</artifactId>
-	<version>2.10.14</version>
+	<version>2.10.19</version>
 </dependency>
 <dependency>
   <groupId>com.ibeetl</groupId>
@@ -319,21 +319,10 @@ List<User> list = sql.query(User.class).andEq("name","hi").orderBy("create_date"
 
  sql.query(User.class) 返回了Query类用于单表查询
 
-如果是Java8，且引入了对jaque库依赖
-
-~~~xml
-<dependency>
-  <groupId>com.trigersoft</groupId>
-  <artifactId>jaque</artifactId>
-  <version>2.1.2</version>
-  <scope>provided</scope>
-</dependency>
-~~~
-
-则可以使用lambda表示列名
+如果是Java8，则可以使用lambda表示列名
 
 ~~~java
-List<User> list1  = sql.query(User.class).lamdba().andEq(User::getName, "hi").orderBy(User::getCreateDate).select();
+List<User> list1  = sql.lambdaQuery(User.class).andEq(User::getName, "hi").orderBy(User::getCreateDate).select();
 ~~~
 
  lamdba()方法返回了一个LamdbaQuery 类，列名支持采用lambda。
@@ -958,6 +947,12 @@ public interface BaseMapper<T> {
 	 * @return
 	 */
 	Query<T> createQuery();
+    
+     /**
+     * 返回一个LambdaQuery对象
+     * @return
+     */
+    LambdaQuery<T> createLambdaQuery();
 
 }
 ~~~
@@ -2535,7 +2530,7 @@ public class MyServiceImpl implements MyService {
 <dependency>
 	<groupId>com.ibeetl</groupId>
 	<artifactId>beetl-framework-starter</artifactId>
-	<version>1.1.43.RELEASE</version>
+	<version>1.1.45.RELEASE</version>
 </dependency>
 ~~~
 
@@ -2701,22 +2696,13 @@ List<User> list = query.andLike("name", "%t%")
 这里有的同学可以看出来，直接使用数据库字段，这样不妥啊！要是重构怎么办。虽然大部分时候建立的数据库字段不会重命名，BeetlSql 还是支持列名重构，代码如下：
 
 ```
-List<User> list1  = sql.query(User.class).lamdba()
+List<User> list1  = sql.sql.lambdaQuery(User.class)
 	.andEq(User::getName, "hi")
 	.orderBy(User::getCreateDate)
 	.select();
 ```
 
-使用LamdbaQuery 必须使用Java8，且引入了对jaque库依赖，maven引入下面的包
-
-```
-<dependency>
-  <groupId>com.trigersoft</groupId>
-  <artifactId>jaque</artifactId>
-  <version>2.1.2</version>
-  <scope>provided</scope>
-</dependency>
-```
+> 这种方式必须在JDK8以上
 
 为了方便，下面的例子都采用数据库字段的形式进行，示例数据库为MySql；
 

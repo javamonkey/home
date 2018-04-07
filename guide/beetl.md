@@ -4,7 +4,7 @@ Beetl作者：李家智 <[xiandafu@126.com](mailto:xiandafu@126.com)>
 
 ### 1. 什么是Beetl
 
-Beetl目前版本是2.7.27,相对于其他java模板引擎，具有功能齐全，语法直观,性能超高，以及编写的模板容易维护等特点。使得开发和维护模板有很好的体验。是新一代的模板引擎。总得来说，它的特性如下：
+Beetl目前版本是2.7.28,相对于其他java模板引擎，具有功能齐全，语法直观,性能超高，以及编写的模板容易维护等特点。使得开发和维护模板有很好的体验。是新一代的模板引擎。总得来说，它的特性如下：
 
 -   功能完备：作为主流模板引擎，Beetl具有相当多的功能和其他模板引擎不具备的功能。适用于*各种应用场景*，从对响应速度有很高要求的大网站到功能繁多的CMS管理系统都适合。Beetl本身还具有很多独特功能来完成模板编写和维护，这是其他模板引擎所不具有的。
 -   非常简单：类似Javascript语法和习俗，只要半小时就能通过半学半猜完全掌握用法。拒绝其他模板引擎那种非人性化的语法和习俗。同时也能支持html 标签，使得开发CMS系统比较容易
@@ -69,7 +69,7 @@ Beetl目前版本是2.7.27,相对于其他java模板引擎，具有功能齐全�
 <dependency>
         <groupId>com.ibeetl</groupId>
         <artifactId>beetl</artifactId>
-        <version>2.7.27</version>
+        <version>2.7.28</version>
 </dependency>
 ```
 
@@ -756,7 +756,8 @@ Beetl内置函数请参考附录，以下列出了常用的函数
 -   **nvl** 函数nvl，如果对象为null，则返回第二个参数，否则，返回自己 nvl(user,"不存在")
 -   **isEmpty** 判断变量或者表达式是否为空，变量不存在，变量为null，变量是空字符串，变量是空集合，变量是空数组，此函数都将返回true
 -   **isNotEmpty** 同上，判断对象是否不为空
--   **has** 变量名为参数，判断是否存在此全局变量，如 has(userList),类似于1.x版本的exist("userList"),但不需要输入引号了
+-   **has** 变量名为参数，判断是否存在此"全局变量"，如 has(userList),类似于1.x版本的exist("userList"),但不需要输入引号了.注意，has和isEmpety 判断的是从java传到模板的全局变量，而不是临时变量
+-   **hasAttriute**  测试目标对象是否有此属性，hasAttribute(user,"name")
 -   **assert** 如果表达式为false，则抛出异常
 -   trim 截取数字或者日期，返回字符,如trim(12.456,2)返回"12.45",trim(date,'yyyyy')返回"2017"
 -   **trunc** 截取数字，保留指定的小数位，如trunc(12.456,2) 输出是12.45.不推荐使用，因为处理float有问题，兼容原因保留了
@@ -2550,7 +2551,7 @@ Beetl视图解析器属性同spring自带的视图解析器一样，支持conten
 <dependency>
 	<groupId>com.ibeetl</groupId>
 	<artifactId>beetl-framework-starter</artifactId>
-	<version>1.1.41.RELEASE</version>
+	<version>1.1.45.RELEASE</version>
 </dependency>
 ~~~
 
