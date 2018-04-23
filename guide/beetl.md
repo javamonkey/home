@@ -1,10 +1,10 @@
-## Beetl2.7 中文文档
+## Beetl2.8 中文文档
 
 Beetl作者：李家智 <[xiandafu@126.com](mailto:xiandafu@126.com)>
 
 ### 1. 什么是Beetl
 
-Beetl目前版本是2.7.27,相对于其他java模板引擎，具有功能齐全，语法直观,性能超高，以及编写的模板容易维护等特点。使得开发和维护模板有很好的体验。是新一代的模板引擎。总得来说，它的特性如下：
+Beetl目前版本是2.8.0,相对于其他java模板引擎，具有功能齐全，语法直观,性能超高，以及编写的模板容易维护等特点。使得开发和维护模板有很好的体验。是新一代的模板引擎。总得来说，它的特性如下：
 
 -   功能完备：作为主流模板引擎，Beetl具有相当多的功能和其他模板引擎不具备的功能。适用于*各种应用场景*，从对响应速度有很高要求的大网站到功能繁多的CMS管理系统都适合。Beetl本身还具有很多独特功能来完成模板编写和维护，这是其他模板引擎所不具有的。
 -   非常简单：类似Javascript语法和习俗，只要半小时就能通过半学半猜完全掌握用法。拒绝其他模板引擎那种非人性化的语法和习俗。同时也能支持html 标签，使得开发CMS系统比较容易
@@ -16,7 +16,7 @@ Beetl目前版本是2.7.27,相对于其他java模板引擎，具有功能齐全�
 
 >   #### 关于性能
 >
->   通过与主流模板引擎Freemarker，Vecloity以及JSP对比，Beetl6倍于Freemarker，2倍于JSP。这是因为宏观上，通过了优化的渲染引擎，IO的二进制输出，字节码属性访问增强，微观上，通过一维数组保存上下文Context,静态文本合并处理，通过重复使用字节数组来防止java频繁的创建和销毁数组，还使用模板缓存，运行时优化等方法。详情参考附录
+>   在使用FastRuntimeEngine情况下，通过与主流模板引擎Freemarker，Vecloity以及JSP对比，Beetl6倍于Freemarker，2倍于JSP。这是因为宏观上，通过了优化的渲染引擎，IO的二进制输出，字节码属性访问增强，微观上，通过一维数组保存上下文Context,静态文本合并处理，通过重复使用字节数组来防止java频繁的创建和销毁数组，还使用模板缓存，运行时优化等方法。详情参考附录
 
 
 >  #### 独特功能
@@ -69,7 +69,7 @@ Beetl目前版本是2.7.27,相对于其他java模板引擎，具有功能齐全�
 <dependency>
         <groupId>com.ibeetl</groupId>
         <artifactId>beetl</artifactId>
-        <version>2.7.27</version>
+        <version>2.8.0</version>
 </dependency>
 ```
 
@@ -114,7 +114,7 @@ Beetl提供不但功能齐全，而且还有很多独特功能，通过简单的
 
 ```properties
 #默认配置
-ENGINE=org.beetl.core.engine.FastRuntimeEngine
+ENGINE=org.beetl.core.engine.DefaultTemplateEngine
 DELIMITER_PLACEHOLDER_START=${
 DELIMITER_PLACEHOLDER_END=}
 DELIMITER_STATEMENT_START=<%
@@ -379,6 +379,16 @@ hello,${user.name};
 <% } %>
 ```
 
+> 自从2.8.0版本后，有一个特殊的变量成为root变量，当模板找不到变量的时候，会寻找root变量的属性来作为变量的值，这个root变量必须绑定为"_root"
+
+```javascript
+template.binding("_root",new User());
+
+//在模板里
+${name}
+${wife.name}
+```
+这里name 和 wife都是User对象的属性
 
 
 #### 2.9. 共享变量
@@ -756,7 +766,8 @@ Beetl内置函数请参考附录，以下列出了常用的函数
 -   **nvl** 函数nvl，如果对象为null，则返回第二个参数，否则，返回自己 nvl(user,"不存在")
 -   **isEmpty** 判断变量或者表达式是否为空，变量不存在，变量为null，变量是空字符串，变量是空集合，变量是空数组，此函数都将返回true
 -   **isNotEmpty** 同上，判断对象是否不为空
--   **has** 变量名为参数，判断是否存在此全局变量，如 has(userList),类似于1.x版本的exist("userList"),但不需要输入引号了
+-   **has** 变量名为参数，判断是否存在此"全局变量"，如 has(userList),类似于1.x版本的exist("userList"),但不需要输入引号了.注意，has和isEmpety 判断的是从java传到模板的全局变量，而不是临时变量
+-   **hasAttriute**  测试目标对象是否有此属性，hasAttribute(user,"name")
 -   **assert** 如果表达式为false，则抛出异常
 -   trim 截取数字或者日期，返回字符,如trim(12.456,2)返回"12.45",trim(date,'yyyyy')返回"2017"
 -   **trunc** 截取数字，保留指定的小数位，如trunc(12.456,2) 输出是12.45.不推荐使用，因为处理float有问题，兼容原因保留了
@@ -1261,7 +1272,7 @@ Beetl建议通过配置文件配置GroupTemplate，主要考虑到IDE插件未�
 -   配置文件： 默认配置在/org/beetl/core/beetl-default.properties 里，Beetl首先加载此配置文件，然后再加载classpath里的beetl.properties,并用后者覆盖前者。配置文件通过Configuration类加载，因此加载完成后，也可以通过此类API来修改配置信息
 -   通过调用GroupTemplate提供的方法来注册函数，格式化函数，标签函数等
 
-配置文件分为三部分，第一部分是基本配置，在第一节讲到过。第二部分是资源类配置，可以在指定资源加载类，以及资源加载器的属性，如下
+配置文件分为三部分，第一部分是基本配置，在第一节讲到过。第二部分是资源类配置，可以在指定资源加载类，以及资源加载器的属性（这个配置在spring框架里，通过spring或者springboot的配置机制实现覆盖，并未起作用），如下
 
 ```properties
 RESOURCE_LOADER=org.beetl.core.resource.ClasspathResourceLoader
@@ -1272,9 +1283,9 @@ RESOURCE.root= /
 RESOURCE.autouCheck= true
 ```
 
-第1行指定了模板加载器类，在beetl与其他框架集成的时候，模板加载器不一定根据这个配置，比如spring，它的RESOURCE_LOADER以spring的配置为准
+第1行指定了模板加载器类，在beetl与其他框架集成的时候，**模板加载器不一定根据这个配置**，比如spring，它的RESOURCE_LOADER以spring的配置为准
 
-第4行指定了模板根目录的路径，此处/ 表示位于classpath 根路径下
+第4行指定了模板根目录的路径，此处/ 表示位于classpath 根路径下，同loader一样，依赖使用的框架
 
 第6行是否自动检测模板变化，默认为true，开发环境下自动检测模板是否更改。关于如何自定义ResouceLoader，请参考下一章
 
@@ -2550,7 +2561,7 @@ Beetl视图解析器属性同spring自带的视图解析器一样，支持conten
 <dependency>
 	<groupId>com.ibeetl</groupId>
 	<artifactId>beetl-framework-starter</artifactId>
-	<version>1.1.41.RELEASE</version>
+	<version>1.1.46.RELEASE</version>
 </dependency>
 ~~~
 
@@ -2977,9 +2988,9 @@ ENGINE=org.beetl.core.engine.DefaultTemplateEngine
 
 [https://git.oschina.net/xiandafu/beetl-struts2-sample](https://git.oschina.net/xiandafu/beetl-struts2-sample) 有完整例子
 
->   #### 郑重申明
->
->   鉴于struts2有安全漏洞，而官方补丁打法很消极，所以请谨慎使用Struts2，Beetl的安全性已经通过在线体验和多个使用Beetl的网站得以体现 一旦你的struts2网站被攻破，请先确定是否是struts2 的问题
+
+
+>   Struts2.5 本身做了包名调整，因此自从Beetl2.8.0以后，只支持Struts2.5.x以上版本，这个版本安全漏洞少.... :)
 
 
 
