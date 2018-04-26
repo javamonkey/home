@@ -13,11 +13,8 @@ Spring Boot 所有历史版本官方文档地址： https://docs.spring.io/sprin
 
 本书的出版社地址是：http://item.jd.com/12214143.html
 
-<<<<<<< HEAD
-> 截至到4月，本书销量已经到8000册
-=======
 > 截至到4月底，本书销量已经到9000册
->>>>>>> 479c34435c72eaf329dadf99a3b5e17692698c15
+
 
 
 
@@ -28,11 +25,7 @@ Spring Boot 所有历史版本官方文档地址： https://docs.spring.io/sprin
 
 
 * Spring Boot: 2.0.0.RELEASE
-<<<<<<< HEAD
-* beetl-framework-starter:1.1.44.RELEASE
-=======
-* beetl-framework-starter:1.1.46.RELEASE
->>>>>>> 479c34435c72eaf329dadf99a3b5e17692698c15
+* beetl-framework-starter:1.1.48.RELEASE
 * HikariCP:2.7.8
 * OkHttp:3.9.1
 * Elastic Search Server：5.6.8
