@@ -2,7 +2,7 @@
 
 >   -   作者: 闲大赋,Gavin.King,Sue,Zhoupan,woate,Darren
 >   -   社区 [http://ibeetl.com](http://ibeetl.com/)
->   -   qq群 219324263
+>   -   qq群 219324263(满) 636321496
 >   -   当前版本 2.10.21
 
 
