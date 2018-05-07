@@ -683,8 +683,7 @@ Beetlsql 默认提供了三种列明和属性名的映射类，推荐使用Under
 @Table(name = "PF_TEST")
 public class TestEntity implements Serializable {
 	public static String S="SSS";
-	@Id
-  private String id;
+	private String id;
 	@Column(name = "login_name")
 	private String loginName;
 	private String password;
@@ -1843,11 +1842,11 @@ updateStatus
 
 update user set
 @trim(){
-@if(!isEmpty(age){
-age = #age# ,
-@} if(!isEmpty(status){
-status = #status#,
-@}
+	@if(!isEmpty(age){
+		age = #age# ,
+	@} if(!isEmpty(status){
+		status = #status#,
+	@}
 @}
 where id = #id#
 ```
@@ -1861,7 +1860,7 @@ queryNewUser
 ===
 select
 @pageTag(){
-id,name,status
+	id,name,status
 @}
 from user
 ```
@@ -1877,11 +1876,11 @@ queryNewUser
 ===
 select
 @pageTag(){
-id,name,status
+	id,name,status
 @}
 from user
 @pageIgnoreTag(){
-order by a.createTime
+	order by a.createTime
 @}
 
 ```
@@ -2178,12 +2177,11 @@ ${imports}
 */
 public class ${className} ${!isEmpty(ext)?"extends "+ext} {
 	@for(attr in attrs){
-	@		if(!isEmpty(attr.comment)){
-	//${attr.comment}
-	@		}
-	private ${attr.type} ${attr.name} ;
+		@if(!isEmpty(attr.comment)){
+		//${attr.comment}
+		@}
+		private ${attr.type} ${attr.name} ;
 	@}
-
 }
 ```
 
@@ -2272,7 +2270,7 @@ SQLResult 如下：
 public class SQLResult {
 	public String jdbcSql;
 	public List<SQLParameter> jdbcPara;
-  	public Object[] toObjectArray(){}
+	public Object[] toObjectArray(){}
 }
 ```
 
@@ -2342,8 +2340,8 @@ dept = user.get("department");
 selectUserAndDepartment
 ===
 	select * from user where user_id=#userId#
-	@ orm.single({"departmentId":"id"},"Department");
-	@ orm.many({"id":"userId"},"user.selectRole","Role");
+	@orm.single({"departmentId":"id"},"Department");
+	@orm.many({"id":"userId"},"user.selectRole","Role");
 
 user.selectRole
 ===
@@ -2411,12 +2409,11 @@ public class TailBean implements Tail {
 
 ```java
 @OrmQuery(
-value={
-	@OrmCondition(target=Department.class,attr="departmentId",targetAttr="id",type=OrmQuery.Type.ONE,lazy=false),
-	@OrmCondition(target=ProductOrder.class,attr="id",targetAttr="userId" ,type=OrmQuery.Type.MANY),
-	@OrmCondition(target=Role.class,attr="id",targetAttr="userId" ,sqlId="user.selectRole",type=OrmQuery.Type.MANY)
-
-}
+	value={
+		@OrmCondition(target=Department.class,attr="departmentId",targetAttr="id",type=OrmQuery.Type.ONE,lazy=false),
+		@OrmCondition(target=ProductOrder.class,attr="id",targetAttr="userId" ,type=OrmQuery.Type.MANY),
+		@OrmCondition(target=Role.class,attr="id",targetAttr="userId" ,sqlId="user.selectRole",type=OrmQuery.Type.MANY)
+	}
 )
 public class User   extends TailBean {
 
@@ -2490,7 +2487,7 @@ OrmQuery 标注在类上,OrmCondition 声明了一个懒加载关系.因此,在�
 public class MyServiceImpl implements MyService {
 
 	@Autowired
-    UserDao dao; // mapper
+    UserDao dao; // UserDao extends BaseMapper<User>
 
     @Autowired
     SQLManager sql;
@@ -2499,12 +2496,12 @@ public class MyServiceImpl implements MyService {
 	@Transactional()
 	public int total(User user) {
 		int total = list .size();
-		dao.deleteById(User.class, 3);
+		dao.deleteById(3);
 		User u =new User();
 		u.id = 3;
 		u.name="hello";
 		u.age = 12;
-		dao.insert(User.class, u);
+		dao.insert(u);
 		return total;
 
 	}
@@ -2589,10 +2586,10 @@ public BeetlSqlDataSource beetlSqlDataSource(@Qualifier("master")  DataSource da
 
 注意，可以通过Application.properties 配置如下属性禁用BeetlSQL或者禁用Beetl
 
-~~~~
+~~~properties
 beetlsql.enabled=false
 beetl.enabled=false
-~~~~
+~~~
 
 
 
@@ -2609,7 +2606,7 @@ public MyConfig{
   public BeetlSqlCustomize beetlSqlCustomize(){
     return  new BeetlSqlCustomize(){
       public void customize(SqlManagerFactoryBean sqlManagerFactoryBean){
-        ....
+        //....
       } 
     };
   }
@@ -2688,7 +2685,7 @@ Trans.rollback()
 ##### Query使用方式和风格介绍
 我们以一个 User表为例，查询模糊查询用户名包含 "t" ，并且delete_time 不为空的数据库，按照id 倒序。
 
-```
+```java
 Query<User> query = sqlManager.query(User.class);
 List<User> list = query.andLike("name", "%t%")
 	.andIsNotNull("delete_time")
@@ -2699,7 +2696,7 @@ List<User> list = query.andLike("name", "%t%")
 
 这里有的同学可以看出来，直接使用数据库字段，这样不妥啊！要是重构怎么办。虽然大部分时候建立的数据库字段不会重命名，BeetlSql 还是支持列名重构，代码如下：
 
-```
+```java
 List<User> list1  = sql.sql.lambdaQuery(User.class)
 	.andEq(User::getName, "hi")
 	.orderBy(User::getCreateDate)
@@ -2751,7 +2748,7 @@ Query接口分为俩类：
 查询器直接通过 sqlManager 获取，多个sqlManager 可以获取各自 的Query。
 获取查询器时，我们泛型一下我们是针对哪个对象（对应的哪张表）进行的操作。
 
-```
+```java
 Query<User> query = sqlManager.query(User.class);
 ```
 
@@ -2768,11 +2765,11 @@ Query<User> query = dao.createQuery();
 
 我们还是以User为例，我们需要查询这条SQL
 
-```
+```sql
 SELECT * FROM `user` WHERE `id` BETWEEN 1 AND 1640 AND `name` LIKE '%t%' AND `create_time` IS NOT NULL ORDER BY id desc 
 ```
 直接上代码：
-```
+```java
 Query<User> query = sqlManager.query(User.class);
 List<User> list = query.andBetween("id", 1, 1640)
 	.andLike("name", "%t%")
@@ -2783,23 +2780,23 @@ List<User> list = query.andBetween("id", 1, 1640)
 
 如果我们只要查询其中的几个字段怎么办？比如我只要name和id字段，SQL如下：
 
-```
+```sql
 SELECT name,id FROM `user` 
 ```
 
 Query也提供了定制字段的方法，只要传入你需要的字段名即可：
 
-```
+```java
 Query<User> query = sqlManager.query(User.class);
 List<User> list = query.select("name", "id");
 ```
 比如时间比较大小：
 
-```
+```sql
 SELECT name,id FROM `user` WHERE `id` = 1637 AND `create_time` < now() AND `name` = 'test' 
 ```
 
-```
+```java
 Query<User> query = sqlManager.query(User.class);
 List<User> list = query.andEq("id", 1637)
 	.andLess("create_time", new Date())
@@ -2809,11 +2806,11 @@ List<User> list = query.andEq("id", 1637)
 
 有的同学会说，OR子句怎么用，和AND一样简单：
 
-```
+```sql
 SELECT * FROM `user` WHERE `name` = 'new name' OR `id` = 1637 limit 0 , 10
 ```
 
-```
+```java
 query.andEq("name", "new name")
 	.orEq("id", 1637)
 	.limit(1, 10)
@@ -2824,12 +2821,13 @@ query.andEq("name", "new name")
 #####  复杂的条件查询
 下面就开始进阶了，要进行一条复杂的条件查询SQL，就要用到  query.condition() 方法，产生一个新的条件，比如我们要查询下面这条SQL
 
-```
-SQL：SELECT * FROM `user` WHERE ( `id` IN( ? , ? , ? ) AND `name` LIKE ? )OR ( `id` = ? )
-参数：[1637, 1639, 1640, %t%, 1640]
+```sql
+-- SQL：
+SELECT * FROM `user` WHERE ( `id` IN( ? , ? , ? ) AND `name` LIKE ? )OR ( `id` = ? )
+-- 参数：[1637, 1639, 1640, %t%, 1640]
 ```
 
-```
+```java
 Query<User> query = sqlManager.query(User.class);
 List<User> list = query
 	.or(query.condition()
@@ -2841,12 +2839,13 @@ List<User> list = query
 复杂的条件查询，只需要调用 or() 方法 和 and()方法 ，然后使用 query.condition()生成一个新的条件传入就行；
 比如下面这条SQL
 
-```
-SQL：SELECT * FROM `user` WHERE ( `id` IN( ? , ? , ? ) AND `name` LIKE ? )AND `id` = ? OR ( `name` = ? )
-参数：[1637, 1639, 1640, %t%, 1640, new name2]
+```sql
+-- SQL：
+SELECT * FROM `user` WHERE ( `id` IN( ? , ? , ? ) AND `name` LIKE ? )AND `id` = ? OR ( `name` = ? )
+-- 参数：[1637, 1639, 1640, %t%, 1640, new name2]
 ```
 
-```
+```java
 Query<User> query = sqlManager.query(User.class);
 List<User> list = query
 	.and(query.condition()
@@ -2862,12 +2861,13 @@ List<User> list = query
 
 ###### 全量插入insert 方法
 
-```
-SQL：insert into `user` (`name`,`department_id`,`create_time`) VALUES (?,?,?)
-参数：[new name, null, null]
+```sql
+-- SQL：
+insert into `user` (`name`,`department_id`,`create_time`) VALUES (?,?,?)
+-- 参数：[new name, null, null]
 ```
 
-```
+```java
 	User record = new User();
 	record.setName("new name");
 	Query<User> query = sqlManager.query(User.class);
@@ -2877,11 +2877,12 @@ SQL：insert into `user` (`name`,`department_id`,`create_time`) VALUES (?,?,?)
 
 ###### 选择插入insertSelective方法
 
+```sql
+-- SQL： 
+insert into `user` ( `name`,`create_time` ) VALUES ( ?,? )
+-- 参数：[new name2, now()]
 ```
-SQL： insert into `user` ( `name`,`create_time` ) VALUES ( ?,? )
-参数：[new name2, now()]
-```
-```
+```java
 User record = new User();
 record.setName("new name2");
 record.setCreateTime(new Date());
@@ -2896,12 +2897,13 @@ update和insert类似,有全量更新和选择更新的方法；
 
 ###### 全量更新 update 方法
 
-```
-SQL：update `user` set `name`=?,`department_id`=?,`create_time`=? WHERE `id` = ? AND `create_time` < ? AND `name` = ? 
-参数：[new name, null, null, 1637, now(), test]
+```sql
+-- SQL：
+update `user` set `name`=?,`department_id`=?,`create_time`=? WHERE `id` = ? AND `create_time` < ? AND `name` = ? 
+-- 参数：[new name, null, null, 1637, now(), test]
 ```
 
-```
+```java
 User record = new User();
 record.setName("new name");
 Query<User> query = sqlManager.query(User.class);
@@ -2914,12 +2916,13 @@ int count = query.andEq("id", 1637)
 全量更新，会对所有的值进行更新，即使这个值是NULL；返回影响的行数；
 
 ###### 选择更新 updateSelective 方法
-```
-SQL：update `user` set `name`=? WHERE `id` = ? AND `create_time` < ? AND `name` = ? 
-参数：[new name, 1637, now(), test]
+```sql
+-- SQL：
+update `user` set `name`=? WHERE `id` = ? AND `create_time` < ? AND `name` = ? 
+-- 参数：[new name, 1637, now(), test]
 ```
 
-```
+```java
 User record = new User();
 record.setName("new name");
 Query<User> query = sqlManager.query(User.class);
@@ -2933,11 +2936,11 @@ updateSelective方法，对user进行了一次有选择性的更新。不是null
 ######  DELETE操作
 delete操作非常简单，拼接好条件，调用delete方法即可；返回影响的行数。
 
-```
+```sql
 DELETE FROM `user` WHERE `id` = ? 
 ```
 
-```
+```java
 Query<User> query = sqlManager.query(User.class);
 int count = query.andEq("id", 1642).delete();
 ```
@@ -2947,11 +2950,11 @@ int count = query.andEq("id", 1642).delete();
 ##### single单条查询
 single查询，查询出一条，如果没有，返回null；
 
-```
+```sql
 SELECT * FROM `user` WHERE `id` = 1642 limit 0 , 1
 ```
 
-```
+```java
 Query<User> query = sqlManager.query(User.class);
 User user = query.andEq("id", 1642).single();
 ```
@@ -2959,30 +2962,30 @@ User user = query.andEq("id", 1642).single();
 ##### unique单条查询
 unique查询和single稍微不同，他是查询一条，如果没有或者有多条，抛异常；
 
-```
+```sql
 SELECT * FROM `user` WHERE `id` = 1642 limit 0 , 2
 ```
 
-```
+```java
 Query<User> query = sqlManager.query(User.class);
 User user = query.andEq("id", 1642).unique();
 ```
 如果存在多条，或者没有则抛出异常：
 
-```
-org.beetl.sql.core.BeetlSQLException: unique查询，但数据库未找到结果集
 
-```
+> org.beetl.sql.core.BeetlSQLException: unique查询，但数据库未找到结果集
+
 
 #####  COUNT查询
 count查询主要用于统计行数，如下面的SQL：
 
-```
-SQL：	 SELECT COUNT(1) FROM `user` WHERE `name` = ? OR `id` = ? limit 0 , 10
-参数：	 [new name, 1637]
+```sql
+-- SQL：	
+ SELECT COUNT(1) FROM `user` WHERE `name` = ? OR `id` = ? limit 0 , 10
+-- 参数：	 [new name, 1637]
 ```
 
-```
+```java
 Query<User> query = sqlManager.query(User.class);
 long count = query.andEq("name", "new name")
              .orEq("id", 1637).limit(1, 10)
@@ -2993,12 +2996,12 @@ long count = query.andEq("name", "new name")
 #####  GROUP分组查询和Having子句
 有时候我们要进行分组查询，如以下SQL：
 
-```
+```sql
 SELECT * FROM `user` WHERE `id` IN(1637, 1639, 1640 ) GROUP BY name 
 ```
 在BeetlSql中直接拼条件调用group方法，传入字段即可：
 
-```
+```java
 Query<User> query = sqlManager.query(User.class);
 List<User> list = query
 	.andIn("id", Arrays.asList(1637, 1639, 1640))
@@ -3007,11 +3010,11 @@ List<User> list = query
 ```
 在分组查询之后，我们可能还要进行having筛选，只需要在后面调用having方法，传入条件即可。
 
-```
+```sql
 SELECT * FROM `user` WHERE `id` IN( 1637, 1639, 1640 ) GROUP BY name HAVING `create_time` IS NOT NULL 
 ```
 
-```
+```java
 Query<User> query = sqlManager.query(User.class);
 List<User> list = query
 	.andIn("id", Arrays.asList(1637, 1639, 1640))
@@ -3023,12 +3026,13 @@ List<User> list = query
 #####  分页查询
 分页查询是我们经常要使用的功能，beetlSql支持多数据，会自动适配当前数据库生成分页语句，在beeltSql中调用limit方法进行分页。如下面的SQL：
 
-```
-SQL： SELECT * FROM `user` WHERE `name` = ? OR `id` = ? limit 0 , 10
-参数： [new name, 1637]
+```sql
+-- SQL： 
+SELECT * FROM `user` WHERE `name` = ? OR `id` = ? limit 0 , 10
+-- 参数： [new name, 1637]
 ```
 
-```
+```java
 User record = new User();
 record.setName("new name");
 Query<User> query = sqlManager.query(User.class);
@@ -3042,12 +3046,13 @@ long count = query.andEq("name", "new name")
 ######  ORDER BY 排序
 进行排序查询时，只要调用orderBy方法，传入要排序的字段以及排序方式即可。
 
-```
-SQL： SELECT * FROM `user` WHERE `id` BETWEEN ? AND ? AND `name` LIKE ? AND `create_time` IS NOT NULL ORDER BY id desc 
-参数： [1, 1640, %t%]
+```sql
+-- SQL： 
+SELECT * FROM `user` WHERE `id` BETWEEN ? AND ? AND `name` LIKE ? AND `create_time` IS NOT NULL ORDER BY id desc 
+-- 参数： [1, 1640, %t%]
 ```
 
-```
+```java
 Query<User> query = sqlManager.query(User.class);
 List<User> list = query.andBetween("id", 1, 1640)
 	.andLike("name", "%t%")
@@ -3083,7 +3088,6 @@ ResultSet转为Map的时候，有不一样则，根据数据库返回的列类�
 如在BeanProcessor.toMap代码里
 
 ```java
-
 String columnName = rsmd.getColumnLabel(i);
 if (null == columnName || 0 == columnName.length()) {
   columnName = rsmd.getColumnName(i);
@@ -3105,9 +3109,7 @@ JavaType 定义了默认的数据库类型到Java类型的转化，从而获取�
 JavaType已经定义了绝大部分数据库类型到Java类型的转化，少量很少使用的类型没有定义，直接使用resultSet.getObject(i)取值
 
 ```java
-
 //JavaType.java
-
 jdbcJavaTypes.put(new Integer(Types.LONGNVARCHAR), String.class); // -16
 																			// 字符串
 jdbcJavaTypes.put(new Integer(Types.NCHAR), String.class); // -15 字符串
@@ -3121,8 +3123,7 @@ jdbcJavaTypes.put(new Integer(Types.LONGVARBINARY), byte[].class); // -4
 jdbcJavaTypes.put(new Integer(Types.VARBINARY), byte[].class); // -3 二进制
 jdbcJavaTypes.put(new Integer(Types.BINARY), byte[].class); // -2 二进制
 jdbcJavaTypes.put(new Integer(Types.LONGVARCHAR), String.class); // -1
-
-...... 
+//...... 
 ```
 
 有些框架，在使用Map的时候，添加了更多的灵活性，比如通过columnName 来片段是否该字段是字典字段，比如都有后缀"_dict",如果是，则从缓存或者查询响应的字典数据，放到ThreadLocal里，以一次性将查询结果，相关字典数据返回
@@ -3178,7 +3179,7 @@ SQLParameter 包含了sql对应参数的值，也包含参数对应的变量名�
 
 
 
-```java
+```sql
 select * from user where create_time>#createTime,typeofDate#
 ```
 
@@ -3217,7 +3218,7 @@ BeetlSql 是一个简单的Dao工具，不含有事务管理，完全依赖web�
 
 ```java
 SQLManager 	sql = new SQLManager(style,loader,cs,new UnderlinedNameConversion(), inters);
-.......
+//.......
 DSTransactionManager.start();
 User user = new User();
 sql.insert(user);
