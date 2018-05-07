@@ -1563,10 +1563,10 @@ EmptyExpressionFunction 用在很多地方,如template 类操作,where语句里�
 
 模板类查询和模板更新，以及Sql语句里的判断都依赖于isEmpty函数判断变量是否存在以及是否为null，2.8.4以前版本对空字符串也认为是空，2.8.4之后版本则仅仅判断对象是否存在以及是否为null
 
-```properties
+```sql
 where 1=1  
-@if(!isEmpty(connent)){
-  and 
+@if(!isEmpty(content)){
+  and   content = #content#
 @}
 ```
 
@@ -1587,10 +1587,10 @@ FN.isNotEmpty = org.beetl.ext.fn.IsNotEmptyExpressionFunction
 
 
 
-```properties
+```sql
 where 1=1  
 @if(null!=content!){
-  and 
+  and content = #content
 @}
 ```
 
@@ -1609,7 +1609,7 @@ selectByCond
 ===
 select * from user where 1=1
 --:if(age!=null)
-age=#age#
+	age=#age#
 --:}
 ```
 
@@ -1687,7 +1687,7 @@ select * from user where name like #'%'+name+'%'#
 ```markdown
 select * from user where status in (
 @for(id in ids){
-#id#  #text(idLP.last?"":"," )#
+	#id#  #text(idLP.last?"":"," )#
 @}
 ```
 
