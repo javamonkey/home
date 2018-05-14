@@ -330,7 +330,7 @@ List<User> list1  = sql.lambdaQuery(User.class).andEq(User::getName, "hi").order
 
 >  关于Query操作的具体用法，请参考25.1节
 >
->  Query 对象不能复用，使用完毕后，如果有新查询，需要重新获取一个新的Query，否则会报Query不能复用的错误
+>  ~~Query 对象不能复用，使用完毕后，如果有新查询，需要重新获取一个新的Query，否则会报Query不能复用的错误~~ 从2.10.19版本开始，Query(LambdaQuery)对象支持复用
 
 
 
@@ -402,10 +402,7 @@ User user = sqlManager.templateOne(template);
 
 -   public Integer intValue(String id,Map paras) 查询结果映射成Integer，如果找不到，返回null，输入是map，其他还有 longValue，bigDecimalValue
 
-> 注意，对于Map参数来说，有一个特殊的key叫着\_root,它代表了查询根对象，sql语句中未能找到的变量都会在试图从\_root 中查找，关于\_root对象，可以参考第8章。 在Map中使用\_root, 可以混合为sql提供参数，如下示例
-> ~~~java
->
-> ~~~
+> 注意，对于Map参数来说，有一个特殊的key叫着\_root,它代表了查询根对象，sql语句中未能找到的变量都会在试图从\_root 中查找，关于\_root对象，可以参考第8章。 在Map中使用\_root, 可以混合为sql提供参数
 
 
 ##### 3.2.5 指定范围查询
@@ -781,7 +778,7 @@ UserDao dao = sqlManager.getMapper(UserDao.class);
 
 如果你使用Spring或者SpringBoot，可以参考Spring集成一章，了解如何自动注入Mapper
 
-> Mapper 对应的sql文件默认根据实体来确定，如实体是User对象，则对应的sql文件是user.md(sql),可以通过@SqlResource 注解来指定Mapper对应的sql文件。比如
+> Mapper 对应的sql文件默认根据实体来确定，如实体是UserInfo对象，则对应的sql文件是userInfo.md(sql),可以通过@SqlResource 注解来指定Mapper对应的sql文件。比如
 
 ~~~java
 @SqlResource("core.user")
@@ -1696,7 +1693,7 @@ select * from user where status in (
 >   -   变量名＋LP 是一个内置变量，包含了循环状态，具体请参考beetl文档，text方法表示直接输出文本而不是符号“？”
 >   -   关于 sql中的in，可以使用内置的join方法更加方便
 
--   while 循环语句 ，如while(i<count))
+-   while 循环语句 ，如`while(i<count))`
 
 
 
