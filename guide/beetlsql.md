@@ -3,7 +3,7 @@
 >   -   作者: 闲大赋,Gavin.King,Sue,Zhoupan,woate,Darren
 >   -   社区 [http://ibeetl.com](http://ibeetl.com/)
 >   -   qq群 219324263(满) 636321496
->   -   当前版本 2.10.22
+>   -   当前版本 2.10.23
 
 
 
@@ -2527,7 +2527,7 @@ public class MyServiceImpl implements MyService {
 <dependency>
 	<groupId>com.ibeetl</groupId>
 	<artifactId>beetl-framework-starter</artifactId>
-	<version>1.1.49.RELEASE</version>
+	<version>1.1.50.RELEASE</version>
 
 </dependency>
 ~~~
@@ -2611,8 +2611,62 @@ public MyConfig{
 ~~~
 可以掉用SqlManagerFactoryBean来配置，或者获得SQLManager 进一步配置
 
+####  24.3. SpringBoot集成多数据源
 
-#### 24.3. JFinal集成和Demo
+单数据源情况，BeetlSQL配置方式如上一节所示，BeetlSQL会自动根据单数据源配置好BeetlSQL，多数据源情况下，需要配置指定的多数据源，如下俩个数据源
+
+~~~java
+@Configuration
+public class DataSourceConfig {
+	
+	@Bean(name = "a")
+	public DataSource datasource(Environment env) {
+		HikariDataSource ds = new HikariDataSource();
+		ds.setJdbcUrl(env.getProperty("spring.datasource.a.url"));
+		ds.setUsername(env.getProperty("spring.datasource.a.username"));
+		ds.setPassword(env.getProperty("spring.datasource.a.password"));
+		ds.setDriverClassName(env.getProperty("spring.datasource.a.driver-class-name"));
+		return ds;
+	}
+	
+	@Bean(name = "b")
+	public DataSource datasourceOther(Environment env) {
+		HikariDataSource ds = new HikariDataSource();
+		ds.setJdbcUrl(env.getProperty("spring.datasource.b.url"));
+		ds.setUsername(env.getProperty("spring.datasource.b.username"));
+		ds.setPassword(env.getProperty("spring.datasource.b.password"));
+		ds.setDriverClassName(env.getProperty("spring.datasource.b.driver-class-name"));
+		return ds;
+	}
+~~~
+对于数据源a，b，需要配置beetlsql如下配置
+~~~properties
+beetlsql.ds.a.basePackage=com.bee.sample.ch5.xxxdao.
+beetlsql.ds.b.basePackage=com.bee.sample.ch5.yyyydao
+beetlsql.mutiple.datasource=a,b
+~~~
+以beetlsql.ds 为前缀，需要分别配置每个数据源的basePackage,nameConversion等配置，如果没有，则使用默认配置
+beetlsql.mutiple.datasource 则配置了多个数据源列表。
+
+如果需要定制每一个SQLManager，需要提供BeetlSqlMutipleSourceCustomize
+
+~~~java
+@Bean
+	public BeetlSqlMutipleSourceCustomize beetlSqlCustomize() {
+		return new BeetlSqlMutipleSourceCustomize() {
+			@Override
+			public void customize(String dataSource,SQLManager sqlManager) {
+				
+			}
+			
+		};
+	}
+~~~
+
+
+
+
+#### 24.4. JFinal集成和Demo
 
 在configPlugin 里配置BeetlSql
 
