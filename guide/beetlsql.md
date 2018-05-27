@@ -3,7 +3,7 @@
 >   -   作者: 闲大赋,Gavin.King,Sue,Zhoupan,woate,Darren
 >   -   社区 [http://ibeetl.com](http://ibeetl.com/)
 >   -   qq群 219324263(满) 636321496
->   -   当前版本 2.10.24
+>   -   当前版本 2.10.25
 
 
 
@@ -24,6 +24,7 @@ BeetSql是一个全功能DAO工具， 同时具有Hibernate 优点 & Mybatis优�
     -   具备Interceptor功能，可以调试，性能诊断SQL，以及扩展其他功能
 -   其他
     -   内置支持主从数据库支持的开源工具
+    -   性能数倍于JPA，MyBatis
     -   支持跨数据库平台，开发者所需工作减少到最小，目前跨数据库支持mysql,postgres,oracle,sqlserver,h2,sqllite,DB2.
 
 
@@ -38,7 +39,7 @@ maven 方式:
 <dependency>
 	<groupId>com.ibeetl</groupId>
 	<artifactId>beetlsql</artifactId>
-	<version>2.10.24</version>
+	<version>2.10.25</version>
 </dependency>
 <dependency>
   <groupId>com.ibeetl</groupId>
@@ -558,12 +559,14 @@ query = sql.execute(new SQLReady(jdbcSql), User.class, query);
 -   直接使用Connection public <T> T executeOnConnection(OnConnection<T> call),使用者需要实现onConnection方法的call方法，如调用存储过程
 
 ```java
-String md5 = sql.executeOnConnection(new OnConnection<String>(){
+List<User> users = sql.executeOnConnection(new OnConnection<List<User>(){
 	@Override
-	public String call(Connection conn) throws SQLException {
-		CallableStatement cstmt = conn.prepareCall("{ ? = call md5( ? ) }");
-		// 其他代码
-		return true;
+	public List<User> call(Connection conn) throws SQLException {
+		 CallableStatement cstmt = conn.prepareCall("{ ? = call md5( ? ) }");
+		 ResultSet rs = callableStatement.executeQuery();
+         return this.sqlManagaer.getDefaultBeanProcessors().toBeanList(rs,User.class);
+        
+		
 	}
 });
 ```
@@ -2527,7 +2530,7 @@ public class MyServiceImpl implements MyService {
 <dependency>
 	<groupId>com.ibeetl</groupId>
 	<artifactId>beetl-framework-starter</artifactId>
-	<version>1.1.51.RELEASE</version>
+	<version>1.1.52.RELEASE</version>
 
 </dependency>
 ~~~
@@ -3331,3 +3334,19 @@ public interface MapperInvoke {
 如果你想定制自己的"BaseMapper"，请参考org.beetl.sql.core.mapper.internal.* 所有类
 
 
+
+####  25.8 性能测试
+
+性能测试代码在 https://gitee.com/xiandafu/dao-benchmark  
+
+* git clone https://gitee.com/xiandafu/dao-benchmark
+* mvn clean package
+* java -jar -Dtest.target=jpa target/dao-0.0.1-SNAPSHOT.jar
+* 测试目标可更换为jpa,beetlsql,mybatis,jdbc
+* 在result目录检测测试文本结果
+
+如下是测试结果
+
+![](dao-performance.png)
+
+JDBC 作为基准，无疑是最快的，在ORM测视中，BeetlSQL性能基本上是其他JPA，MyBatis的3-7倍

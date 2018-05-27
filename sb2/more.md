@@ -221,7 +221,10 @@ Curl是命令行工具，更适合写书的时候用 :)
   * Thymeleaf性能瓶颈
   * Thymeleaf的语法较为难学习，学习曲线很大。
 * 模板语法一般有三种风格，xml方式，类似freemaker，比如“<if></if>”,指令方式，类似velocity，Thymeleaf。还有一种是Beetl这种方式，脚本方式。我个人更喜欢脚本方式，能处理较为复杂的逻辑渲染，而且，模板脚本和静态文本能区分开。每个人都有自己的审美，喜欢何种风格都没有问题。
+* 性能测试，Thymeleaf 更是非常糟糕
 
+
+![](../img/beetl.png)
 
 ## 4.2 前端模板引擎已经很流行了，后端模板引擎还有作用嘛？
 
@@ -290,6 +293,16 @@ public class JndiDataSourceAutoConfiguration {
 https://my.oschina.net/xiandafu/blog/617542
 
 简单的来讲，我更认可BeetlSQL和Mybatis这种风格的ORM工具。关于结合SpringBoot，我们知道，BeetlSQL结合Spring Boot，应该是启动最快的了。比较适合Spring Boot快速启动和热启动
+
+
+
+关于性能PK，可以看
+
+https://gitee.com/xiandafu/dao-benchmark
+
+性能测试结果
+
+![](https://gitee.com/xiandafu/dao-benchmark/raw/master/performance.png)
 
 
 
