@@ -3,7 +3,7 @@
 >   -   作者: 闲大赋,Gavin.King,Sue,Zhoupan,woate,Darren
 >   -   社区 [http://ibeetl.com](http://ibeetl.com/)
 >   -   qq群 219324263(满) 636321496
->   -   当前版本 2.10.25
+>   -   当前版本 2.10.26
 
 
 
@@ -39,7 +39,7 @@ maven 方式:
 <dependency>
 	<groupId>com.ibeetl</groupId>
 	<artifactId>beetlsql</artifactId>
-	<version>2.10.25</version>
+	<version>2.10.26</version>
 </dependency>
 <dependency>
   <groupId>com.ibeetl</groupId>
@@ -3350,3 +3350,9 @@ public interface MapperInvoke {
 ![](dao-performance.png)
 
 JDBC 作为基准，无疑是最快的，在ORM测视中，BeetlSQL性能基本上是其他JPA，MyBatis的3-7倍
+
+
+#### 25.9 内置sql语句生成
+
+AbstractDBStyle 提供了跨平台的内置sql语句，比如根据class或者table 生成insert，update，del 等语句，你可以覆盖AbstractDBStyle方法来生成特定的sql语句，比如Mysql 支持insert ignore into 语句，你可以覆盖generalInsert方法来生成特定的insert ignore into语句
+
