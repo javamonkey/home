@@ -769,9 +769,9 @@ Beetl内置函数请参考附录，以下列出了常用的函数
 -   **has** 变量名为参数，判断是否存在此"全局变量"，如 has(userList),类似于1.x版本的exist("userList"),但不需要输入引号了.注意，has和isEmpety 判断的是从java传到模板的全局变量，而不是临时变量
 -   **hasAttriute**  测试目标对象是否有此属性，hasAttribute(user,"name")
 -   **assert** 如果表达式为false，则抛出异常
--   trim 截取数字或者日期，返回字符,如trim(12.456,2)返回"12.45",trim(date,'yyyyy')返回"2017"
+-   trim 截取数字或者日期，返回字符,如trim(12.456,2)返回"12.45",trim(date,'yyyy')返回"2017"
 -   **trunc** 截取数字，保留指定的小数位，如trunc(12.456,2) 输出是12.45.不推荐使用，因为处理float有问题，兼容原因保留了
--   **decode** 一个简化的if else 结构，如 decode(a,1,"a=1",2,"a=2","不知道了")},如果a是1，这decode输出"a=1",如果a是2，则输出"a==2", 如果是其他值，则输出"不知道了"
+-   **decode** 一个简化的if else 结构，如 decode(a,1,"a=1",2,"a=2","不知道了"),如果a是1，这decode输出"a=1",如果a是2，则输出"a==2", 如果是其他值，则输出"不知道了"
 -   **debug** 在控制台输出debug指定的对象以及所在模板文件以及模板中的行数，如debug(1),则输出1 [在3行@/org/beetl/core/lab/hello.txt],也可以输出多个，如debug("hi",a),则输出hi,a=123,[在3行@/org/beetl/core/lab/hello.txt]
 -   **parseInt** 将数字或者字符解析为整形 如 parseInt("123");
 -   **parseLong** 将数字或者字符解析为长整形，parseInt(123.12);
@@ -795,7 +795,7 @@ Beetl内置函数请参考附录，以下列出了常用的函数
 -   有时候模板变量并不存在（譬如子模板里）
 -   模板变量为null，但输出的是此变量的一个属性，如${user.wife.name}
 
-针对前俩种种情况，可以在变量引用后加上！以提醒beetl这是一个安全输出的变量。
+针对前俩种情况，可以在变量引用后加上！以提醒beetl这是一个安全输出的变量。
 
 如${user.wife.name! },即使user不存在，或者user为null，或者user.wife为null，或者user.wife.name为null beetl都不将输出
 
@@ -840,7 +840,7 @@ DIRECTIVE SAFE_OUTPUT_CLOSE;
 %>
 ```
 
-Beetl不建议每一个页面都使用DIRECTIVE SAFE_OUTPUT_OPEN，这样，如果如果真有不期望的错误，不容易及时发现，其次，安全输出意味着beetl会有额外的代码检测值是否存在或者是否为null，性能会略差点。所以建议及时关闭安全输出（这不是必须的，但页面所有地方是安全输出，可能不容易发现错误）
+Beetl不建议每一个页面都使用DIRECTIVE SAFE_OUTPUT_OPEN，这样，如果真有不期望的错误，不容易及时发现，其次，安全输出意味着beetl会有额外的代码检测值是否存在或者是否为null，性能会略差点。所以建议及时关闭安全输出（这不是必须的，但页面所有地方是安全输出，可能不容易发现错误）
 
 在for-in 循环中 ，也可以为集合变量增加安全输出指示符号，这样，如果集合变量为null，也可以不进入循环体，如：
 
@@ -1020,13 +1020,13 @@ Beetl 也支持HTML tag形式的标签， 区分beetl的html tag 与 标准html 
 <% } %>
 ```
 
-如下还包含了自定义html标签一些一些规则
+如下还包含了自定义html标签一些规则
 
 -   可以在自定义标签里引用标签体的内容，标签体可以是普通文本，beetl模板，以及嵌套的自定义标签等。如上<#richeditor 标签体里，可用“tagBody”来引用
--   HTML自定义标签 的属性值均为字符串 如<#input value=”123” />,在input.tag文件里 变量value的类型是字符串
--   可以在属性标签里引用beetl变量，如<#input value=”${user.age}” />，此时在input.tag里，value的类型取决于user.age
--   在属性里引用beetl变量，不支持格式化，如<#input value=”${user.date,‘yyyy-MM-dd’ }” />,如果需要格式化，需要在input.tag文件里自行格式化
--   在标签属性里传json变量需要谨慎，因为json包含了"}",容易与占位符混合导致解析出错，因此得使用"\"符号，如<#input value=”${ {*age*:25} }” />
+-   HTML自定义标签 的属性值均为字符串 如<#input value="123" />,在input.tag文件里 变量value的类型是字符串
+-   可以在属性标签里引用beetl变量，如<#input value="${user.age}" />，此时在input.tag里，value的类型取决于user.age
+-   在属性里引用beetl变量，不支持格式化，如<#input value="${user.date,'yyyy-MM-dd'}"/>,如果需要格式化，需要在input.tag文件里自行格式化
+-   在标签属性里传json变量需要谨慎，因为json包含了"}",容易与占位符混合导致解析出错，因此得使用"\"符号，如<#input value="${ {*age*:25\} }" />
 -   html tag 属性名将作为 其对应模板的变量名。
 -   默认机制下，全局变量都将传给html tag对应的模板文件，这个跟include一样。当然，这机制也可以改变，对于标签来说，通常是作为一个组件存在，也不一定需要完全传送所有全局变量，而只传送（request,session,这样变量），因此需要重新继承org.beetl.ext.tag.HTMLTagSupportWrapper.并重载callHtmlTag方法。并注册为htmltag标签。具体请参考https://github.com/javamonkey/beetl2.0/blob/master/beetl-core/src/test/java/org/beetl/core/tag/HtmlTagTest.java
 
@@ -1060,7 +1060,7 @@ public class SimpleHtmlTag extends Tag{
 
 #### 2.24. 绑定变量的HTML标签
 
-对于html标签（参考上一节），Beetl还 支持将标签实现类（java代码）里的对象作为临时变量，被标签体引用。此时需要实现GeneralVarTagBinding (此类是Tag的子类） 该类提供另外3个个方法 - void binds(Object… array) 子类在render方法里调用此类以实现变量绑定，绑定顺序同在模板中声明的顺序 - void bind(String name, Object value) 子类在render方法里调用此类以实现变量绑定，name是模板中声明的变量名，用此方法绑定不如binds更灵活，不再推荐 - Object getAttributeValue 获得标签的属性 - Map getAttributes 获得标签的所有属性
+对于html标签（参考上一节），Beetl还 支持将标签实现类（java代码）里的对象作为临时变量，被标签体引用。此时需要实现GeneralVarTagBinding (此类是Tag的子类） 该类提供另外3个方法 - void binds(Object… array) 子类在render方法里调用此类以实现变量绑定，绑定顺序同在模板中声明的顺序 - void bind(String name, Object value) 子类在render方法里调用此类以实现变量绑定，name是模板中声明的变量名，用此方法绑定不如binds更灵活，不再推荐 - Object getAttributeValue 获得标签的属性 - Map getAttributes 获得标签的所有属性
 
 ```java
 public class TagSample extends GeneralVarTagBinding{
@@ -1485,7 +1485,7 @@ public class CompressTag extends Tag{
         public void render(){
                 BodyContent  content = getBodyContent();
                 String content = content.getBody();
-                String zip = compress(conent);
+                String zip = compress(cotnent);
                 ctx.byteWriter.write(zip);
         }
 }
@@ -2542,7 +2542,7 @@ Beetl视图解析器属性同spring自带的视图解析器一样，支持conten
 其他集成需要注意的事项:
 
 -   spring集成，请不要使用spring的 前缀配置,改用beetl的RESOURCE.ROOT 配置，否则include，layout会找不到模板
--   如果跟目录不是默认目录，可以通过添加root属性
+-   如果根目录不是默认目录，可以通过添加root属性
 
 
 ~~~xml
@@ -2594,7 +2594,7 @@ public MyConfig{
 @Configuration
 public class BeetlConf {
 
-        @Value("${beetl.templatesPath}") String templatesPath;//模板跟目录 ，比如 "templates"
+        @Value("${beetl.templatesPath}") String templatesPath;//模板根目录 ，比如 "templates"
         @Bean(name = "beetlConfig")
         public BeetlGroupUtilConfiguration getBeetlGroupUtilConfiguration() {
                 BeetlGroupUtilConfiguration beetlGroupUtilConfiguration = new BeetlGroupUtilConfiguration();
@@ -3185,7 +3185,7 @@ ajax 片段渲染也支持默认情况下不渲染，仅仅做为一个片段使
 
 
 
-符号#ajax 实际上用来标记一个模板渲染片段，它还有个别名的叫#fragment，俩着是一样的，比如
+符号#ajax 实际上用来标记一个模板渲染片段，它还有个别名的叫#fragment，两者是一样的，比如
 ~~~java
 <%
 #fragment part2:{
@@ -3223,9 +3223,9 @@ ERROR_HANDLER = org.beetl.ext.web.WebErrorHandler
 -   **isNotEmpty** 同上，判断对象是否不为空
 -   has 变量名为参数，判断是否存在此全局变量，如 has(userList),类似于1.x版本的exist("userList"),但不需要输入引号了
 -   **assert** 如果表达式为false，则抛出异常
--   trim 截取数字或者日期，返回字符,如trim(12.456,2)返回"12.45",trim(date,'yyyyy')返回"2017"
+-   trim 截取数字或者日期，返回字符,如trim(12.456,2)返回"12.45",trim(date,'yyyy')返回"2017"
 -   **trunc** 截取数字，保留指定的小数位，如trunc(12.456,2) 输出是12.45.不推荐使用，因为处理float有问题，兼容原因保留了
--   **decode** 一个简化的if else 结构，如 decode(a,1,"a=1",2,"a=2","不知道了")},如果a是1，这decode输出"a=1",如果a是2，则输出"a==2", 如果是其他值，则输出"不知道了"
+-   **decode** 一个简化的if else 结构，如 ${decode(a,1,"a=1",2,"a=2","不知道了")},如果a是1，这decode输出"a=1",如果a是2，则输出"a==2", 如果是其他值，则输出"不知道了"
 -   debug 在控制台输出debug指定的对象以及所在模板文件以及模板中的行数，如debug(1),则输出1 [在3行@/org/beetl/core/lab/hello.txt],也可以输出多个，如debug("hi",a),则输出hi,a=123,[在3行@/org/beetl/core/lab/hello.txt]
 -   **parseInt** 将数字或者字符解析为整形 如 parseInt("123");
 -   **parseLong** 将数字或者字符解析为长整形，parseInt(123.12);
@@ -3243,19 +3243,19 @@ ERROR_HANDLER = org.beetl.ext.web.WebErrorHandler
 
 >   strutil方法对参数均不做空指针检测，你可自定义方法来覆盖这些内置的方法
 
--   **strutil.startWith** ${ strutil.startWith(“hello”,”he”) 输出是true
--   **strutil.endWith** ${ strutil.endWith(“hello”,”o”) 输出是true
--   **strutil.length** ${ strutil. length (“hello”),输出是5
--   **strutil.subString** ${ strutil.subString (“hello”,1),输出是“ello”
--   strutil.subStringTo ${ strutil.subStringTo (“hello”,1,2),输出是“e”
--   **strutil.split** ${ strutil.split (“hello,joeli”,”,”),输出是数组，第一个是字符串，第二个是正则表达式。返回第一个是hello，第二个是joelli”
--   strutil.contain ${ strutil.contain (“hello,”el”),输出是true
--   **strutil.toUpperCase** ${ strutil.toUpperCase (“hello”),输出是HELLO
--   **strutil.toLowerCase** ${ strutil.toLowerCase (“Hello”),输出是hello
--   **strutil.replace** ${ strutil.replace (“Hello”,”lo”,”loooo”),输出是helloooo
--   strutil.format ${ strutil.format (“hello,{0}, my age is {1}”,”joeli”,15),输出是hello,joelli, my age is 15. 具体请参考[http://docs.oracle.com/javase/6/docs/api/java/text/MessageFormat.html](http://docs.oracle.com/javase/6/docs/api/java/text/MessageFormat.html)
+-   **strutil.startWith** ${ strutil.startWith("hello","he")} 输出是true
+-   **strutil.endWith** ${ strutil.endWith("hello","o")} 输出是true
+-   **strutil.length** ${ strutil. length ("hello")},输出是5
+-   **strutil.subString** ${ strutil.subString ("hello",1)},输出是"ello"
+-   strutil.subStringTo ${ strutil.subStringTo ("hello",1,2)},输出是"e"
+-   **strutil.split** ${ strutil.split ("hello,joeli",",")},参数第一个是字符串，第二个是正则表达式。输出是数组：返回第一个是"hello"，第二个是"joelli"
+-   strutil.contain ${ strutil.contain ("hello,"el")},输出是true
+-   **strutil.toUpperCase** ${ strutil.toUpperCase ("hello")},输出是HELLO
+-   **strutil.toLowerCase** ${ strutil.toLowerCase ("hello")},输出是hello
+-   **strutil.replace** ${ strutil.replace ("hello","lo","loooo")},输出是helloooo
+-   strutil.format ${ strutil.format ("hello,{0}, my age is {1}","joeli",15)},输出是hello,joeli, my age is 15. 具体请参考[http://docs.oracle.com/javase/6/docs/api/java/text/MessageFormat.html](http://docs.oracle.com/javase/6/docs/api/java/text/MessageFormat.html)
 -   **strutil.trim** 去掉字符串的尾部空格
--   **strutil.formatDate** var a = strutil.formatDate(user.bir,’yyyy-MM-dd’);
+-   **strutil.formatDate** var a = strutil.formatDate(user.bir,'yyyy-MM-dd')};
 -   **strutil.index** var index = strutil.index("abc","a");返回 索引0
 -   **strutil.lastIndex** var index = strutil.lastIndex("aba","a");返回索引2
 
