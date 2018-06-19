@@ -1236,6 +1236,8 @@ public class QueryUser ..
 
 注：可以为对象指定一个数据库shcema，如name="cms.user",此时将访问cms库（或者cms用户，对不同的数据库，称谓不一样）下的user数据表
 
+> 考虑到跨数据库，最好采用大写方式，比如USER,CMS.USER，oracle 识别大写
+
 
 
 #### 7.6. @TableTemplate
@@ -2343,7 +2345,7 @@ selectUserAndDepartment
 	@orm.single({"departmentId":"id"},"Department");
 	@orm.many({"id":"userId"},"user.selectRole","Role");
 
-user.selectRole
+selectRole
 ===
 
 	select r.* from user_role ur left join role r on ur.role_id=r.id
