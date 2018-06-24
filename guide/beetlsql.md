@@ -3,7 +3,7 @@
 >   -   作者: 闲大赋,Gavin.King,Sue,Zhoupan,woate,Darren
 >   -   社区 [http://ibeetl.com](http://ibeetl.com/)
 >   -   qq群 219324263(满) 636321496
->   -   当前版本 2.10.26
+>   -   当前版本 2.10.28
 
 
 
@@ -1094,9 +1094,23 @@ public List<User> queryUser( @Param(name) String name, @Param(age) @RowStart Int
 
 \_st,_sz 同@RowStart和@RowSize 
 
+#### 6.8 使用接口默认方法
+如果你使用JDK8，则可以在mapper中添加默认方法，有利于重用
+~~~java
+public interface SysResourceDao extends BaseMapper<SysResource> {
 
+    void page(PageQuery<SysResource> query);
 
+    default List<SysResource> listChildren(Integer resourceId) {
+        return createLambdaQuery()
+                .andNotEq(SysResource::getStatus, 1)
+                .andEq(SysResource::getPid, resourceId)
+                .select();
+    }
+}
+~~~
 
+ 
 
 
 
@@ -2532,7 +2546,7 @@ public class MyServiceImpl implements MyService {
 <dependency>
 	<groupId>com.ibeetl</groupId>
 	<artifactId>beetl-framework-starter</artifactId>
-	<version>1.1.52.RELEASE</version>
+	<version>1.1.54.RELEASE</version>
 
 </dependency>
 ~~~
