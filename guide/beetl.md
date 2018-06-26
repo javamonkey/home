@@ -4,7 +4,7 @@ Beetl作者：李家智 <[xiandafu@126.com](mailto:xiandafu@126.com)>
 
 ### 1. 什么是Beetl
 
-Beetl目前版本是2.8.4,相对于其他java模板引擎，具有功能齐全，语法直观,性能超高，以及编写的模板容易维护等特点。使得开发和维护模板有很好的体验。是新一代的模板引擎。总得来说，它的特性如下：
+Beetl目前版本是2.8.5,相对于其他java模板引擎，具有功能齐全，语法直观,性能超高，以及编写的模板容易维护等特点。使得开发和维护模板有很好的体验。是新一代的模板引擎。总得来说，它的特性如下：
 
 -   功能完备：作为主流模板引擎，Beetl具有相当多的功能和其他模板引擎不具备的功能。适用于*各种应用场景*，从对响应速度有很高要求的大网站到功能繁多的CMS管理系统都适合。Beetl本身还具有很多独特功能来完成模板编写和维护，这是其他模板引擎所不具有的。
 -   非常简单：类似Javascript语法和习俗，只要半小时就能通过半学半猜完全掌握用法。拒绝其他模板引擎那种非人性化的语法和习俗。同时也能支持html 标签，使得开发CMS系统比较容易
@@ -69,7 +69,7 @@ Beetl目前版本是2.8.4,相对于其他java模板引擎，具有功能齐全�
 <dependency>
         <groupId>com.ibeetl</groupId>
         <artifactId>beetl</artifactId>
-        <version>2.8.4</version>
+        <version>2.8.5</version>
 </dependency>
 ```
 
@@ -2561,7 +2561,7 @@ Beetl视图解析器属性同spring自带的视图解析器一样，支持conten
 <dependency>
 	<groupId>com.ibeetl</groupId>
 	<artifactId>beetl-framework-starter</artifactId>
-	<version>1.1.52.RELEASE</version>
+	<version>1.1.55.RELEASE</version>
 </dependency>
 ~~~
 
@@ -3218,6 +3218,7 @@ ERROR_HANDLER = org.beetl.ext.web.WebErrorHandler
 -   **date** 返回一个java.util.Date类型的变量，如 date() 返回一个当前时间(对应java的java.util.Date); ${date( "2011-1-1" , "yyyy-MM-dd" )} 返回指定日期
 -   **print** 打印一个对象 print(user.name);
 -   **println** 打印一个对象以及回车换行符号，回车换号符号使用的是模板本身的，而不是本地系统的.如果仅仅打印一个换行符，则直接调用println() 即可
+-   **printFile** 直接答应文件，文件路径以模板根目录为相对目录，printFile(‘‘/common/header.html’’);
 -   **nvl** 函数nvl，如果对象为null，则返回第二个参数，否则，返回自己 nvl(user,"不存在")
 -   **isEmpty** 判断变量或者表达式是否为空，变量不存在，变量为null，变量是空字符串，变量是空集合，变量是空数组，此函数都将返回true
 -   **isNotEmpty** 同上，判断对象是否不为空
