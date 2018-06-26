@@ -12,7 +12,7 @@
 ## 2.1JPA,MyBatis,BeetlSQL,JDBC 性能测试
 
 ~~~
-时长16分钟
+时长16分钟,测试框架地址 https://gitee.com/xiandafu/dao-benchmark
 ~~~
 
 ORM工具几乎每一个Java企业项目，网站需要的访问数据库的工具，比如MyBatis，Hibernate,JPA，JDBC，BeetlSQL等等，每个工具各有特点，难以比较，但性能可以比较，本视频介绍了Dao-Benchmark测试框架以及常用的ORM工具测试结果。你即可以作为ORM选型依据，也可以通过测试框架快速学习这些ORM如何使用，如何集成到SpringBoot 2中
@@ -21,8 +21,9 @@ ORM工具几乎每一个Java企业项目，网站需要的访问数据库的工�
 
 
 
->测试框架地址 https://gitee.com/xiandafu/dao-benchmark
-><img src="image\beetlsql\2.1.dao-benchmark.jpg" width="150px" height="150px" >
+
+<img src="image\beetlsql\2.1.dao-benchmark.jpg" width="150px" height="150px" >微信扫描进入课程页面
+
 
 
 
