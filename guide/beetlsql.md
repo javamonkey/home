@@ -288,7 +288,7 @@ SQLManager sqlManager = new SQLManager(mysql,loader,source,nc,new Interceptor[]{
 更常见的是，已经有了DataSource，创建ConnectionSource 可以采用如下代码
 
 ```java
-ConnectionSource source = ConnectionSourceHelper.single(datasource);
+ConnectionSource source = ConnectionSourceHelper.getSingle(datasource);
 ```
 
 如果是主从Datasource
