@@ -22,8 +22,11 @@ ORM工具几乎每一个Java企业项目，网站需要的访问数据库的工�
 
 ![](image\beetlsql\2.1.dao-benchmark.jpg)
 
-
 # 3 Spring Boot 2.0精髓  短视频
+
+Spring Boot是目前Spring技术体系中炙手可热的框架之一，既可用于构建业务复杂的企业应用系统，也可以开发高性能和高吞吐量的互联网应用。Spring Boot框架降低了Spring技术体系的使用门槛，简化了Spring应用的搭建和开发过程，提供了流行的第三方开源技术的自动集成。本书系统介绍了Spring Boot 2的主要技术，侧重于两个方面，一方面是极速开发一个Web应用系统，详细介绍Spring Boot框架、Spring MVC、视图技术、数据库访问技术，并且介绍多环境部署、自动装配、单元测试等高级特性；另一方面，当系统模块增加，性能和吞吐量要求增加时，如何平滑地用Spring Boot实现分布式架构，也会在本书后半部分介绍，包括使用Spring实现RESTful架构，在Spring Boot框架下使用Redis、MongoDB、ZooKeeper、Elasticsearch等流行技术，使用Spring Session实现系统水平扩展，使用Spring Cache提高系统性能。
+
+
 
 # 4 Spring Boot Plus 短视频
 
@@ -31,7 +34,7 @@ ORM工具几乎每一个Java企业项目，网站需要的访问数据库的工�
 
 系统基于Spring Boot2技术，前端采用了Layui2。数据库以MySQL为实例，理论上是跨数据库平台.
 
-基本技术栈来源于我为电子工业出版社编写的的[<>](http://ibeetl.com/sb2/#more) (这本书每一章也有各种例子，但Springboot-plus 更偏向于应用而不是教学)
+基本技术栈来源于我为电子工业出版社编写的的 [《Spring Boot 2 精髓》](http://ibeetl.com/sb2/#more) (这本书每一章也有各种例子，但Springboot-plus 更偏向于应用而不是教学)
 
 ## 4.1 安装和子系统生成
 
