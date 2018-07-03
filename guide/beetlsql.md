@@ -3,7 +3,7 @@
 >   -   作者: 闲大赋,Gavin.King,Sue,Zhoupan,woate,Darren
 >   -   社区 [http://ibeetl.com](http://ibeetl.com/)
 >   -   qq群 219324263(满) 636321496
->   -   当前版本 2.10.29
+>   -   当前版本 2.10.30
 
 
 
@@ -39,7 +39,7 @@ maven 方式:
 <dependency>
 	<groupId>com.ibeetl</groupId>
 	<artifactId>beetlsql</artifactId>
-	<version>2.10.29</version>
+	<version>2.10.30</version>
 </dependency>
 <dependency>
   <groupId>com.ibeetl</groupId>
@@ -2546,8 +2546,7 @@ public class MyServiceImpl implements MyService {
 <dependency>
 	<groupId>com.ibeetl</groupId>
 	<artifactId>beetl-framework-starter</artifactId>
-	<version>1.1.55.RELEASE</version>
-
+	<version>1.1.56.RELEASE</version>
 </dependency>
 ~~~
 

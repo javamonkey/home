@@ -26,8 +26,8 @@ Spring Boot 所有历史版本官方文档地址： https://docs.spring.io/sprin
 
 
 
-* Spring Boot: 2.0.0.RELEASE
-* beetl-framework-starter:1.1.52.RELEASE
+* Spring Boot: 2.0.1.RELEASE
+* beetl-framework-starter:1.1.56.RELEASE
 * HikariCP:2.7.8
 * OkHttp:3.9.1
 * Elastic Search Server：5.6.8
