@@ -8,6 +8,22 @@
 
 # 1 Beetl 短视频
 
+## 1.1 Beetl介绍
+
+~~~
+时长约30分钟,定价6元
+~~~
+
+介绍了Beetl历史，应用范围，语法特点，相关文档和demo资源，重点通过在线体验演示了Beetl的主要语法。通过本视频，可以快速了解Beetl和使用语法，打消你使用Beetl的疑虑。本视频也可以作为你在众多模板引擎里选型的依据
+
+![](image\beetl\beetl001.png)
+![](image\beetl\beetl001-pay.png)
+
+
+
+
+
+
 # 2 BeetlSQL 短视频
 ## 2.1JPA,MyBatis,BeetlSQL,JDBC 性能测试
 
