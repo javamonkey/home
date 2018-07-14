@@ -11,24 +11,29 @@
 ## 1.1 Beetl介绍
 
 ~~~
-时长约30分钟,定价6元
+时长约30分钟,定价6元，购买地址：https://m.qlchat.com/topic/details?topicId=2000001587143720
 ~~~
 
-介绍了Beetl历史，应用范围，语法特点，相关文档和demo资源，重点通过在线体验演示了Beetl的主要语法。通过本视频，可以快速了解Beetl和使用语法，打消你使用Beetl的疑虑。本视频也可以作为你在众多模板引擎里选型的依据
-
+介绍了Beetl历史，应用范围，语法特点，相关文档和demo资源，重点通过在线体验演示了Beetl的主要语法。通过本视频，可以快速了解Beetl和使用语法，打消你使用Beetl的疑虑。本视频也可以作为你在众多模板引擎里选型的依据。
 ![](image\beetl\beetl001.png)
 ![](image\beetl\beetl001-pay.png)
 
 
+##  1.2 Beetl语法详解
 
+> 时长40分钟，
 
+在第一课基础上，详细介绍Beetl常用语法，函数，配置以及布局，常见错误，初学者可以通过这个视频了解Beetl大部分语法和使用习俗。本视频适合那些已经集成好Beetl的前提下，需要使用Beetl开发动态页面的初学者
+
+![](image\beetl\beetl002.png)
+![](image\beetl\beetl002-pay.png)
 
 
 # 2 BeetlSQL 短视频
 ## 2.1JPA,MyBatis,BeetlSQL,JDBC 性能测试
 
 ~~~
-时长16分钟,测试框架地址 https://gitee.com/xiandafu/dao-benchmark
+时长16分钟,测试框架地址 https://gitee.com/xiandafu/dao-benchmark，购买地址 https://m.qlchat.com/topic/details?topicId=2000001515619086
 ~~~
 
 ORM工具几乎每一个Java企业项目，网站需要的访问数据库的工具，比如MyBatis，Hibernate,JPA，JDBC，BeetlSQL等等，每个工具各有特点，难以比较，但性能可以比较，本视频介绍了Dao-Benchmark测试框架以及常用的ORM工具测试结果。你即可以作为ORM选型依据，也可以通过测试框架快速学习这些ORM如何使用，如何集成到SpringBoot 2中
@@ -55,7 +60,7 @@ Spring Boot是目前Spring技术体系中炙手可热的框架之一，既可用
 ## 4.1 安装和子系统生成
 
 ~~~
-时长25分钟，介绍SpringBoot-Plus的安装和代码子系统生成
+时长25分钟，介绍SpringBoot-Plus的安装和代码子系统生成，购买地址 https://m.qlchat.com/topic/details?topicId=2000001551304588
 ~~~
 
 ![](image/sb/pay-install.png)

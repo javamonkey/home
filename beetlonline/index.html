@@ -37,12 +37,8 @@
 							<li v-for="p in i18n.dl"><a :href="p.u" target="_blank" rel="nofllow external"><i class="iconfont icon-beetl"></i> {{p.n}}</a></li>
 						</ul>
 					</li>
-					<li id="donate">
-						<a href="javascript:;"><i class="iconfont icon-donate"></i> {{i18n.donate}}</a>
-						<ul>
-							<li><a href="javascript:;"><img src="/img/weixinpay.png"></a></li>
-						</ul>
-					</li>
+					<li><a href="/pay/#list"><i class="iconfont icon-forum"></i> {{i18n.video}}</a></li>
+						
 					<li>
 						<a href="javascript:;"><i class="iconfont icon-book"></i> {{i18n.sb2.name}}</a>
 						<ul>
@@ -98,7 +94,7 @@
 		var $=function(id){return document.querySelector(id)}
 		var chapterData = {ch1:'看一眼',ch2:'定义变量',ch3:'属性引用',ch4:'算数表达式',ch5:'逻辑表达式',ch6:'循环语句',ch7:'条件语句',ch8:'函数调用',ch9:'格式化',ch10:'class方法调用',ch11:'错误处理',ch12:'安全输出',ch13:'注释',ch14:'类型说明'}
 		var sampleData={ch1:{ch1_0:"空白",ch1_1:"Hello,beetl",ch1_2:"变量",ch1_3:"表达式",ch1_4:"循环语句",ch1_5:"判断语句",ch1_6:"安全输出",ch1_7:"class调用",ch1_8:"方法调用",ch1_9:"格式化函数",ch1_10:"虚拟属性"},ch2:{ch2_0:"定义临时变量",ch2_1:"一行定义多个临时变量",ch2_2:"定义json变量",ch2_3:"定义模板变量"},ch3:{ch3_0:"对象属性",ch3_1:"数组或者列表",ch3_2:"集合",ch3_3:"Map"},ch4:{ch4_0:"算数表达式"},ch5:{ch5_0:"逻辑表达式1",ch5_1:"逻辑表达式2",ch5_2:"三元表达式"},ch6:{ch6_0:"循环数组或者List",ch6_1:"循环Map",ch6_2:"安全循环",ch6_3:"循环控制",ch6_4:"elsefor",ch6_5:"for(exp;exp;exp)"},ch7:{ch7_0:"if else ",ch7_1:"switch",ch7_2:"使用nvl函数",ch7_3:"使用decode函数",ch7_4:"select case"},ch8:{ch8_0:"print函数",ch8_1:"date函数",ch8_2:"exist函数",ch8_3:"debug函数",ch8_4:"cache标签"},ch9:{ch9_0:"日期格式化输出",ch9_1:"数字格式化输出"},ch10:{ch10_0:"class静态方法",ch10_1:"class静态属性",ch10_2:"实例的方法"},ch11:{ch11_0:"语法错误",ch11_1:"运行错误"},ch12:{ch12_0:"安全输出",ch12_1:"安全输出指令",ch12_2:"使用安全输出判断变量是否存在",ch12_3:"使用isEmpty判断是否存在"},ch13:{ch13_0:"单行注释",ch13_1:"多行输出"},ch14:{ch14_0:"动态类型",ch14_1:"指定全局变量类型"}};
-		var lang={"zh-cn":{guide:{title:"在线文档",beetl:"Beetl文档",beetlsql:"BeetlSQL文档"},trial:"在线体验",forum:"论坛",download:"下载",dl:[{n:"Beetl模板引擎",u:"http://git.oschina.net/xiandafu/beetl2.0/attach_files"},{n:"BeetlSQL数据库Dao",u:"http://git.oschina.net/xiandafu/beetlsql/attach_files"},{n:"XLSUnit单元测试工具",u:"https://git.oschina.net/xiandafu/xlsunit"}],sb2:{name:"《Spring Boot2精髓》",fix:"内容勘正",more:"内容补充"},donate:"立即打赏",language:"English",result:"体验结果",chapter:"章节",sample:"例子",template:"模板",model:"伪模型",reset:"清空内容",run:"运行代码",tips:"默认使用${ } 作为占位符号\n使用<%%> 作为控制语句起始符号"},en:{guide:{title:"Guide",beetl:"Beetl Doc",beetlsql:"BeetlSQL Doc"},trial:"Trial",forum:"Forum",download:"Download",dl:[{n:"Beetl Template",u:"http://mvnrepository.com/artifact/com.ibeetl/beetl"},{n:"BeetlSQL Database Dao",u:"http://mvnrepository.com/artifact/com.ibeetl/beetlsql"},{n:"XLSUnit Unit Testing Tool",u:"http://mvnrepository.com/artifact/com.ibeetl/xlsunit"}],sb2:{name:"《Spring Boot2揭秘》",fix:"内容勘正",more:"内容补充"},donate:"Donate",language:"中文",result:"Result",chapter:"Chapter",sample:"Sample",template:"Template",model:"Pseudo model",reset:"Reset form",run:"Run code",tips:"The default placeholder is ${ }\nUse <%%> as the control statement start-end symbol"}};
+		var lang={"zh-cn":{guide:{title:"在线文档",beetl:"Beetl文档",beetlsql:"BeetlSQL文档"},trial:"在线体验",forum:"论坛",download:"下载",dl:[{n:"Beetl模板引擎",u:"http://git.oschina.net/xiandafu/beetl2.0/attach_files"},{n:"BeetlSQL数据库Dao",u:"http://git.oschina.net/xiandafu/beetlsql/attach_files"},{n:"XLSUnit单元测试工具",u:"https://git.oschina.net/xiandafu/xlsunit"}],sb2:{name:"《Spring Boot2精髓》",fix:"内容勘正",more:"内容补充"},video:"付费视频",language:"English",result:"体验结果",chapter:"章节",sample:"例子",template:"模板",model:"伪模型",reset:"清空内容",run:"运行代码",tips:"默认使用${ } 作为占位符号\n使用<%%> 作为控制语句起始符号"},en:{guide:{title:"Guide",beetl:"Beetl Doc",beetlsql:"BeetlSQL Doc"},trial:"Trial",forum:"Forum",download:"Download",dl:[{n:"Beetl Template",u:"http://mvnrepository.com/artifact/com.ibeetl/beetl"},{n:"BeetlSQL Database Dao",u:"http://mvnrepository.com/artifact/com.ibeetl/beetlsql"},{n:"XLSUnit Unit Testing Tool",u:"http://mvnrepository.com/artifact/com.ibeetl/xlsunit"}],sb2:{name:"《Spring Boot2揭秘》",fix:"内容勘正",more:"内容补充"}, video:"Video",language:"中文",result:"Result",chapter:"Chapter",sample:"Sample",template:"Template",model:"Pseudo model",reset:"Reset form",run:"Run code",tips:"The default placeholder is ${ }\nUse <%%> as the control statement start-end symbol"}};
 		var localize = (localStorage.localize||navigator.language||navigator.browserLanguage).toLowerCase();
 		if(localize!='zh-cn')localize='en';
 		var app = new Vue({

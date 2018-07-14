@@ -22,7 +22,7 @@
 							<ul>
 								<li><a href="/guide/#beetl"><i class="iconfont icon-guide"></i> {{i18n.guide.beetl}}</a></li>
 								<li><a href="/guide/#beetlsql"><i class="iconfont icon-guide"></i> {{i18n.guide.beetlsql}}</a></li>
-								<li><a href="/pay/#list"><i class="iconfont icon-guide"></i> {{i18n.guide.pay}}</a></li>
+							
 							</ul>
 						</li>
 						<li><a href="/beetlonline"><i class="iconfont icon-trial"></i> {{i18n.trial}}</a></li>
@@ -35,12 +35,8 @@
 								<li v-for="p in i18n.dl"><a :href="p.u" target="_blank" rel="nofllow external"><i class="iconfont icon-beetl"></i> {{p.n}}</a></li>
 							</ul>
 						</li>
-						<li id="donate">
-							<a href="javascript:;"><i class="iconfont icon-donate"></i> {{i18n.donate}}</a>
-							<ul>
-								<li><a href="javascript:;"><img src="/img/weixinpay.png"></a></li>
-							</ul>
-						</li>
+						<li><a href="/pay/#list"><i class="iconfont icon-forum"></i> {{i18n.video}}</a></li>
+						
 						<li>
 							<a href="javascript:;"><i class="iconfont icon-book"></i> {{i18n.sb2.name}}</a>
 							<ul>
@@ -157,8 +153,8 @@
 				        guide:{
 				            title:"在线文档",
 				            beetl:"Beetl文档",
-				            beetlsql:"BeetlSQL文档",
-				            pay:"付费视频学习"
+				            beetlsql:"BeetlSQL文档"
+				           
 
 				        },
 				        trial:"在线体验",
@@ -174,7 +170,7 @@
 				        	fix:"内容勘正",
 				        	more:"内容补充"
 				        },
-				        donate:"立即打赏",
+				        video:"付费视频",
 				        language:"English",
 				        product:[ {
 				            name:"Beetl",
@@ -242,7 +238,7 @@
 				        	{n:'BeetlSQL Database Dao',u:'http://mvnrepository.com/artifact/com.ibeetl/beetlsql'},
 				        	{n:'XLSUnit Unit Testing Tool',u:'http://mvnrepository.com/artifact/com.ibeetl/xlsunit'}
 				        ],
-				        donate:"Donate",
+				        video:"Video",
 				        sb2:{
 				        	name:"《Spring Boot2精髓》",
 				        	fix:"内容勘正",
